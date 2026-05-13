@@ -1,3 +1,5 @@
+#ifndef AUX_FUNC_H
+#define AUX_FUNC_H
 /**
  * @brief verifica se um valor está dentro de um intervalo.
  * @param value valor a comparar
@@ -20,3 +22,5 @@ void createLine(short n, char c);
  * @return o caracter em maiusculo
  */
 int toUpper(int ch);
+
+#endif

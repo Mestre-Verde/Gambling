@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
-
-int num;
+#include <time.h>
 
 int guess_main_processo(void)
 {
+    srand(time(NULL)); // permite gerar uma seed que não repete o mesmo valor sempre
+    int num = rand() % 100 + 1;
     puts("Welcome to the Guess Game!");
     puts("Try to guess the number between 1 and 100.");
-
-    num = rand() % 100 + 1;
 
     int guess;
     bool guessed = false;

@@ -1,8 +1,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "include/jogo_do_galo.h"
-#include "include/aux_func.h"
+#include "jogo_do_galo.h"
+#include "aux_func.h"
+
+char tabuleiro[MAX][MAX] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+short coordenates[2];
+
+const char jogadorX = 'X';
+const char jogadorO = 'O';
+
+int jogadorXWinnes = 0;
+int jogadorOWinnes = 0;
+int noWinnerCount = 0;
+
+char playerTurn;
 
 _Bool isToExit(char c) { return toUpper(c) == 'S'; }
 

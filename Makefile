@@ -1,8 +1,7 @@
 COMPILER = gcc
 CFLAGS = -Wall
-
+INCLUDE = -Iinclude
 BIN_PATH = bin/
-BUILD_PATH = build/
 
 SRC = \
 	src/main.c \
@@ -10,21 +9,18 @@ SRC = \
 	Menu/menu.c
 
 GAMES_SRC = \
-	guess_game/guess_game.c \
-	jogo_do_galo/main_logic.c
+	games/guess_game/guess_game.c \
+	games/jogo_do_galo/jogo_do_galo.c
 
 ALL_SRC = $(SRC) $(GAMES_SRC)
 
 EXEC = gamblingApp
 
-# criar pasta bin se não existir + compilar
+.PHONY: build run clean
+
 build:
 	mkdir -p $(BIN_PATH)
-	$(COMPILER) $(CFLAGS) $(ALL_SRC) -o $(BIN_PATH)$(EXEC)
-
-compile: 
-	mkdir -p $(BUILD_PATH)
-	cria objetos e guarda em build
+	$(COMPILER) $(CFLAGS) $(ALL_SRC) $(INCLUDE) -o $(BIN_PATH)$(EXEC)
 
 run: build
 	./$(BIN_PATH)$(EXEC)
