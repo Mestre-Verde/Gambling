@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-bool isBetween(short value, short min, short max)
-{
-    return (min <= value) && (value < max);
-}
+bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
 
 void createLine(short n, char c)
 {
@@ -34,3 +31,12 @@ int toUpper(int ch)
         return ch - 32;
     return ch;
 }
+
+// @return valor absoluto
+int Abs(int x) { return x < 0 ? -x : x; }
+// retorna o cubo de um numero.
+int Cubo(int x) { return x * x * x; }
+// retorna o numero negativo
+int Minus(int x) { return x < 0 ? x : -x; }
+// retorna o inverso de um numero
+int Inverso(int x) { return x == 0 ? x : (1 / x); }

@@ -9,8 +9,11 @@
  */
 _Bool galoMainProcess(void);
 
-_Bool placeChar(char c, short position[2], char M[MAX][MAX]);
-void clearMatrix(char M[MAX][MAX]);
+/**
+ * @brief Imprime no terminal o tabuleiro.
+ * @param M coloque aqui o array que pretente mostrar
+ * @param showContent 0 para mostrar as coordenadas, 1 para mostrar o conteudo em cada membro do array.
+ */
 void printMatrix2D(char M[MAX][MAX], short int showContent);
-char checkWinner();
+
 #endif

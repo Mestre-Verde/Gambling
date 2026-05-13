@@ -48,8 +48,8 @@ int main(){
     int array1[10];
     int array2[20];
 
-    functionX(array1,10);
-    functionX(array2);
+    functionX(10,array1);
+    functionX(20,array2);
 }
 ```
 >Primeiro coloque o tamanho e depois o array.

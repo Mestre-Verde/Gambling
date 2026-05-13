@@ -5,8 +5,11 @@
 
 int guess_main_processo(void)
 {
-    srand(time(NULL)); // permite gerar uma seed que não repete o mesmo valor sempre
+    // permite gerar uma seed que não repete o mesmo valor sempre
+    srand(time(NULL));
+    // obtem um numero aleatório e deixa-o dentro do intervalo 0 a 100
     int num = rand() % 100 + 1;
+
     puts("Welcome to the Guess Game!");
     puts("Try to guess the number between 1 and 100.");
 

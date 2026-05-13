@@ -7,7 +7,7 @@
  * @param max valor maximo
  * @return 1 se verdade, 0 se falso
  */
-bool isBetween(short value, short min, short max);
+bool isBetween(int value, int min_value, int max_value);
 
 /**
  * @brief Imprime um carater em linha e no final dá /n
@@ -22,5 +22,12 @@ void createLine(short n, char c);
  * @return o caracter em maiusculo
  */
 int toUpper(int ch);
+
+/**
+ * @brief  verifica se o caracter é espaço
+ * @param ch caracter para comparar
+ * @return 1 se é espaço, 0 se não é.
+ */
+int isSpace(int ch);
 
 #endif

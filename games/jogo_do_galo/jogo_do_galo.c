@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "jogo_do_galo.h"
 #include "aux_func.h"
-
-char tabuleiro[MAX][MAX] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
-short coordenates[2];
 
 const char jogadorX = 'X';
 const char jogadorO = 'O';
@@ -14,18 +12,18 @@ int jogadorXWinnes = 0;
 int jogadorOWinnes = 0;
 int noWinnerCount = 0;
 
-char playerTurn;
-
-_Bool isToExit(char c) { return toUpper(c) == 'S'; }
-
 void printMatrix2D(char M[MAX][MAX], short int showContent)
 {
     for (int linha = 0; linha < MAX; linha++)
     {
         if (showContent)
+        {
             createLine(7, '-');
+        }
         else
+        {
             createLine(13, '-');
+        }
         putchar('|');
         for (int coluna = 0; coluna < MAX; coluna++)
         {
@@ -36,6 +34,7 @@ void printMatrix2D(char M[MAX][MAX], short int showContent)
         }
         putchar('\n');
     }
+
     if (showContent)
     {
         createLine(7, '-');
@@ -46,126 +45,228 @@ void printMatrix2D(char M[MAX][MAX], short int showContent)
     }
 }
 
-void clearMatrix(char M[MAX][MAX])
+/**
+ * @brief Coloca um caracter no tabuleiro.
+ * @param c caracter a colocar
+ * @param tamanho tamanho e position
+ * @param position array com as coordenadas
+ * @param M matriz do tabuleiro
+ * @return 0 se colocou com sucesso, 1 se não conseguiu
+ */
+_Bool placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX])
 {
+    if (!isBetween(position[0], 0, MAX - 1) ||
+        !isBetween(position[1], 0, MAX - 1))
+    {
+        return 1;
+    }
+
+    if (M[position[0]][position[1]] != ' ')
+    {
+        return 1;
+    }
+
+    M[position[0]][position[1]] = c;
+
+    return 0;
+}
+
+char getCoordenadas(char playerTurn, short int tamanho, short int position[tamanho], char tabuleiro[MAX][MAX])
+{
+    char turnText[] = "Vez de: \"%c\".\nIntroduza a posição [linha,coluna] ou 'S' para sair:";
+
+    while (1)
+    {
+        char buffer[4];
+        short int x, y;
+
+        printf(turnText, playerTurn);
+
+        if (!fgets(buffer, sizeof(buffer), stdin))
+            continue;
+
+        if (strchr(buffer, '\n') == NULL)
+        {
+            int c;
+
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
+        }
+        // saída
+        if (toUpper(buffer[0]) == 'S')
+            return 'S';
+
+        // validar formato
+        if (sscanf(buffer, "%hd,%hd", &x, &y) != 2)
+        {
+            puts("Input inválido. Usa formato: x,y");
+            continue;
+        }
+
+        position[0] = x;
+        position[1] = y;
+        // printf("Coordenadas recebidas:%hi,%hi", position[0], position[1]);
+
+        // tentar jogar
+        if (!placeChar(playerTurn, tamanho, position, tabuleiro))
+        {
+            return 0; // jogada válida feita
+        }
+
+        puts("Jogada inválida (posição ocupada ou fora do tabuleiro).");
+    }
+}
+
+_Bool isFull(char M[MAX][MAX])
+{
+
     for (short linha = 0; linha < MAX; linha++)
     {
         for (short coluna = 0; coluna < MAX; coluna++)
         {
-            M[linha][coluna] = ' ';
+            if (isSpace(M[linha][coluna]))
+            {
+                return 0;
+            }
         }
     }
+    return 1;
 }
 
-_Bool placeChar(char c, short position[2], char M[MAX][MAX])
+char checkWinner(char tabuleiro[MAX][MAX])
 {
-    char caracter = M[position[0]][position[1]];
-    if (caracter == ' ' && isBetween(position[0], 0, MAX) && isBetween(position[1], 0, MAX))
+    // linhas
+    for (int i = 0; i < MAX; i++)
     {
-        M[position[0]][position[1]] = c;
-        return 0;
+        if (tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2] && tabuleiro[i][0] != ' ')
+        {
+            return tabuleiro[i][0];
+        }
     }
-    else
-    {
-        return 1;
-    }
-}
 
-char checkWinner()
-{
-    short countX = 0;
-    short countO = 0;
-    for (short i = 0; i < MAX; i++)
+    // colunas
+    for (int i = 0; i < MAX; i++)
     {
-        if (tabuleiro[i][i] == 'X')
-            countX++;
-        else if (tabuleiro[i][i] == 'O')
-            countO++;
+        if (tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i] && tabuleiro[0][i] != ' ')
+        {
+            return tabuleiro[0][i];
+        }
     }
-    if (countX == MAX)
+
+    // diagonal principal
+    if (tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2] && tabuleiro[0][0] != ' ')
     {
-        jogadorXWinnes++;
-        return 'X';
+        return tabuleiro[0][0];
     }
-    else if (countO == MAX)
+
+    // diagonal secundária
+    if (tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0] && tabuleiro[0][2] != ' ')
     {
-        jogadorOWinnes++;
-        return 'O';
+        return tabuleiro[0][2];
     }
-    else
-    {
-        countX = countO = 0;
-    }
+
     return 0;
 }
 
+/**
+ * @brief Lê uma entrada correpsondente a "X","O","S"
+ * @return Um dos 3 caracteres.
+ */
 char chooseTheFirstPlayer()
 {
-    puts("Neste jogo há 2 jogadores insira quem vai ser o primeiro,digite \"X\" ou \"O\":");
+    puts("Quem começa: X ou O (ou S para sair)");
+
     char input;
-    do
+
+    while (1)
     {
         input = getchar();
-    } while (input != 'X' && input != 'O');
-    return input;
+
+        // ignora ENTER e lixo
+        if (input == '\n' || input == ' ' || input == '\t')
+            continue;
+
+        input = toUpper(input);
+
+        // limpa o resto da linha (evita bugs no fgets depois)
+        while (getchar() != '\n')
+            ;
+
+        if (input == 'X' || input == 'O' || input == 'S')
+            return input;
+
+        puts("Entrada inválida. Usa X, O ou S.");
+    }
 }
 
-bool galoMainProcess(void)
+_Bool galoMainProcess(void)
 {
-    char turnText[] = "Vez de:\"%c\".\nIntroduza a posição da jogada  [linha,coluna]:";
 
+    short int coordenates[2];
+    char playerTurn;
+    char winner = 0;
     puts("!!!WELCOME TO THE GAME!!");
-    puts("Para sair do jogo deve enviar um unico 'S'.");
 
-    bool exit = 0;
-    while (!exit)
+    while (1)
     {
-        char winner = 0;
+        // limpa o tabuleiro no inicio de cada ronda.
+        char tabuleiro[MAX][MAX] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+
+        // inicio do jogo, escolher quem vai ser o primeiro:
         playerTurn = chooseTheFirstPlayer();
-
-        if (isToExit(playerTurn))
+        if (playerTurn == 'S')
         {
-            break;
+            return 0;
         }
+        // inicia-se o jogo
 
-        do
+        // proceso simples, o jogador obtido na parte acima vai ser o primeiro
+        // então o primeiro jogador vai mandar as coordenadas
+        while (!winner)
         {
             printMatrix2D(tabuleiro, 1);
             printMatrix2D(tabuleiro, 0);
-
-            int sucesso = 0;
-            do
+            // manda obter as coordenadas
+            if (getCoordenadas(playerTurn, sizeof(coordenates) / sizeof(coordenates[0]), coordenates, tabuleiro) == 'S')
             {
-                printf(turnText, playerTurn);
-                scanf(" %hi,%hi", &coordenates[0], &coordenates[1]);
-
-                sucesso = placeChar(playerTurn, coordenates, tabuleiro);
-            } while (sucesso);
-
-            if (playerTurn == jogadorX)
-            {
-                playerTurn = jogadorO;
+                return 0;
             }
-            else
-            {
-                playerTurn = jogadorX;
-            }
-            winner = checkWinner();
-        } while (!winner);
 
-        if (winner == 'X' || winner == 'O')
-        {
-            printf("O jagador \"%c\" ganhou esta partida\n", winner);
+            // verifica se o tabuleiro já está preeenchido:
+            if (isFull(tabuleiro))
+            {
+                winner = 0;
+                break;
+            }
+
+            // verifica se algum jogador fez 3 seguidos
+            winner = checkWinner(tabuleiro);
+            if (winner)
+            {
+                break;
+            }
+
+            // troca de jogador no final de 1 jogada.
+            playerTurn = (playerTurn == jogadorX) ? jogadorO : jogadorX;
         }
-        else if (winner == '0')
+        // ok agora que ou o tabuleiro ficou cheio ou algum teve 3 de uma vez verifica-se
+        // qual é que ganheou para incrementar
+        if (winner == jogadorO)
         {
-            puts("Sem vencedor.");
-            noWinnerCount++;
+            jogadorOWinnes++;
+        }
+        else if (winner == jogadorX)
+        {
+            jogadorOWinnes++;
         }
         else
         {
-            return 1;
+            puts("Empate entre os 2.");
+            noWinnerCount++;
+            continue;
         }
+
+        printf("O jogador \"%c\"", winner);
     }
 
     return 0;
