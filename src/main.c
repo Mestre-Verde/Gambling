@@ -5,7 +5,7 @@ int main(void)
 {
     if (!galoMainProcess)
     {
-        puts("Ocurreu um erro com o jogo do galo.");
+        puts("Ocorreu um erro com o jogo do galo.");
     }
 
     puts("ola duarte");
