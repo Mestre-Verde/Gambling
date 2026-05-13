@@ -1,4 +1,4 @@
-COMPILER = Gcc
+COMPILER = gcc
 CFLAGS = -Wall
 
 BIN_PATH = bin/
