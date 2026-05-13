@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "main_menu.h"
 #include "jogo_do_galo.h"
 #include "guess_game.h"
 
@@ -9,11 +10,11 @@ int main(void)
     {
         puts("Ocorreu um erro com o jogo do galo.");
     }
-    /*
-        if (guess_main_processo())
-        {
-            puts("Ocorreu um erro com o jogo de adivinhação.");
-        }
-    */
+
+    if (guess_main_processo())
+    {
+        puts("Ocorreu um erro com o jogo de adivinhação.");
+    }
+
     return 0;
 }

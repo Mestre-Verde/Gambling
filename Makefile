@@ -11,7 +11,7 @@ BUILD_PATH = build/
 SRC = \
 	src/main.c \
 	utils/aux_func.c \
-	Menu/menu.c \
+	menu/main_menu.c \
 	games/guess_game/guess_game.c \
 	games/jogo_do_galo/jogo_do_galo.c
 
