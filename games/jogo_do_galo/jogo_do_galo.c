@@ -4,6 +4,8 @@
 #include "include/jogo_do_galo.h"
 #include "include/aux_func.h"
 
+_Bool isToExit(char c) { return toUpper(c) == 'S'; }
+
 void printMatrix2D(char M[MAX][MAX], short int showContent)
 {
     for (int linha = 0; linha < MAX; linha++)
@@ -43,7 +45,7 @@ void clearMatrix(char M[MAX][MAX])
     }
 }
 
-bool placeChar(char c, short position[2], char M[MAX][MAX])
+_Bool placeChar(char c, short position[2], char M[MAX][MAX])
 {
     char caracter = M[position[0]][position[1]];
     if (caracter == ' ' && isBetween(position[0], 0, MAX) && isBetween(position[1], 0, MAX))
@@ -93,7 +95,7 @@ char chooseTheFirstPlayer()
     {
         input = getchar();
     } while (input != 'X' && input != 'O');
-    playerTurn = input;
+    return input;
 }
 
 bool galoMainProcess(void)
@@ -109,9 +111,8 @@ bool galoMainProcess(void)
         char winner = 0;
         playerTurn = chooseTheFirstPlayer();
 
-        if (toUpper(playerTurn) == 'S')
+        if (isToExit(playerTurn))
         {
-            exit = 1;
             break;
         }
 
