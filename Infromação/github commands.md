@@ -526,22 +526,6 @@ A---B---C-------M (merge commit)
 
 ---
 
-## 🚀 Regra prática (boa para o teu projeto)
-
-Para o teu caso (C + trabalho de equipa):
-
-```bash
-git pull --rebase
-```
-
-E opcionalmente fixar isto globalmente:
-
-```bash
-git config --global pull.rebase true
-```
-
----
-
 ## ⚠️ Importante
 
 * `rebase` reescreve histórico local
