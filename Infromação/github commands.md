@@ -451,18 +451,107 @@ Se outra pessoa mexeu no repo:
 
 ---
 
-## 9.5. 🔁 6.5 Rebase (histórico limpo)
+Boa — isto aqui é exatamente onde o Git começa a fazer sentido de verdade.
 
-```bash id="t1n4qk"
+---
+
+## 🔁 6.5 Rebase (histórico limpo)
+
+```bash
 git pull --rebase
 ```
 
-### 9.5.1. 💡 O que muda?
+### 9.5.1 💡 O que faz?
 
-Em vez de misturar históricos:
+Em vez de misturar históricos (merge commit), o Git faz isto:
 
-* o Git primeiro traz mudanças do GitHub
-* depois “encaixa” os teus commits por cima
+* vai buscar os commits do GitHub
+* “remove temporariamente” os teus commits locais
+* atualiza o branch com o que está no remoto
+* reaplica os teus commits por cima, um a um
+
+Resultado:
+
+> histórico linear, limpo e fácil de ler
+
+---
+
+## 🧠 E o `--no-rebase`?
+
+```bash
+git pull --no-rebase
+```
+
+### 💡 O que faz?
+
+Aqui o Git escolhe o comportamento oposto ao rebase:
+
+* ele faz um **merge normal**
+* junta os dois históricos diretamente
+* cria um *merge commit*
+
+---
+
+### 📉 O que muda na prática?
+
+#### 🔁 Com `--rebase`
+
+Histórico fica assim:
+
+```text
+A---B---C---D (main limpo)
+```
+
+---
+
+#### 🔀 Com `--no-rebase`
+
+Histórico fica assim:
+
+```text
+A---B---C-------M (merge commit)
+         \     /
+          D---E
+```
+
+---
+
+## ⚖️ Comparação simples
+
+| Método        | Resultado                | Quando usar                          |
+| ------------- | ------------------------ | ------------------------------------ |
+| `--rebase`    | histórico linear (limpo) | projetos organizados, equipa         |
+| `--no-rebase` | merge commits            | quando não queres mexer no histórico |
+| `--ff-only`   | só avança se possível    | máxima segurança                     |
+
+---
+
+## 🚀 Regra prática (boa para o teu projeto)
+
+Para o teu caso (C + trabalho de equipa):
+
+```bash
+git pull --rebase
+```
+
+E opcionalmente fixar isto globalmente:
+
+```bash
+git config --global pull.rebase true
+```
+
+---
+
+## ⚠️ Importante
+
+* `rebase` reescreve histórico local
+* nunca uses em commits já partilhados sem cuidado
+* se houver conflito, resolves e depois:
+
+```bash
+git rebase --continue
+```
+
 
 ---
 
