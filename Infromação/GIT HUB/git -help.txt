@@ -1,0 +1,48 @@
+MestreVerde@FedoraPC:~$ git
+uso: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]
+           [--no-optional-locks] [--no-advice] [--bare] [--git-dir=<path>]
+           [--work-tree=<path>] [--namespace=<name>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+
+Estes são comandos do Git comuns usados em diversas situações:
+
+iniciar uma área-trabalho (vê também: git help tutorial)
+   clone      Clonar um repositório numa nova pasta
+   init       Criar um repositório Git vazio ou reinicializar um existente
+
+trabalhar na alteração atual (vê também: git help everyday)
+   add        Adicionar conteúdos de ficheiro ao cenário
+   mv         Mover ou renomear um ficheiro, pasta ou ligação simbólica
+   restore    Restaurar ficheiros de árvore-trabalho
+   rm         Remove files from the working tree and from the index
+
+examinar o histórico e estado (vê também: git help revisions)
+   bisect     Usar procura binário para encontrar a memória que introduziu um bug
+   diff       Mostrar alterações entre memórias, memória e árvore-trabalho, etc
+   grep       Imprimir linhas que correspondam a um padrão
+   log        Mostrar registro de memórias
+   show       Mostrar vários tipos objetos
+   status     Mostrar status de árvore-trabalho
+
+aumentar, marcar e ajustar teu histórico comum
+   backfill   Download missing objects in a partial clone
+   branch     Listar, criar ou eliminar ramos
+   commit     Gravar alterações para o repositório
+   history    EXPERIMENTAL: Rewrite history
+   merge      Juntar duas ou mais histórias de desenvolvimento numa só
+   rebase     Reaplicar memórias no topo de outra ponta
+   reset      Set `HEAD` or the index to a known state
+   switch     Trocar ramos
+   tag        Create, list, delete or verify tags
+
+colaborar (vê também: git help workflows)
+   fetch      Download objectos e refs de outro repositório
+   pull       Buscar de e integrar com outro repositório ou um ramo local
+   push       Atualizar referências remotas juntamente com objetos associados
+
+'git help -a' e 'git help -g' listam subcomandos disponíveis e alguns
+guias de conceitos. Consulta 'git help <comando>' ou 'git help <conceito>'
+para ler sobre um subcomando específico ou conceito específico.
+Para uma visão geral do sistema, vê 'git help git'.
