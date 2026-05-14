@@ -95,9 +95,9 @@ Aqui tens no mesmo estilo 👇
 
 ---
 
-# `strchr()`
+## `strchr()`
 
-Serve para **procurar um caractere numa string**.
+Procura um carácter numa string e devolve um pointer para onde ele está.
 
 * Procura da esquerda para a direita
 * Para na primeira ocorrência
@@ -121,4 +121,42 @@ int main() {
     }
 }
 ```
+__*Explicação de uso:*__
+
+Imagina isto na memória:
+
+```txt
+1000 → a
+1001 → b
+1002 → c
+```
+
+```c
+char str[] = "abc";
+char *p = strchr(str, 'b');
+```
+
+Aqui acontece isto:
+
+* `str` aponta para `1000` (onde está `'a'`)
+* `p` aponta para `1001` (onde está `'b'`)
+* `*p` não é o endereço → é o **valor no endereço**, ou seja `'b'`
+
+
+Agora a parte importante:
+
+```c
+p - str
+```
+
+
+O que o C faz é:
+
+```txt
+1001 - 1000 = 1 (posição no array)
+```
+
+Mas atenção: isto é **diferença de posições dentro do mesmo array**, não números de memória “livres”.
+
+---
 

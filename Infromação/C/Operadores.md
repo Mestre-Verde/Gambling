@@ -43,14 +43,16 @@ em vez de escrever `i = i + 34` escreve-se `i += 34`.
 
 # 2. Operadores 
 
-| operador | sintax                                  | explicação                            |
-| -------- | --------------------------------------- | ------------------------------------- |
-| sizeof   | sizeof <expressão> ou sizeof (datatype) | Dá a dimenção de um datatype em bytes |
-| return   | return <expressão>                      | returna algo e sai de uma função      |
-| break    | break;                                  | Saí dum ciclo                         |
-| continue | continue;                               | Salta para o próximo ciclo de um loop |
-| typedef  |                                         |                                       |
-| trenário | expressão ? se verdadeira  : se falso   | Uma sintax rapida para condição       |
+|  operador   |                 sintax                  |                     explicação                      |
+| :---------: | :-------------------------------------: | :-------------------------------------------------: |
+|   sizeof    | sizeof <expressão> ou sizeof (datatype) |        Dá a dimenção de um datatype em bytes        |
+|   return    |           return <expressão>            |          returna algo e sai de uma função           |
+|    break    |                 break;                  |                    Saí dum ciclo                    |
+|  continue   |                continue;                |        Salta para o próximo ciclo de um loop        |
+|   typedef   |                                         |                                                     |
+|  trenário   |  expressão ? se verdadeira  : se falso  |           Uma sintax rapida para condição           |
+|      &      |                &variavel                | permite obter o endereço de memória de uma variável |
+| indirection |                    *                    |         Aponta para um endereço de mamória          |
 
 
 # Operadorres unários
