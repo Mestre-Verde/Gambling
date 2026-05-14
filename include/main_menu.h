@@ -1,12 +1,8 @@
 #ifndef MAIN_MENU
 #define MAIN_MENU
-
-
-enum mainMenu
-{
-    SAIR = 0,
-    GAMBLING=1,
-    GALO= 2
-};
-
+/**
+ * @brief Menu inicial.
+ * @return 0 se correu tudo bem, 1 se ouve um problema.
+ */
+_Bool mainMenu();
 #endif

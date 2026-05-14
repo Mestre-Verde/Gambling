@@ -1,20 +1,11 @@
 #include <stdio.h>
 #include "main_menu.h"
-#include "jogo_do_galo.h"
-#include "guess_game.h"
 
 int main(void)
 {
-
-    if (galoMainProcess())
+    if (mainMenu())
     {
-        puts("Ocorreu um erro com o jogo do galo.");
+        perror("Houve um problema com a função \"mainMenu\"");
     }
-
-    if (guess_main_processo())
-    {
-        puts("Ocorreu um erro com o jogo de adivinhação.");
-    }
-
     return 0;
 }

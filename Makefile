@@ -21,7 +21,7 @@ OBJ = $(patsubst %.c,$(BUILD_PATH)%.o,$(SRC))
 # nome do executável
 EXEC = gamblingApp
 
-.PHONY: build run clean
+.PHONY: build run clear
 
 # executa o programa
 run: 
@@ -38,5 +38,5 @@ $(BUILD_PATH)%.o: %.c
 	$(COMPILER) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 # limpa ficheiros gerados
-clean:
+clear:
 	rm -rf $(BIN_PATH) $(BUILD_PATH)
