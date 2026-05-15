@@ -21,8 +21,10 @@ int getMenuChoice(void)
     puts("\n===== MENU PRINCIPAL =====");
     puts("1 - Jogo do Galo");
     puts("2 - Guess Game");
+    // puts("");
+    // puts("");
+    //  puts("5 - Defenições Jogador");
     puts("0 - Sair");
-    // puts("5 - Defenições Jogador");
     printf("Escolha: ");
 
     if (!fgets(buffer, sizeof(buffer), stdin))

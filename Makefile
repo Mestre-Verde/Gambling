@@ -1,12 +1,12 @@
-# Parametros de compilação
+# compilador
 COMPILER = gcc
 CFLAGS = -Wall
 INCLUDE = -Iinclude
 
-# pastas do projeto
-BIN_PATH = bin/
+# nome do executável
+EXEC = gamblingApp
 
-# ficheiros fonte do projeto
+# ficheiros fonte
 SRC = \
 	src/main.c \
 	utils/aux_func.c \
@@ -14,20 +14,41 @@ SRC = \
 	games/guess_game/guess_game.c \
 	games/jogo_do_galo/jogo_do_galo.c
 
-# nome do executável
-EXEC = gamblingApp
+# deteção do sistema operativo
+ifeq ($(OS),Windows_NT)
+
+	BIN_PATH = bin\\
+	TARGET = $(BIN_PATH)$(EXEC).exe
+
+	MKDIR = if not exist bin mkdir bin
+	REMOVE = del /Q
+
+	RUN = $(TARGET)
+
+else
+
+	BIN_PATH = bin/
+	TARGET = $(BIN_PATH)$(EXEC)
+
+	MKDIR = mkdir -p bin
+	REMOVE = rm -f
+
+	RUN = ./$(TARGET)
+
+endif
 
 all: build run
 
-# executar
-run: 
-	./$(BIN_PATH)$(EXEC)
-
 # compilar
 build:
-	mkdir -p $(BIN_PATH)
-	$(COMPILER) $(CFLAGS) $(INCLUDE) $(SRC) -o $(BIN_PATH)$(EXEC)
+	$(MKDIR)
+	$(COMPILER) $(CFLAGS) $(INCLUDE) $(SRC) -o $(TARGET)
+
+# executar
+run:
+	$(RUN)
 
 # limpar
 clear:
-	rm -f $(BIN_PATH)$(EXEC)
+	$(REMOVE) $(TARGET)
+
