@@ -17,6 +17,7 @@ SRC = \
 # nome do executável
 EXEC = gamblingApp
 
+all: build run
 
 # executar
 run: 
