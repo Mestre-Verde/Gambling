@@ -169,7 +169,7 @@ printf("Hello");
 # Significado
 
 | Parte                 | Significado   |
-|  | - |
+| --------------------- | ------------- |
 | `<<<<<<< HEAD`        | tua versão    |
 | `=======`             | separador     |
 | `>>>>>>> origin/main` | versão remota |
@@ -324,7 +324,7 @@ git push
 # Diferença entre os comandos
 
 | Comando     | Função                  |
-| -- | -- |
+| ----------- | ----------------------- |
 | `git fetch` | Descarrega sem integrar |
 | `git pull`  | Descarrega e integra    |
 | `git push`  | Envia alterações locais |

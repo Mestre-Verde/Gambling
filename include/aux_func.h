@@ -1,5 +1,25 @@
 #ifndef AUX_FUNC_H
 #define AUX_FUNC_H
+
+/* INFO */
+#define LOG_INFO(msg, ...) \
+    printf("[INFO] " msg "\n", ##__VA_ARGS__)
+
+/* DEBUG */
+#define LOG_DEBUG(msg, ...)               \
+    printf("[DEBUG] [%s():%d] " msg "\n", \
+           __func__, __LINE__, ##__VA_ARGS__)
+
+/* WARNING */
+#define LOG_WARN(msg, ...)               \
+    printf("[WARN] [%s | %s] " msg "\n", \
+           __FILE__, __func__, ##__VA_ARGS__)
+
+/* ERROR */
+#define LOG_ERROR(msg, ...)                    \
+    printf("[ERROR] [%s:%d | %s()] " msg "\n", \
+           __FILE__, __LINE__, __func__, ##__VA_ARGS__)
+
 /**
  * @brief verifica se um valor está dentro de um intervalo.
  * @param value valor a comparar
@@ -7,7 +27,7 @@
  * @param max valor maximo
  * @return 1 se verdade, 0 se falso
  */
-bool isBetween(int value, int min_value, int max_value);
+_Bool isBetween(int value, int min_value, int max_value);
 
 /**
  * @brief Imprime um carater em linha e no final dá /n

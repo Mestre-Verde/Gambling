@@ -9,6 +9,7 @@ EXEC = gamblingApp
 # ficheiros fonte
 SRC = \
 	src/main.c \
+	src/setup.c \
 	utils/aux_func.c \
 	menu/main_menu.c \
 	games/guess_game/guess_game.c \
@@ -37,7 +38,7 @@ else
 
 endif
 
-all: build run
+all: build run 
 
 # compilar
 build:
