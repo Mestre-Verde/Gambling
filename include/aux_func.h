@@ -20,6 +20,9 @@
     printf("[ERROR] [%s:%d | %s()] " msg "\n", \
            __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
+/*Limpa a stream de entrada */
+void clearStdinTrash(void);
+
 /**
  * @brief verifica se um valor está dentro de um intervalo.
  * @param value valor a comparar

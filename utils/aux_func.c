@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void clearStdinTrash(void)
+{
+    for (int c = 0; c != '\n' && c != EOF;)
+    {
+        c = getchar();
+    }
+}
+
 bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
 
 void createLine(short n, char c)

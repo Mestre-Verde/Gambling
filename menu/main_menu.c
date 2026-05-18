@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "main_menu.h"
+
 #include "jogo_do_galo.h"
 #include "guess_game.h"
+#include "aux_func.h"
 
 typedef enum
 {
@@ -16,19 +19,19 @@ typedef enum
 int getMenuChoice(void)
 {
     int choice;
-    char buffer[100];
+    char buffer[3 + 1];
 
     puts("\n===== MENU PRINCIPAL =====");
     puts("1 - Jogo do Galo");
     puts("2 - Guess Game");
-    // puts("");
-    // puts("");
-    //  puts("5 - Defenições Jogador");
     puts("0 - Sair");
     printf("Escolha: ");
 
     if (!fgets(buffer, sizeof(buffer), stdin))
         return MENU_EXIT;
+
+    if (strchr(buffer, '\n') == NULL)
+        clearStdinTrash();
 
     if (sscanf(buffer, "%d", &choice) != 1)
         return -1;
@@ -38,11 +41,9 @@ int getMenuChoice(void)
 
 _Bool mainMenu(void)
 {
-    int option;
-
     while (1)
     {
-        option = getMenuChoice();
+        int option = getMenuChoice();
 
         switch (option)
         {
@@ -52,14 +53,14 @@ _Bool mainMenu(void)
         case MENU_GALO:
             if (galoMainProcess())
             {
-                perror("Ocorreu um erro com o jogo do galo.");
+                LOG_ERROR("Ocorreu um erro com o jogo do galo.");
             }
             break;
 
         case MENU_GUESS:
             if (guess_main_processo())
             {
-                perror("Ocorreu um erro com o jogo de adivinha.");
+                LOG_ERROR("Ocorreu um erro com o jogo de adivinha.");
             }
             break;
 
