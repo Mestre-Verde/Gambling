@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 void clearStdinTrash(void)
 {
@@ -9,7 +8,7 @@ void clearStdinTrash(void)
     }
 }
 
-bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
+_Bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
 
 void createLine(short n, char c)
 {

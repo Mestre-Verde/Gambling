@@ -11,15 +11,17 @@
 typedef enum
 {
     MENU_EXIT = 0,
-    MENU_PLAYER = 5,
     MENU_GALO = 1,
     MENU_GUESS = 2,
+    MENU_PLAYER = 5,
+    UNKNOWN = 9,
+
 } MainMenuOption;
 
-int getMenuChoice(void)
+MainMenuOption getMenuChoice(void)
 {
-    int choice;
-    char buffer[3 + 1];
+    
+    char buffer[5 + 1];
 
     puts("\n===== MENU PRINCIPAL =====");
     puts("1 - Jogo do Galo");
@@ -27,23 +29,36 @@ int getMenuChoice(void)
     puts("0 - Sair");
     printf("Escolha: ");
 
-    if (!fgets(buffer, sizeof(buffer), stdin))
-        return MENU_EXIT;
+    // Obtem a entrada do usuário e guarda no buffer.
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+        return UNKNOWN;
 
+    // Verifica se existe um new line.
     if (strchr(buffer, '\n') == NULL)
         clearStdinTrash();
 
-    if (sscanf(buffer, "%d", &choice) != 1)
-        return -1;
+    int value;
+    if (sscanf(buffer, "%d", &value) != 1)
+        return UNKNOWN;
 
-    return choice;
+    switch (value)
+    {
+    case MENU_EXIT:
+    case MENU_GALO:
+    case MENU_GUESS:
+    case MENU_PLAYER:
+        return (MainMenuOption)value;
+
+    default:
+        return UNKNOWN;
+    }
 }
 
-_Bool mainMenu(void)
+signed short int mainMenu(void)
 {
     while (1)
     {
-        int option = getMenuChoice();
+        MainMenuOption option = getMenuChoice();
 
         switch (option)
         {
