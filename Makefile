@@ -10,6 +10,7 @@ EXEC = gamblingApp
 SRC = \
 	src/main.c \
 	src/setup.c \
+	src/jogador.c \
 	utils/aux_func.c \
 	menu/main_menu.c \
 	games/guess_game/guess_game.c \
@@ -17,7 +18,6 @@ SRC = \
 
 # deteção do sistema operativo
 ifeq ($(OS),Windows_NT)
-
 	BIN_PATH = bin\\
 	TARGET = $(BIN_PATH)$(EXEC).exe
 

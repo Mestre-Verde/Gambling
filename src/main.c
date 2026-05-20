@@ -9,10 +9,18 @@ int main(void)
     {
         LOG_ERROR("Houve um problema com a função \"setup()\"");
     }
+    else
+    {
+        LOG_INFO("O Setup foi concluído com sucesso!");
+    }
 
     if (mainMenu())
     {
         LOG_ERROR("Houve um problema com a função \"mainMenu()\"");
+    }
+    else
+    {
+        LOG_INFO("O Menu principal saiu sem qualquer problema.");
     }
     return 0;
 }

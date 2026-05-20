@@ -1,7 +1,6 @@
 #ifndef SETUP
 #define SETUP
 
-_Bool setup();
-
+int setup();
 
 #endif

@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-int guess_main_processo(void)
+#include "guess_game.h"
+#include "aux_func.h"
+
+int guess_main_process(void)
 {
     // permite gerar uma seed que não repete o mesmo valor sempre
     srand(time(NULL));

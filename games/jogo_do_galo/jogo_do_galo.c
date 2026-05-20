@@ -55,8 +55,7 @@ void printMatrix2D(char M[MAX][MAX], short int showContent)
  */
 _Bool placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX])
 {
-    if (!isBetween(position[0], 0, MAX - 1) ||
-        !isBetween(position[1], 0, MAX - 1))
+    if (!isBetween(position[0], 0, MAX - 1) || !isBetween(position[1], 0, MAX - 1))
     {
         return 1;
     }
@@ -73,7 +72,7 @@ _Bool placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][
 
 char getCoordenadas(char playerTurn, short int tamanho, short int position[tamanho], char tabuleiro[MAX][MAX])
 {
-    char turnText[] = "Vez de: \"%c\".\nIntroduza a posição [linha,coluna] ou 'S' para sair:";
+    const char turnText[] = "Vez de: \"%c\".\nIntroduza a posição [linha,coluna] ou 'S' para sair:";
 
     while (1)
     {

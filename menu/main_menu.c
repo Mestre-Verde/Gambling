@@ -10,56 +10,44 @@
 
 typedef enum
 {
+    UNKNOWN = -1,
     MENU_EXIT = 0,
     MENU_GALO = 1,
     MENU_GUESS = 2,
     MENU_PLAYER = 5,
-    UNKNOWN = 9,
-
 } MainMenuOption;
 
 MainMenuOption getMenuChoice(void)
 {
-    
-    char buffer[5 + 1];
+    const char menuText[] = "\n===== MENU PRINCIPAL =====\n1 - Jogo do Galo\n2 - Guess Game\n0 - Sair";
+    int choice = -1;
 
-    puts("\n===== MENU PRINCIPAL =====");
-    puts("1 - Jogo do Galo");
-    puts("2 - Guess Game");
-    puts("0 - Sair");
-    printf("Escolha: ");
-
-    // Obtem a entrada do usuário e guarda no buffer.
-    if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+    puts(menuText);
+    if (readDigitUserInput("Escolha: ", &choice))
+    {
+        LOG_DEBUG("string recebida: %i", choice);
         return UNKNOWN;
+    }
 
-    // Verifica se existe um new line.
-    if (strchr(buffer, '\n') == NULL)
-        clearStdinTrash();
-
-    int value;
-    if (sscanf(buffer, "%d", &value) != 1)
-        return UNKNOWN;
-
-    switch (value)
+    switch (choice)
     {
     case MENU_EXIT:
     case MENU_GALO:
     case MENU_GUESS:
     case MENU_PLAYER:
-        return (MainMenuOption)value;
+        return (MainMenuOption)choice;
 
     default:
         return UNKNOWN;
     }
 }
 
-signed short int mainMenu(void)
+int mainMenu(void)
 {
     while (1)
     {
         MainMenuOption option = getMenuChoice();
-
+        LOG_DEBUG("Input lida: %i", option);
         switch (option)
         {
         case MENU_EXIT:
@@ -73,14 +61,14 @@ signed short int mainMenu(void)
             break;
 
         case MENU_GUESS:
-            if (guess_main_processo())
+            if (guess_main_process())
             {
                 LOG_ERROR("Ocorreu um erro com o jogo de adivinha.");
             }
             break;
 
         case MENU_PLAYER:
-            break;
+            // break;
 
         default:
             puts("Opção inválida.");

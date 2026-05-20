@@ -5,7 +5,7 @@
         pastas com dados de jogadores
 
 */
-_Bool setup()
+int setup()
 {
     return 0;
 }

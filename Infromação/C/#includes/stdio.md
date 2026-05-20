@@ -62,7 +62,66 @@ scanf(" %[^\n]%*c", str);
 * Útil para frases completas
 * ` %*c` consome o `\n` que fica no buffer (evita problemas em `scanf` seguintes)
 
+## 1.6. `sscanf()` (string scan + format)
 
+* Lê dados a partir de uma string
+* Funciona como `scanf()`, mas em vez do teclado usa uma string
+
+```c id="m3v7ka"
+#include <stdio.h>
+
+int main(void){
+    char texto[] = "123 45.7 A";
+
+    int num;
+    float decimal;
+    char letra;
+
+    sscanf(texto, "%d %f %c", &num, &decimal, &letra);
+
+    printf("Inteiro: %d\n", num);
+    printf("Float: %.1f\n", decimal);
+    printf("Char: %c\n", letra);
+
+    return 0;
+}
+```
+
+---
+
+### 1.6.1. Return da função
+
+`sscanf()` retorna: __int__
+
+#### Em sucesso:
+
+Retorna: _Número de valores lidos corretamente_
+
+#### Em erro:
+
+Retorna: `0`
+
+quando não consegue converter nada.
+
+
+#### Em EOF/fim da string:
+
+Pode retornar:
+
+```c id="rjz2fi"
+EOF
+```
+
+### 1.6.2. Porque usamos `==`
+
+```c id="s6y4ci"
+if(sscanf(texto, "%d %f", &a, &b) == 2)
+```
+
+Porque:
+
+* `sscanf()` retorna quantidade de valores convertidos
+* queremos verificar se todos foram lidos corretamente
 
 ## 1.3. `puts()` (put string)
 
@@ -116,14 +175,52 @@ puts(string);
 
 ## 1.7. `fgets()` (FILE GET STRING)
 
-* Lê string com limite de tamanho (segura)
-* Lê até `n-1` caracteres ou `\n`
+* Lê uma linha/string de forma segura
+* Lê até:
+
+  * `n-1` caracteres
+  * `\n`
+  * `EOF`
+* Mantém o `\n` na string caso exista espaço
+* Evita buffer overflow (mais segura que `gets()`)
 
 ```c
-char string[50];
-fgets(string, 50, stdin);
-puts(string);
+#include <stdio.h>
+
+int main(void){
+    char string[50];
+
+    printf("Introduza texto: ");
+
+    if(fgets(string, 50, stdin) != NULL){
+        puts(string);
+    }
+
+    return 0;
+}
 ```
+
+### 1.7.1. Return da função
+
+#### 1.7.1.1. Em sucesso:
+
+Retorna:
+
+```c
+string
+```
+
+(ponteiro válido para a própria string)
+
+
+#### 1.7.1.2. Em erro ou EOF:
+
+Retorna:
+
+```c
+NULL
+```
+
 
 
 # 2. 🔥 Agora vou adicionar mais funções úteis no mesmo estilo
