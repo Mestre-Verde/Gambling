@@ -27,10 +27,13 @@ int toUpper(int ch)
 
 void clearStdinTrash(void)
 {
+    // LOG_INFO("Detetado caracteres a mais em stdin. A limpar...");
     for (int c = 0; c != '\n' && c != EOF;)
     {
         c = getchar();
+        // printf("%i ", (int)c);
     }
+    // putchar('\n');
 }
 
 void printHex(int strLen, char str[strLen])
@@ -83,12 +86,12 @@ int readDigitUserInput(const char str[], int *var)
     {
         return 1; // erro de leitura
     }
-    // se a entrada era mairo que o buffer, limpa o excesso do stream stdin
+    // se a entrada era maior que o buffer, limpa o excesso do stream stdin
     if (findCharInStr(buffer, '\n') == -1)
     {
         clearStdinTrash();
     }
-    // Substitui o '\n' por '\0'
+    // Substitui o '\n' por '\0' se existir
     int index = findCharInStr(buffer, '\n');
     if (index != -1)
     {
