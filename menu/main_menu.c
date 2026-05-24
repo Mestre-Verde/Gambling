@@ -15,7 +15,7 @@ MainMenuOption getMainMenuChoice(void)
     puts(menuText);
     if (readDigitUserInput("Escolha: ", &choice))
     {
-        LOG_DEBUG("digito recebido: %i", choice);
+        // LOG_DEBUG("digito recebido: %i", choice);
         return MENU_UNKNOWN;
     }
 
