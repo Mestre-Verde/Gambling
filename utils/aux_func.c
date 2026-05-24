@@ -25,6 +25,13 @@ int toUpper(int ch)
 
 //---------------
 
+void createLine(short n, char c)
+{
+    for (int i = 0; i < n; i++)
+        putchar(c);
+    putchar('\n');
+}
+
 void clearStdinTrash(void)
 {
     // LOG_INFO("Detetado caracteres a mais em stdin. A limpar...");
@@ -73,30 +80,42 @@ int findCharInStr(char str[], char c)
     return -1;
 }
 
-int readDigitUserInput(const char str[], int *var)
+/**
+ * @brief Generic function to ask integers to the user.
+ * @param prompt Text to show before the user enterance
+ * @param var pointer to the var that will save the input
+ * @return 0 if all fine, 1 if something whent wrong
+ */
+int readDigitUserInput(const char prompt[], int *var)
 {
+#define BUFFER_LEN 10 + 1
+
     // Variaveis para uso da função
-    char buffer[10 + 1] = {0}; // un int vai até 4'294'967'296 combinações 10 digitos
+    char buffer[BUFFER_LEN] = {0}; // um int vai até 4'294'967'296 combinações 10 digitos
 
     // imprime o texto
-    printString(str);
+    printString(prompt);
 
-    // lê input e guarda no buffer
+    // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
     if (fgets(buffer, sizeof(buffer), stdin) == NULL)
     {
         return 1; // erro de leitura
     }
-    // se a entrada era maior que o buffer, limpa o excesso do stream stdin
-    if (findCharInStr(buffer, '\n') == -1)
-    {
-        clearStdinTrash();
-    }
-    // Substitui o '\n' por '\0' se existir
+
     int index = findCharInStr(buffer, '\n');
-    if (index != -1)
+
+    switch (index)
     {
-        buffer[index] = '\0';
+    case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
+        clearStdinTrash();
+        break;
+    case 0: // se só tem \n
+        return 1;
+        break;
     }
+
+    // Substitui o '\n' por '\0' se não for unico
+    buffer[index] = '\0';
 
     // valida se todos os caracteres são dígitos
     for (int i = 0; buffer[i] != '\0'; i++)
@@ -123,17 +142,27 @@ int readDigitUserInput(const char str[], int *var)
     return 0;
 }
 
-void createLine(short n, char c)
+/**
+ * @brief Função generalizada para receber inputs do tipo string
+ * @param str Texto de prompt
+ * @param input ponteiro a apontar para a variavelq ue vai armazenar o valor
+ * @param withRegex 1 se vai ter caracteres aceitaveis, 0 se não vai ter
+ * @param regex string com os caracteres aceitaveis
+ * @return
+ */
+int readStrUserInput(const char prompt[], const char *var, _Bool withRegex, short int regexLen, const char regex[regexLen])
 {
-    for (int i = 0; i < n; i++)
-        putchar(c);
-    putchar('\n');
+    printString(prompt);
+    return 1;
 }
 
 //---------------
 
 // retorna 1 se estiver dentro do intervalo,0 se contrário
-_Bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
+_Bool isBetween(int value, int min_value, int max_value)
+{
+    return min_value <= value && value <= max_value;
+}
 // @return valor absoluto
 int Abs(int x) { return x < 0 ? -x : x; }
 // retorna o cubo de um numero.

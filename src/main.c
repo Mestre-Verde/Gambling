@@ -20,7 +20,7 @@ int main(void)
     }
     else
     {
-        LOG_INFO("O Menu principal saiu sem qualquer problema.");
+        LOG_INFO("Saiu do Menu principal.");
     }
     return 0;
 }

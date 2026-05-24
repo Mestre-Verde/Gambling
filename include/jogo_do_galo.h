@@ -7,7 +7,7 @@
  * @brief função principal.
  * @return 0 se não houve problemas,1 se have um erro.
  */
-_Bool galoMainProcess(void);
+int galoMainProcess(void);
 
 /**
  * @brief Imprime no terminal o tabuleiro.

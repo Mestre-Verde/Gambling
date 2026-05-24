@@ -51,11 +51,7 @@ int *var;
 &var     → endereço de var
 pointer  → contém o endereço de var
 ```
-Perfeito, entendido — vou evitar emotes daqui para a frente.
 
-Aqui tens a parte para adicionares, curta e direta:
-
----
 
 ## Inicialização de um pointer (com NULL)
 

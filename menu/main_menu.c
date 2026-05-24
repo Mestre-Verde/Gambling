@@ -1,34 +1,25 @@
 #include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
 
 #include "main_menu.h"
+#include "player_menu.h"
 
 #include "jogo_do_galo.h"
 #include "guess_game.h"
 #include "aux_func.h"
 
-typedef enum
+MainMenuOption getMainMenuChoice(void)
 {
-    UNKNOWN = -1,
-    MENU_EXIT = 0,
-    MENU_GALO = 1,
-    MENU_GUESS = 2,
-    MENU_PLAYER = 5,
-} MainMenuOption;
-
-MainMenuOption getMenuChoice(void)
-{
-    const char menuText[] = "\n===== MENU PRINCIPAL =====\n1 - Jogo do Galo\n2 - Guess Game\n0 - Sair";
+    const char menuText[] = "\n===== MENU PRINCIPAL =====\n1 - Jogo do Galo\n2 - Guess Game\n5 - Defenições de jogador\n0 - Sair";
     int choice = -1;
 
     puts(menuText);
     if (readDigitUserInput("Escolha: ", &choice))
     {
-        LOG_DEBUG("string recebida: %i", choice);
-        return UNKNOWN;
+        LOG_DEBUG("digito recebido: %i", choice);
+        return MENU_UNKNOWN;
     }
 
+    // verifica se há um valor correspondente ao enum.
     switch (choice)
     {
     case MENU_EXIT:
@@ -38,7 +29,7 @@ MainMenuOption getMenuChoice(void)
         return (MainMenuOption)choice;
 
     default:
-        return UNKNOWN;
+        return MENU_UNKNOWN;
     }
 }
 
@@ -46,12 +37,13 @@ int mainMenu(void)
 {
     while (1)
     {
-        MainMenuOption option = getMenuChoice();
-        LOG_DEBUG("Input lida: %i", option);
+        MainMenuOption option = getMainMenuChoice();
+        LOG_DEBUG("Valor de Enum recebido: %i", option);
         switch (option)
         {
-        case MENU_EXIT:
-            return 0;
+        case MENU_UNKNOWN:
+            puts("Opção inválida.");
+            break;
 
         case MENU_GALO:
             if (galoMainProcess())
@@ -68,10 +60,19 @@ int mainMenu(void)
             break;
 
         case MENU_PLAYER:
-            // break;
+            if (playerMenu())
+            {
+                LOG_ERROR("Ocorreu um erro com o menu de jogador.");
+            }
+            break;
+
+        case MENU_EXIT:
+            return 0;
 
         default:
-            puts("Opção inválida.");
+            LOG_WARN("\7"
+                     "Opção fora do escopo,reveja o enum.Valor:%i",
+                     option);
             break;
         }
     }

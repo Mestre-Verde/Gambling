@@ -209,7 +209,7 @@ Retorna:
 ```c
 string
 ```
-
+no final coloca um '\0'
 (ponteiro válido para a própria string)
 
 

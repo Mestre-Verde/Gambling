@@ -53,7 +53,7 @@ void printMatrix2D(char M[MAX][MAX], short int showContent)
  * @param M matriz do tabuleiro
  * @return 0 se colocou com sucesso, 1 se não conseguiu
  */
-_Bool placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX])
+int placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX])
 {
     if (!isBetween(position[0], 0, MAX - 1) || !isBetween(position[1], 0, MAX - 1))
     {
@@ -125,11 +125,11 @@ _Bool isFull(char M[MAX][MAX])
         {
             if (isSpace(M[linha][coluna]))
             {
-                return 0;
+                return false;
             }
         }
     }
-    return 1;
+    return true;
 }
 
 char checkWinner(char tabuleiro[MAX][MAX])
@@ -198,7 +198,7 @@ char chooseTheFirstPlayer()
     }
 }
 
-_Bool galoMainProcess(void)
+int galoMainProcess(void)
 {
 
     short int coordenates[2];

@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include "aux_func.h"
+#include "jogador.h"
 
-typedef struct
+// constutor
+Player createPlayer(const char nome[MAX_NAME_LENGTH], int *id)
 {
-    char nome[20 + 1];
-    unsigned int vitórias_galo;
-    unsigned int derrotas_galo;
-    unsigned long int pontos_guess;
+    Player player = {0};
+    for (short int i = 0; i < MAX_NAME_LENGTH; i++)
+    {
+        player.nome[i] = nome[i];
+    }
+    player.id = *id;
 
-} Player;
-
+    return player;
+}
 void showPlayerInfo(Player p)
 {
     printf("Nome do jogador:%s", p.nome);
@@ -17,3 +21,28 @@ void showPlayerInfo(Player p)
     printf("Nº de derrotas no jogo do Galo: %u\n", p.derrotas_galo);
     printf("Pontos no jogo da Adivinha: %lu\n", p.pontos_guess);
 }
+
+void playerStats(Player p)
+{
+    puts("===== Estatísticas =====");
+    showPlayerInfo(p);
+    createLine(50, '+');
+    // outras estatisticas.
+}
+
+int choosePlayer(void) { return 1; }
+
+int buildPlayer(void)
+{
+    // pede nome
+    char nome[MAX_NAME_LENGTH] = {0};
+
+    // verifica os ids e atribui
+    // int id = getNextAvaiableID();
+
+    // Player p = createPlayer(&nome, &id);
+
+    return 0;
+}
+
+int removePlayer(void) { return 1; }
