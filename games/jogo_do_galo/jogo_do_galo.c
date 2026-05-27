@@ -200,7 +200,6 @@ char chooseTheFirstPlayer()
 
 int galoMainProcess(void)
 {
-
     short int coordenates[2];
     char playerTurn;
     char winner = 0;
@@ -265,7 +264,7 @@ int galoMainProcess(void)
             continue;
         }
 
-        printf("O jogador \"%c\"", winner);
+        printf("O jogador \"%c\" ganhou o jogo!!!!\n", winner);
     }
 
     return 0;
