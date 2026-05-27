@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "aux_func.h"
 
 int isDigit(int ch) { return '0' <= ch && ch <= '9'; }
@@ -22,6 +23,19 @@ int toUpper(int ch)
         return ch - 32;
     return ch;
 }
+
+//---------------
+
+// retorna 1 se estiver dentro do intervalo,0 se contrário
+bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
+// @return valor absoluto
+int Abs(int x) { return x < 0 ? -x : x; }
+// retorna o cubo de um numero.
+int Cubo(int x) { return x * x * x; }
+// retorna o numero negativo
+int Minus(int x) { return x < 0 ? x : -x; }
+// retorna o inverso de um numero
+float Inverso(int x) { return x == 0 ? x : (1 / x); }
 
 //---------------
 
@@ -52,14 +66,6 @@ void printHex(int strLen, char str[strLen])
     printf("\n");
 }
 
-/**
- * @brief Imprime uma string caractere a caractere até '\0'.
- *
- * Diferente de puts(), não adiciona automaticamente '\n'.
- * Evita overhead de formatação do printf().
- *
- * @param str String a imprimir
- */
 void printString(const char str[])
 {
     for (int i = 0; str[i] != '\0'; i++)
@@ -80,24 +86,15 @@ int findCharInStr(char str[], char c)
     return -1;
 }
 
-/**
- * @brief Generic function to ask integers to the user.
- * @param prompt Text to show before the user enterance
- * @param var pointer to the var that will save the input
- * @return 0 if all fine, 1 if something whent wrong
- */
 int readDigitUserInput(const char prompt[], int *var)
 {
-#define BUFFER_LEN 10 + 1
-
-    // Variaveis para uso da função
-    char buffer[BUFFER_LEN] = {0}; // um int vai até 4'294'967'296 combinações 10 digitos
-
+#define BUFFER_LEN (10 + 1)
     // imprime o texto
     printString(prompt);
 
+    char buffer[BUFFER_LEN] = {0}; // um int vai até 4'294'967'296 combinações 10 digitos
     // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
-    if (fgets(buffer, sizeof(buffer), stdin) == NULL)
+    if (fgets(buffer, BUFFER_LEN, stdin) == NULL)
     {
         return 1; // erro de leitura
     }
@@ -143,31 +140,65 @@ int readDigitUserInput(const char prompt[], int *var)
 }
 
 /**
- * @brief Função generalizada para receber inputs do tipo string
- * @param str Texto de prompt
- * @param input ponteiro a apontar para a variavelq ue vai armazenar o valor
- * @param withRegex 1 se vai ter caracteres aceitaveis, 0 se não vai ter
- * @param regex string com os caracteres aceitaveis
- * @return
+ * @brief Função generalizada para receber inputs do tipo string com filtro.
+ * @param prompt Texto de prompt
+ * @param varSize Tamanho da var.
+ * @param var ponteiro a apontar para a variavel que vai armazenar o valor
+ * @param useFilter 1 se vai ter caracteres aceitaveis, 0 se não vai ter
+ * @param allowedChars string com os caracteres aceitaveis
+ * @return 0 if all fine, 1 if something whent wrong
  */
-int readStrUserInput(const char prompt[], const char *var, _Bool withRegex, short int regexLen, const char regex[regexLen])
+int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize], bool useFilter, const char allowedChars[])
 {
+    // Dá print do texto prompt
     printString(prompt);
+
+    if (varSize >= 1)
+    {
+        LOG_WARN("A size param was set to 0 and an inportant array was not initialized, make sure to not alow such thing.");
+        return 2;
+    }
+    else
+    {
+        char buffer[varSize];
+        // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
+        if (fgets(buffer, varSize, stdin) == NULL)
+        {
+            return 1;
+        }
+
+        int index = findCharInStr(buffer, '\n');
+        switch (index)
+        {
+        case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
+            clearStdinTrash();
+            break;
+        case 0: // se só tem \n
+            return 1;
+            break;
+        }
+
+        // Substitui o '\n' por '\0' se não for unico
+        buffer[index] = '\0';
+
+        if (useFilter) // comparar a string com os caracteres permitidos
+        {
+            for (unsigned short int i = 0; buffer[i] != '\0'; i++)
+            {
+                for (unsigned short int j = 0; allowedChars[j] != '\0'; j++)
+                {
+                    if (buffer[i] != allowedChars[j])
+                    {
+
+                        return 1;
+                    }
+                }
+            }
+        }
+        else
+        {
+        }
+    }
+
     return 1;
 }
-
-//---------------
-
-// retorna 1 se estiver dentro do intervalo,0 se contrário
-_Bool isBetween(int value, int min_value, int max_value)
-{
-    return min_value <= value && value <= max_value;
-}
-// @return valor absoluto
-int Abs(int x) { return x < 0 ? -x : x; }
-// retorna o cubo de um numero.
-int Cubo(int x) { return x * x * x; }
-// retorna o numero negativo
-int Minus(int x) { return x < 0 ? x : -x; }
-// retorna o inverso de um numero
-float Inverso(int x) { return x == 0 ? x : (1 / x); }

@@ -3,26 +3,21 @@
 
 // MACROS--------------
 
-/* INFO */
-#define LOG_INFO(msg, ...) \
-    printf("[INFO] " msg "\n", ##__VA_ARGS__)
+#define LOG_INFO(msg, ...) printf("[INFO] " msg "\n", ##__VA_ARGS__)
 
-/* DEBUG */
 #define LOG_DEBUG(msg, ...)               \
     printf("[DEBUG] [%s():%d] " msg "\n", \
            __func__, __LINE__, ##__VA_ARGS__)
 
-/* WARNING */
 #define LOG_WARN(msg, ...)               \
     printf("[WARN] [%s | %s] " msg "\n", \
            __FILE__, __func__, ##__VA_ARGS__)
 
-/* ERROR */
 #define LOG_ERROR(msg, ...)                    \
     printf("[ERROR] [%s:%d | %s()] " msg "\n", \
            __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
-// string print RELATED--------------
+// string RELATED--------------
 
 /**
  * @brief Imprime uma string caractere a caractere até '\0'.
@@ -44,19 +39,26 @@ void createLine(short n, char c);
 // Mostra o HEX de uma array
 void printHex(int strLen, char str[strLen]);
 
+/**
+ * @brief Procura por um caracter em uma string
+ * @param str String para procurar.
+ * @param c caracter a procurar.
+ * @return Se existir, o index do caracter na string, -1 se não encontrar.
+ */
+int findCharInStr(char str[], char c);
+
 // INPUT RELATED--------------
 
 /*Limpa a stream de entrada */
 void clearStdinTrash(void);
 
 /**
- * @brief Obtem uma input do user.
- * Depois desta função pode se usar um filtro de um enum especifico
- * @param str Texto a apresentar em cada pedido
- * @param var Endereço da variavel para substituir com a entrada valida.
- * @return 0 se sucesso, 1 se houve problemas.
+ * @brief Generic function to ask integers to the user.
+ * @param prompt Text to show before the user input
+ * @param var pointer to the var that will save the input
+ * @return 0 if all fine, 1 if something whent wrong
  */
-int readDigitUserInput(const char str[], int *var);
+int readDigitUserInput(const char prompt[], int *var);
 
 // CHAR RELATED--------------
 
@@ -74,14 +76,6 @@ int toUpper(int ch);
  */
 int isSpace(int ch);
 
-/**
- * @brief Procura por um caracter em uma string
- * @param str String para procurar.
- * @param c caracter a procurar.
- * @return Se existir, o index do caracter na string,-1 se não encontrar.
- */
-int findCharInStr(char str[], char c);
-
 // MATH RELATED--------------
 
 /**
@@ -89,8 +83,8 @@ int findCharInStr(char str[], char c);
  * @param value valor a comparar
  * @param min valor minimo
  * @param max valor maximo
- * @return 1 se verdade, 0 se falso
+ * @return true if inside the interval, false if not inside
  */
-_Bool isBetween(int value, int min_value, int max_value);
+bool isBetween(int value, int min_value, int max_value);
 
 #endif
