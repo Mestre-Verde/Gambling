@@ -7,26 +7,21 @@ INCLUDE := -Iinclude
 EXEC := gamblingApp
 
 # ficheiros fonte
-SRC_MAIN := \
-	src/main.c \
-	src/setup.c \
-	src/jogador.c \
-	utils/aux_func.c
+SRC_MAIN := src/main.c src/setup.c src/jogador.c 	
 
-MENU_SRC := \
-	menu/main_menu.c \
-	menu/player_menu.c
+AUX_SRC := utils/aux_func.c utils/aux_string.c
+
+MENU_SRC :=	menu/main_menu.c menu/player_menu.c
 
 GAME_SRC := \
 	games/guess_game/guess_game.c \
 	games/jogo_do_galo/jogo_do_galo.c
 # games/Engine.c 
 
-FILE_MANAGER := \
-	FileManager/FileManager.c
+FILE_MANAGER := FileManager/FileManager.c
 
 	 
-SRC = $(SRC_MAIN) $(MENU_SRC) $(GAME_SRC) $(FILE_MANAGER)
+SRC = $(SRC_MAIN) $(AUX_SRC) $(MENU_SRC) $(GAME_SRC) $(FILE_MANAGER)
 
 # pasta de build
 BUILD_PATH := build
@@ -65,4 +60,5 @@ run:
 clean:
 	$(REMOVE) $(TARGET)
 
-clear: clean
+backup:
+	zip -r ~/Transferências/projeto_backup.zip .

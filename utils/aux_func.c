@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "aux_func.h"
+#include "aux_string.h"
 
 int isDigit(int ch) { return '0' <= ch && ch <= '9'; }
 int isAlpha(int ch) { return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'); }
@@ -48,42 +49,13 @@ void createLine(short n, char c)
 
 void clearStdinTrash(void)
 {
-    // LOG_INFO("Detetado caracteres a mais em stdin. A limpar...");
+    LOG_DEBUG("Detetado caracteres a mais em stdin. A limpar...");
     for (int c = 0; c != '\n' && c != EOF;)
     {
         c = getchar();
         // printf("%i ", (int)c);
     }
     // putchar('\n');
-}
-
-void printHex(int strLen, char str[strLen])
-{
-    for (int i = 0; i < strLen; i++)
-    {
-        printf("%02X ", (unsigned char)str[i]);
-    }
-    printf("\n");
-}
-
-void printString(const char str[])
-{
-    for (int i = 0; str[i] != '\0'; i++)
-    {
-        putchar(str[i]);
-    }
-}
-
-int findCharInStr(char str[], char c)
-{
-    for (int i = 0; str[i] != '\0'; i++)
-    {
-        if (str[i] == c)
-        {
-            return i;
-        }
-    }
-    return -1;
 }
 
 int readDigitUserInput(const char prompt[], int *var)
@@ -143,10 +115,13 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
 {
     // Dá print do texto prompt
     printString(prompt);
+    putchar('[');
+    printString(allowedChars);
+    putchar(']');
 
-    if (varSize < 1)
+    if (varSize < 2)
     {
-        LOG_WARN("A size param was set to 0 and an inportant array was not initialized, make sure to not alow such thing.");
+        LOG_WARN("The vazSize cant be 0, dont allow the call function to let an 0 enter it.");
         return 2;
     }
 
@@ -156,38 +131,49 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
     {
         return 1;
     }
+    printString("Entrada recebida:");
+    printHex(varSize, buffer);
 
+    //  obtem a posição do enter
     int index = findCharInStr(buffer, '\n');
+    // chega aqui como input\n\0
+    LOG_DEBUG("Obtido o index: %i", index);
     switch (index)
     {
-    case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
+    case -1: // não encontrou '\n' -> A entrada era maior que o buffer, limpa o excesso do stream stdin
         clearStdinTrash();
         break;
     case 0: // se só tem \n
         return 1;
-        break;
     }
-
     // Substitui o '\n' por '\0' se não for unico
     buffer[index] = '\0';
 
     if (useFilter) // comparar a string com os caracteres permitidos
     {
+        // caracter a caracter da string
         for (unsigned short int i = 0; buffer[i] != '\0'; i++)
         {
+            bool isValid = false;
+            // caracter a caracter do whitelist
             for (unsigned short int j = 0; allowedChars[j] != '\0'; j++)
             {
-                if (buffer[i] != allowedChars[j])
+                if (buffer[i] == allowedChars[j])
                 {
-
-                    return 1;
+                    isValid = true;
+                    break;
                 }
             }
+            if (!isValid)
+            {
+                return 1;
+            }
         }
+        stringCopy(buffer, var);
     }
     else
     {
+        stringCopy(buffer, var);
     }
-
-    return 1;
+    return 0;
 }

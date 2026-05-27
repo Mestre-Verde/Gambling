@@ -20,32 +20,11 @@
 // string RELATED--------------
 
 /**
- * @brief Imprime uma string caractere a caractere até '\0'.
- *
- * Diferente de puts(), não adiciona automaticamente '\n'.
- * Evita overhead de formatação do printf().
- *
- * @param str String a imprimir
- */
-void printString(const char str[]);
-
-/**
  * @brief Imprime um carater em linha e no final dá /n
  * @param n numero de vezes a repetir o caracter
  * @param c o caracter a imprimir 'C'
  */
 void createLine(short n, char c);
-
-// Mostra o HEX de uma array
-void printHex(int strLen, char str[strLen]);
-
-/**
- * @brief Procura por um caracter em uma string
- * @param str String para procurar.
- * @param c caracter a procurar.
- * @return Se existir, o index do caracter na string, -1 se não encontrar.
- */
-int findCharInStr(char str[], char c);
 
 // INPUT RELATED--------------
 

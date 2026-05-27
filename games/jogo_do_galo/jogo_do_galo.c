@@ -264,7 +264,9 @@ int galoMainProcess(void)
             continue;
         }
 
-        printf("O jogador \"%c\" ganhou o jogo!!!!\n", winner);
+        createLine(33, '!');
+        printf("!!!O jogador \"%c\" ganhou o jogo!!!\n", winner);
+        createLine(33, '!');
     }
 
     return 0;
