@@ -60,6 +60,17 @@ void clearStdinTrash(void);
  */
 int readDigitUserInput(const char prompt[], int *var);
 
+/**
+ * @brief Função generalizada para receber inputs do tipo string com filtro.
+ * @param prompt Texto de prompt
+ * @param varSize Tamanho da var.
+ * @param var ponteiro a apontar para a variavel que vai armazenar o valor
+ * @param useFilter 1 se vai ter caracteres aceitaveis, 0 se não vai ter
+ * @param allowedChars string com os caracteres aceitaveis
+ * @return 0 if all fine, 1 if something whent wrong
+ */
+int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize], bool useFilter, const char allowedChars[]);
+
 // CHAR RELATED--------------
 
 /**

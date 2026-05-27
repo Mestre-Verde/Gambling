@@ -35,7 +35,7 @@ int choosePlayer(void) { return 1; }
 int buildPlayer(void)
 {
     // pede nome
-    char nome[MAX_NAME_LENGTH] = {0};
+    // char nome[MAX_NAME_LENGTH] = {0};
 
     // verifica os ids e atribui
     // int id = getNextAvaiableID();
