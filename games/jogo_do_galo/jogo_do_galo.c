@@ -256,7 +256,7 @@ int galoMainProcess(void)
         }
         else if (winner == jogadorX)
         {
-            jogadorOWinnes++;
+            jogadorXWinnes++;
         }
         else
         {
