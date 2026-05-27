@@ -138,60 +138,56 @@ int readDigitUserInput(const char prompt[], int *var)
 
     return 0;
 }
-/*
-
 
 int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize], bool useFilter, const char allowedChars[])
 {
     // Dá print do texto prompt
     printString(prompt);
 
-    if (varSize >= 1)
+    if (varSize < 1)
     {
         LOG_WARN("A size param was set to 0 and an inportant array was not initialized, make sure to not alow such thing.");
         return 2;
     }
-    else
+
+    char buffer[varSize];
+    // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
+    if (fgets(buffer, varSize, stdin) == NULL)
     {
-        char buffer[varSize];
-        // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
-        if (fgets(buffer, varSize, stdin) == NULL)
-        {
-            return 1;
-        }
+        return 1;
+    }
 
-        int index = findCharInStr(buffer, '\n');
-        switch (index)
-        {
-        case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
-            clearStdinTrash();
-            break;
-        case 0: // se só tem \n
-            return 1;
-            break;
-        }
+    int index = findCharInStr(buffer, '\n');
+    switch (index)
+    {
+    case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
+        clearStdinTrash();
+        break;
+    case 0: // se só tem \n
+        return 1;
+        break;
+    }
 
-        // Substitui o '\n' por '\0' se não for unico
-        buffer[index] = '\0';
+    // Substitui o '\n' por '\0' se não for unico
+    buffer[index] = '\0';
 
-        if (useFilter) // comparar a string com os caracteres permitidos
+    if (useFilter) // comparar a string com os caracteres permitidos
+    {
+        for (unsigned short int i = 0; buffer[i] != '\0'; i++)
         {
-            for (unsigned short int i = 0; buffer[i] != '\0'; i++)
+            for (unsigned short int j = 0; allowedChars[j] != '\0'; j++)
             {
-                for (unsigned short int j = 0; allowedChars[j] != '\0'; j++)
+                if (buffer[i] != allowedChars[j])
                 {
-                    if (buffer[i] != allowedChars[j])
-                    {
 
-                        return 1;
-                    }
+                    return 1;
                 }
             }
         }
-        else
-        {
-        }
+    }
+    else
+    {
     }
 
     return 1;
-}*/
+}
