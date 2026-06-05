@@ -158,13 +158,15 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
 {
     // Dá print do texto prompt
     printString(prompt);
-    putchar('[');
-    printString(allowedChars);
-    putchar(']');
+    if (useFilter)
+    {
+        printf("[%s]", allowedChars);
+    }
+    putchar(':');
 
     if (varSize < 2)
     {
-        LOG_WARN("The vazSize cant be 0, dont allow the call function to let an 0 enter it.");
+        LOG_WARN("The vazSize must be bigger than 1 in order to have '1 char + \\0'");
         return 2;
     }
 
@@ -174,13 +176,14 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
     {
         return 1;
     }
-    printString("Entrada recebida:");
+
+    LOG_DEBUG("Entrada recebida:");
     printHex(varSize, buffer);
 
     //  obtem a posição do enter
     int index = findCharInStr(buffer, '\n');
     // chega aqui como input\n\0
-    LOG_DEBUG("Obtido o index: %i", index);
+    LOG_DEBUG("Obtido o index de '\\n': %i", index);
     switch (index)
     {
     case -1: // não encontrou '\n' -> A entrada era maior que o buffer, limpa o excesso do stream stdin

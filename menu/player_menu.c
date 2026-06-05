@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "player_menu.h"
+#include "jogador.h"
 #include "aux_func.h"
 
 PlayerMenuOption getPlayerMenuChoice(void)
@@ -46,6 +47,7 @@ int playerMenu(void)
         case CHOOSE_PLAYER:
             break;
         case CREATE_PLAYER:
+            buildPlayer();
             break;
         case REMOVE_PLAYER:
             break;
