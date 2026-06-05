@@ -13,7 +13,7 @@ int savePlayerInDataBase(Player player)
 {
     FILE *f = fopen(PLAYERDB_DIR, "ab");
 
-    // Erro ao abrir ficheiro
+    // Ficheiro não existe
     if (f == NULL)
     {
         return 1;
@@ -50,7 +50,7 @@ int getNextPlayerId(unsigned short int *nextId)
     }
 
     fclose(f);
-    LOG_DEBUG("Ultimo Id Obtido: %hu, returnado %hu", last.id, last.id + 1);
+    LOG_DEBUG("Ultimo Id Obtido: %hu, retornado %hu", last.id, last.id + 1);
     *nextId = last.id + 1;
     return 0;
 }

@@ -1,18 +1,24 @@
 #include <stdio.h>
 #include "aux_func.h"
+#include "aux_string.h"
 #include "jogador.h"
 #include "FileManager.h"
 
 // constutor
 Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
 {
+    // inicializa tudo a 0
     Player player = {0};
-    for (short int i = 0; i < MAX_NAME_LENGTH; i++)
-    {
-        player.nome[i] = nome[i];
-    }
-    player.id = *id;
 
+    stringCopy(nome, player.nome);
+    // LOG_DEBUG("Nome do novo jogador:%s", player.nome);
+
+    player.id = *id;
+    // LOG_DEBUG("Id do novo jogador:%i", player.id);
+
+    // player.vitorias_galo = 0;
+    // player.derrotas_galo = 0;
+    // player.pontos_guess = 0;
     return player;
 }
 
@@ -48,12 +54,12 @@ int buildPlayer(void)
     unsigned short int id = 0;
     if (getNextPlayerId(&id))
     {
-        LOG_ERROR("Houve um problema ao obter o Proximo ID do jogador.");
+        LOG_ERROR("Houve um problema ao obter o próximo ID do jogador.");
         return 1;
     }
 
     Player player = createPlayer(nome, &id);
-    LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
+    // LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
     savePlayerInDataBase(player);
 
     return 0;
