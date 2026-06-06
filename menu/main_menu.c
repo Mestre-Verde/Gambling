@@ -9,8 +9,13 @@
 
 MainMenuOption getMainMenuChoice(void)
 {
-    const char menuText[] = "\n===== MENU PRINCIPAL =====\n1 - Jogo do Galo\n2 - Guess Game\n5 - Defenições de jogador\n0 - Sair";
-    int choice = -1;
+    const char menuText[] =
+        "\n===== MENU PRINCIPAL =====\n\
+1 - Jogo do Galo\n\
+2 - Guess Game\n\
+5 - Defenições de jogador\n\
+0 - Sair";
+    int choice = MENU_UNKNOWN;
 
     puts(menuText);
     if (readDigitUserInput("Escolha: ", &choice))
@@ -70,10 +75,8 @@ int mainMenu(void)
             return 0;
 
         default:
-            LOG_WARN("\7"
-                     "Opção fora do escopo,reveja o enum.Valor:%i",
-                     option);
-            break;
+            LOG_WARN("\7Opção fora do escopo,reveja o enum.Valor:%i", option);
+            return 1;
         }
     }
 }

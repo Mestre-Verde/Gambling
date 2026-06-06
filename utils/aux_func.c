@@ -20,9 +20,7 @@ int toLower(int ch)
 
 int toUpper(int ch)
 {
-    if (isLower(ch))
-        return ch - 32;
-    return ch;
+    return isLower(ch) ? ch - 32 : ch;
 }
 
 //---------------
@@ -103,11 +101,11 @@ void printCharTable(void)
 
 int readDigitUserInput(const char prompt[], int *var)
 {
-#define BUFFER_LEN (10 + 1)
+    const int BUFFER_LEN = (10 + 1);
     // imprime o texto
     printString(prompt);
 
-    char buffer[BUFFER_LEN] = {0}; // um int vai até 4'294'967'296 combinações 10 digitos
+    char buffer[BUFFER_LEN]; // um int vai até 4'294'967'296 combinações 10 digitos
     // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
     if (fgets(buffer, BUFFER_LEN, stdin) == NULL)
     {
@@ -164,9 +162,10 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
     }
     putchar(':');
 
-    if (varSize < 2)
+    // reduz limpessas desnecessárias ao stdin
+    if (varSize < 3)
     {
-        LOG_WARN("The vazSize must be bigger than 1 in order to have '1 char + \\0'");
+        LOG_WARN("The vazSize must be bigger than 2 in order to have '1 char + \\n + \\0'");
         return 2;
     }
 
@@ -182,8 +181,8 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
 
     //  obtem a posição do enter
     int index = findCharInStr(buffer, '\n');
-    // chega aqui como input\n\0
     LOG_DEBUG("Obtido o index de '\\n': %i", index);
+
     switch (index)
     {
     case -1: // não encontrou '\n' -> A entrada era maior que o buffer, limpa o excesso do stream stdin

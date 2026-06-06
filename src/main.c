@@ -8,6 +8,7 @@ int main(void)
     if (setup())
     {
         LOG_ERROR("Houve um problema com a função \"setup()\"");
+        goto end;
     }
     else
     {
@@ -17,10 +18,12 @@ int main(void)
     if (mainMenu())
     {
         LOG_ERROR("Houve um problema com a função \"mainMenu()\"");
+        goto end;
     }
     else
     {
         LOG_INFO("Saiu do Menu principal.");
     }
+end:
     return 0;
 }

@@ -15,4 +15,5 @@ int savePlayerInDataBase(Player player);
  */
 int getNextPlayerId(unsigned short int *nextId);
 
+int listPlayersInDataBase(bool withIndex);
 #endif // FILE_MANAGER

@@ -28,6 +28,38 @@ int savePlayerInDataBase(Player player)
     return (escritos == 1) ? 0 : 1;
 }
 
+/**
+ * @brief Lista todos os jogadores registados na base de dados
+ * @return 0 em sucesso, 1 em erro
+ */
+int listPlayersInDataBase(bool withIndex)
+{
+    FILE *f = fopen(PLAYERDB_DIR, "rb");
+
+    if (f == NULL)
+    {
+        return 1;
+    }
+
+    Player player;
+    unsigned int index = 0;
+
+    while (fread(&player, sizeof(Player), 1, f) == 1)
+    {
+        if (withIndex)
+        {
+            printf("\n[%u]", index);
+        }
+
+        showPlayerInfo(player);
+        index++;
+    }
+
+    fclose(f);
+
+    return 0;
+}
+
 int getNextPlayerId(unsigned short int *nextId)
 {
     FILE *f = fopen(PLAYERDB_DIR, "rb");
@@ -40,17 +72,17 @@ int getNextPlayerId(unsigned short int *nextId)
         return 0;
     }
 
-    Player last;
+    Player player;
 
     // Vai diretamente tentar ler o último registo
-    if (fseek(f, -(long)sizeof(Player), SEEK_END) != 0 || fread(&last, sizeof(Player), 1, f) != 1)
+    if (fseek(f, -(long)sizeof(Player), SEEK_END) != 0 || fread(&player, sizeof(Player), 1, f) != 1)
     {
         fclose(f);
         return 1;
     }
 
     fclose(f);
-    LOG_DEBUG("Ultimo Id Obtido: %hu, retornado %hu", last.id, last.id + 1);
-    *nextId = last.id + 1;
+    LOG_DEBUG("Ultimo Id Obtido: %hu, retornado %hu", player.id, player.id + 1);
+    *nextId = player.id + 1;
     return 0;
 }

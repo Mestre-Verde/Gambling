@@ -1,9 +1,17 @@
+/*
+Este jogo n\ao ter]a logica de jogador pois para isso necessitaria de logica
+para ter 2 jogadores ativos o que não vai acontecer.
+
+De resto, este ficheiro é o jogo do galo normal.
+*/
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 
 #include "jogo_do_galo.h"
 #include "aux_func.h"
+
+#define MAX 3
 
 const char jogadorX = 'X';
 const char jogadorO = 'O';
@@ -12,6 +20,20 @@ int jogadorXWinnes = 0;
 int jogadorOWinnes = 0;
 int noWinnerCount = 0;
 
+void printPlayCounts(void)
+{
+    createLine('#', 30);
+    printf("Vitórias do jogador X: %i\n", jogadorXWinnes);
+    printf("Vitórias do jogador O: %i\n", jogadorOWinnes);
+    printf("Empates: %i\n", noWinnerCount);
+    createLine('#', 30);
+}
+
+/**
+ * @brief Imprime no terminal o tabuleiro.
+ * @param M coloque aqui o array que pretente mostrar
+ * @param showContent 0 para mostrar as coordenadas, 1 para mostrar o conteudo em cada membro do array.
+ */
 void printMatrix2D(char M[MAX][MAX], short int showContent)
 {
     for (int linha = 0; linha < MAX; linha++)
@@ -72,47 +94,39 @@ int placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MA
 
 char getCoordenadas(char playerTurn, short int tamanho, short int position[tamanho], char tabuleiro[MAX][MAX])
 {
-    const char turnText[] = "Vez de: \"%c\".\nIntroduza a posição [linha,coluna] ou 'S' para sair:";
+    // só é aceitavel (x,y\n\0)
+    const int MAX_BUFFER_LEN = (4 + 1);
 
     while (1)
     {
-        char buffer[4];
-        short int x, y;
+        // Informa de quem é o turno
+        LOG_INFO("Vez de: \"%c\".", playerTurn);
 
-        printf(turnText, playerTurn);
+        // obtem a imput do user
+        char buffer[MAX_BUFFER_LEN];
+        readStrUserInput("Introduza a posição [linha,coluna] ou 'S' para sair", MAX_BUFFER_LEN, buffer, 1, "0123456789,sS");
 
-        if (!fgets(buffer, sizeof(buffer), stdin))
-            continue;
-
-        if (strchr(buffer, '\n') == NULL)
-        {
-            int c;
-
-            while ((c = getchar()) != '\n' && c != EOF)
-                ;
-        }
-        // saída
+        // verifica se é para sair
         if (toUpper(buffer[0]) == 'S')
             return 'S';
 
         // validar formato
-        if (sscanf(buffer, "%hd,%hd", &x, &y) != 2)
+        if (sscanf(buffer, "%hi,%hi", &position[0], &position[1]) != 2)
         {
-            puts("Input inválido. Usa formato: x,y");
+            LOG_INFO("Input inválido. Usa formato: x,y .");
             continue;
         }
 
-        position[0] = x;
-        position[1] = y;
-        // printf("Coordenadas recebidas:%hi,%hi", position[0], position[1]);
+        // LOG_DEBUG("Coordenadas recebidas:%hi,%hi", position[0], position[1]);
 
         // tentar jogar
         if (!placeChar(playerTurn, tamanho, position, tabuleiro))
         {
+            putchar('\n');
             return 0; // jogada válida feita
         }
 
-        puts("Jogada inválida (posição ocupada ou fora do tabuleiro).");
+        LOG_INFO("Jogada inválida (posição ocupada ou fora do tabuleiro).");
     }
 }
 
@@ -173,36 +187,52 @@ char checkWinner(char tabuleiro[MAX][MAX])
  */
 char chooseTheFirstPlayer()
 {
-    puts("Quem começa: X ou O (ou S para sair)");
-
-    char input;
-
+    const char promptText[] = "Quem começa: X ou O (ou S para sair)";
+    // formato (char\n\0);
+    const int MAX_BUFFER_LEN = (2 + 1);
     while (1)
     {
-        input = getchar();
+        char buffer[MAX_BUFFER_LEN];
 
-        // ignora ENTER e lixo
-        if (input == '\n' || input == ' ' || input == '\t')
+        // obtem input do user
+        if (readStrUserInput(promptText, MAX_BUFFER_LEN, buffer, 1, "XxOoSs"))
+        {
+            LOG_INFO("Entrada inválida.");
             continue;
+        }
 
-        input = toUpper(input);
-
-        // limpa o resto da linha (evita bugs no fgets depois)
-        while (getchar() != '\n')
-            ;
-
-        if (input == 'X' || input == 'O' || input == 'S')
-            return input;
-
-        puts("Entrada inválida. Usa X, O ou S.");
+        // ora vamos ter em mãos um unico char.
+        return toUpper(buffer[0]);
     }
+    /*
+        puts("Quem começa: X ou O (ou S para sair)");
+
+        char input;
+
+        while (1)
+        {
+            input = getchar();
+
+            // ignora ENTER e lixo
+            if (input == '\n' || input == ' ' || input == '\t')
+                continue;
+
+            input = toUpper(input);
+
+            // limpa o resto da linha (evita bugs no fgets depois)
+            while (getchar() != '\n')
+                ;
+
+            if (input == 'X' || input == 'O' || input == 'S')
+                return input;
+
+            puts("Entrada inválida. Usa X, O ou S.");
+        }
+            */
 }
 
 int galoMainProcess(void)
 {
-    short int coordenates[2];
-    char playerTurn;
-    char winner = 0;
     puts("!!!WELCOME TO THE GAME!!");
 
     while (1)
@@ -210,8 +240,8 @@ int galoMainProcess(void)
         // limpa o tabuleiro no inicio de cada ronda.
         char tabuleiro[MAX][MAX] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
 
-        // inicio do jogo, escolher quem vai ser o primeiro:
-        playerTurn = chooseTheFirstPlayer();
+        // Escolha de quem vai ser o primeiro.
+        char playerTurn = chooseTheFirstPlayer();
         if (playerTurn == 'S')
         {
             return 0;
@@ -220,12 +250,16 @@ int galoMainProcess(void)
 
         // proceso simples, o jogador obtido na parte acima vai ser o primeiro
         // então o primeiro jogador vai mandar as coordenadas
+        // nisso vai-se alternando entre jogador até um ganhar.
+        short int coordenadas[2] = {-1};
+        char winner = '\0';
         while (!winner)
         {
             printMatrix2D(tabuleiro, 1);
             printMatrix2D(tabuleiro, 0);
+
             // manda obter as coordenadas
-            if (getCoordenadas(playerTurn, sizeof(coordenates) / sizeof(coordenates[0]), coordenates, tabuleiro) == 'S')
+            if (getCoordenadas(playerTurn, sizeof(coordenadas) / sizeof(coordenadas[0]), coordenadas, tabuleiro) == 'S')
             {
                 return 0;
             }
@@ -233,16 +267,12 @@ int galoMainProcess(void)
             // verifica se o tabuleiro já está preeenchido:
             if (isFull(tabuleiro))
             {
-                winner = 0;
+                winner = '\0';
                 break;
             }
 
             // verifica se algum jogador fez 3 seguidos
             winner = checkWinner(tabuleiro);
-            if (winner)
-            {
-                break;
-            }
 
             // troca de jogador no final de 1 jogada.
             playerTurn = (playerTurn == jogadorX) ? jogadorO : jogadorX;
@@ -259,14 +289,16 @@ int galoMainProcess(void)
         }
         else
         {
-            puts("Empate entre os 2.");
+            LOG_INFO("Empate entre os 2.");
             noWinnerCount++;
+            printPlayCounts();
             continue;
         }
 
         createLine(33, '!');
         printf("!!!O jogador \"%c\" ganhou o jogo!!!\n", winner);
         createLine(33, '!');
+        printPlayCounts();
     }
 
     return 0;
