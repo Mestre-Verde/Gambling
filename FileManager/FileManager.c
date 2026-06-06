@@ -4,19 +4,52 @@ Para mexer com ficheiros externos é necessário chamar funções genéricas aqu
 
 */
 #include <stdio.h>
+#include <stdbool.h>
 #include "jogador.h"
 #include "aux_func.h"
 
 #define PLAYERDB_DIR "base_de_dados/playerdb.bin"
 
-int savePlayerInDataBase(Player player)
+int checkDataBase(FILE *file)
 {
-    FILE *f = fopen(PLAYERDB_DIR, "ab");
-
-    // Ficheiro não existe
-    if (f == NULL)
+    // verifica se o enderesso existe
+    if (file == NULL)
     {
         return 1;
+    }
+
+    // verifica se o ficheiro está vazio
+    int caracter = fgetc(file);
+
+    if (caracter == EOF)
+    {
+        fclose(file);
+        return 2;
+    }
+
+    return 0;
+}
+
+int savePlayerInDataBase(Player player, char PATH[])
+{
+    // guarda o stream em um ponteiro do tipo struct FILE
+    FILE *f = fopen(PATH, "ab");
+
+    // verifica o ficheiro
+    int estado = checkDataBase(f);
+
+    switch (estado)
+    {
+    case 0: // O ficheiro tinha algo escrito.
+        break;
+
+    case 1:
+        LOG_ERROR("O ficheiro no qual se tentou escrever não existe! \"%s\"", PATH);
+        return 1;
+
+    case 2:
+        LOG_WARN("O ficheiro no qual se escreveu estava vazio. \"%s\"", PATH);
+        break;
     }
 
     // Escreve a struct completa no ficheiro

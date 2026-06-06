@@ -13,9 +13,7 @@ int isVowell(char ch) { return (ch == 'a' || ch == 'A' || ch == 'e' || ch == 'E'
 
 int toLower(int ch)
 {
-    if (isUpper(ch))
-        return ch + 32;
-    return ch;
+    return isUpper(ch) ? ch + 32 : ch;
 }
 
 int toUpper(int ch)

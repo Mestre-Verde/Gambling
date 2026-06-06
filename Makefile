@@ -28,6 +28,7 @@ BUILD_PATH := build
 
 # deteção do sistema operativo
 ifeq ($(OS),Windows_NT)
+# make no windows é mingw32-make
 	TARGET := $(BUILD_PATH)/$(EXEC).exe
 
 	MKDIR := if not exist $(BUILD_PATH) mkdir $(BUILD_PATH)
