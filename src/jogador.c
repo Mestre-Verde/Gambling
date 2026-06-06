@@ -8,7 +8,7 @@
 Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
 {
     // inicializa tudo a 0
-    Player player = {0};
+    Player player;
 
     stringCopy(nome, player.nome);
     // LOG_DEBUG("Nome do novo jogador:%s", player.nome);
@@ -16,7 +16,7 @@ Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
     player.id = *id;
     // LOG_DEBUG("Id do novo jogador:%i", player.id);
 
-    // player.pontos_guess = 0;
+    player.pontos_guess = 0;
     return player;
 }
 
