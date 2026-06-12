@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdbool.h>
+
 #include "aux_func.h"
 #include "aux_string.h"
 #include "jogador.h"
@@ -33,7 +35,7 @@ void showPlayerInfo(Player player)
 
 int choosePlayer(void)
 {
-    listPlayersInDataBase(1);
+    listPlayersInDataBase(1, PLAYERDB_DIR);
     return 1;
 }
 
@@ -49,15 +51,15 @@ int buildPlayer(void)
 
     // verifica os ids e atribui
     unsigned short int id = 0;
-    if (getNextPlayerId(&id))
+    if (getNextPlayerId(&id, PLAYERDB_DIR))
     {
         LOG_ERROR("Houve um problema ao obter o próximo ID do jogador.");
         return 1;
     }
 
     Player player = createPlayer(nome, &id);
-    // LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
-    savePlayerInDataBase(player);
+    LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
+    savePlayerInDataBase(player, PLAYERDB_DIR);
 
     return 0;
 }

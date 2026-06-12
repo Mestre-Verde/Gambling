@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#define PLAYERDB_DIR "base_de_dados/playerdb.bin"
+
 /**
  * @brief Verifica o estado de um ficheiro
  * @param file ponteiro para o stream.
@@ -23,7 +25,14 @@ int savePlayerInDataBase(Player player, char PATH[]);
  * @param nextId apontador onde será guardado o próximo ID
  * @return 0 = sucesso, 1 = erro
  */
-int getNextPlayerId(unsigned short int *nextId);
+int getNextPlayerId(unsigned short int *nextId, char PATH[]);
 
-int listPlayersInDataBase(bool withIndex);
+/**
+ * @brief Lista os jogadores de uma base de dados
+ * @param withIndex mostra separação com ID
+ * @param PATH string com o caminho do path
+ * @return 0 se sucesso, 1 se algo não corre bems
+ */
+int listPlayersInDataBase(bool withIndex, char PATH[]);
+
 #endif // FILE_MANAGER

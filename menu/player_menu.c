@@ -61,11 +61,18 @@ int playerMenu(void)
             break;
 
         case CHOOSE_PLAYER:
-            choosePlayer();
+            if (choosePlayer())
+            {
+                LOG_ERROR("O processo de escolher um jogador foi abortado.");
+            }
+            else
+            {
+                LOG_INFO("Jogador selecionado com sucesso.");
+            }
             break;
 
         case REMOVE_PLAYER:
-            removePlayer();
+            // removePlayer();
             break;
 
         case PLAYER_STATS:
