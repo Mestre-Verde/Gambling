@@ -54,6 +54,11 @@ void clearStdinTrash(void)
     // putchar('\n');
 }
 
+void ShowCursorPosition(FILE *file)
+{
+    printf("Cursor: %ld\n", ftell(file));
+}
+
 void printCharTable(void)
 {
     printf("Char   | Dec | Hex\n");

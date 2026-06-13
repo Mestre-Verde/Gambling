@@ -43,7 +43,7 @@ int mainMenu(void)
     while (1)
     {
         MainMenuOption option = getMainMenuChoice();
-        LOG_DEBUG("Valor de Enum recebido: %i", option);
+        // LOG_DEBUG("Valor de Enum recebido: %i", option);
         switch (option)
         {
         case MENU_UNKNOWN:

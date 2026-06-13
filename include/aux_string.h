@@ -1,8 +1,6 @@
 #ifndef AUX_STRING
 #define AUX_STRING
 
-
-
 /**
  * @brief Copia uma string para outra
  * @param inicial string a copiar

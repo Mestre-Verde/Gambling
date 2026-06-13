@@ -26,6 +26,7 @@ int checkDataBase(FILE *file)
     // ftell devolve o tamanho atual do ficheiro em bytes
     long size = ftell(file);
 
+    rewind(file);
     // Se o tamanho for 0, o ficheiro está vazio
     if (size == 0)
     {
@@ -40,7 +41,9 @@ int savePlayerInDataBase(Player player, char PATH[])
     // Abre ficheiro em modo append binário
     FILE *f = fopen(PATH, "ab");
 
-    if (f == NULL)
+    int estado = checkDataBase(f);
+
+    if (estado == 1)
     {
         LOG_ERROR("Não foi possível abrir o ficheiro \"%s\"", PATH);
         return 1;
@@ -61,21 +64,17 @@ int listPlayersInDataBase(bool withIndex, char PATH[])
 
     if (f == NULL)
     {
-        LOG_DEBUG("Ficheiro não existe.");
+        LOG_ERROR("Ficheiro não existe.");
         return 1;
     }
-
     int estado = checkDataBase(f);
 
     if (estado)
     {
-        LOG_DEBUG("Sem jogadores para listar.");
+        LOG_INFO("Sem jogadores para listar.");
         fclose(f);
-        return 0;
+        return -1;
     }
-
-    // voltar ao início para leitura
-    rewind(f);
 
     Player player;
 
@@ -85,7 +84,6 @@ int listPlayersInDataBase(bool withIndex, char PATH[])
         {
             printf("\n[%u]", player.id);
         }
-
         showPlayerInfo(player);
     }
 
@@ -129,7 +127,74 @@ int getNextPlayerId(unsigned short int *nextId, char PATH[])
 
     *nextId = player.id + 1;
 
-    LOG_DEBUG("Último ID: %hu → próximo: %hu", player.id, *nextId);
+    // LOG_DEBUG("Último ID: %hu → próximo: %hu", player.id, *nextId);
+
+    return 0;
+}
+
+int removePlayerFromDB(const unsigned short int id, char PATH[])
+{
+    // abre o ficheiro em modo leitura binario
+    FILE *file = fopen(PATH, "rb");
+
+    // verifica  o estado do ficheiro
+    int estado = checkDataBase(file);
+
+    if (estado == 1)
+    {
+        return 1;
+    }
+    else if (estado == 2)
+    {
+        LOG_INFO("Não há jogadores para remover na base de dados.");
+        return 0;
+    }
+
+    // cria ficheiro temporário
+    FILE *tempFile = fopen(TEMP_FILE_PATH, "wb");
+
+    if (tempFile == NULL)
+    {
+        fclose(file);
+        LOG_ERROR("Não foi possível criar o ficheiro temporário.");
+        return 1;
+    }
+
+    Player player;
+
+    bool found = false;
+
+    // lê jogador a jogador
+    while (fread(&player, sizeof(Player), 1, file) == 1)
+    {
+        LOG_DEBUG("Id encontrado: %hu", player.id);
+
+        //  ignora jogador a remover
+        if (player.id == id)
+        {
+            found = true;
+            continue;
+        }
+
+        // copia jogador para ficheiro temporário
+        fwrite(&player, sizeof(Player), 1, tempFile);
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    // jogador não encontrado
+    if (!found)
+    {
+        remove(TEMP_FILE_PATH);
+        return -1;
+    }
+
+    // remove base de dados antiga
+    remove(PATH);
+
+    // renomeia temporário para base de dados principal
+    rename(TEMP_FILE_PATH, PATH);
 
     return 0;
 }

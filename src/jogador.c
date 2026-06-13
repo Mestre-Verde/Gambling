@@ -3,6 +3,7 @@
 
 #include "aux_func.h"
 #include "aux_string.h"
+
 #include "jogador.h"
 #include "FileManager.h"
 
@@ -58,10 +59,56 @@ int buildPlayer(void)
     }
 
     Player player = createPlayer(nome, &id);
-    LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
+    // LOG_DEBUG("Size of Player is %zu\n", sizeof(Player));
     savePlayerInDataBase(player, PLAYERDB_DIR);
 
     return 0;
 }
 
-int removePlayer(void) { return 1; }
+// TODO :quando implementar corrent player, naõ deixar que ele se apague.
+int removePlayer(void)
+{
+    int stateOfThePlayerList = listPlayersInDataBase(true, PLAYERDB_DIR);
+    // Lista os jogadores existentes
+    if (stateOfThePlayerList == 1)
+    {
+        LOG_WARN("Não foi possível listar jogadores.");
+        return 1;
+    }
+    else if (stateOfThePlayerList == -1)
+    {
+        return 0;
+    }
+
+    // pergunta qual jogador quer remover com base em id, será 1 por vez para simpificar
+    int playerId = 0;
+    if (readDigitUserInput("Insira o id do jogador a remover('0' para abortar):", &playerId))
+    {
+        return 1;
+    }
+
+    if (!playerId)
+    {
+        return 0;
+    }
+
+    // com o id começa o processo de remoção do jogador, isto se existir
+    // chama a função de remoção em FileManager.
+    int estado = removePlayerFromDB(playerId, PLAYERDB_DIR);
+
+    switch (estado)
+    {
+    case -1:
+        LOG_INFO("Jogador não encontrado.");
+        break;
+
+    case 0:
+        LOG_INFO("Jogador removido com sucesso.");
+        break;
+
+    case 1:
+        return 1;
+    }
+
+    return 0;
+}

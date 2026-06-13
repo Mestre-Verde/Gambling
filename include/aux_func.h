@@ -77,4 +77,10 @@ int isSpace(int ch);
  */
 bool isBetween(int value, int min_value, int max_value);
 
+/**
+ * @brief Função debug para saber a posição do cursor em dado instante
+ * @param file ficheiro atual
+ */
+void ShowCursorPosition(FILE *file);
+
 #endif

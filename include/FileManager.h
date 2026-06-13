@@ -4,9 +4,11 @@
 #include <stdbool.h>
 
 #define PLAYERDB_DIR "base_de_dados/playerdb.bin"
+#define TEMP_FILE_PATH "base_de_dados/playerdb.tmp"
 
 /**
- * @brief Verifica o estado de um ficheiro
+ * @brief Verifica o estado de um ficheiro.
+ * @details Vai para o final do ficheiro para verficar o tamanho, e depois de obter o tamanho volta ao inicio do ficheiro.
  * @param file ponteiro para o stream.
  * @return 0 se existe e tem conteudo, 1 se não existe, 2 se existe mas não tem conteudo.
  */
@@ -31,8 +33,18 @@ int getNextPlayerId(unsigned short int *nextId, char PATH[]);
  * @brief Lista os jogadores de uma base de dados
  * @param withIndex mostra separação com ID
  * @param PATH string com o caminho do path
- * @return 0 se sucesso, 1 se algo não corre bems
+ * @return 0 se sucesso, 1 se algo não corre bems, -1 se não há jogadores
  */
 int listPlayersInDataBase(bool withIndex, char PATH[]);
+
+/**
+ * @brief Função para remover um jogador de uma base de dados
+ * @details É usado o metudo simples de criar um ficheiro temporario para escrever todos
+ * os jogadores menos o a remover e no final substituir a base de dados original pela temporaria.
+ * @param id ponteiro para onde está armazenado o id
+ * @param PATH caminho da base de dados
+ * @return 0 se sucesso, 1 se algo correu mal, -1 se não encontrou o jogador
+ */
+int removePlayerFromDB(const unsigned short int id, char PATH[]);
 
 #endif // FILE_MANAGER

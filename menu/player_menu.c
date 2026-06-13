@@ -1,8 +1,9 @@
 #include <stdio.h>
 
+#include "aux_func.h"
+
 #include "player_menu.h"
 #include "jogador.h"
-#include "aux_func.h"
 
 PlayerMenuOption getPlayerMenuChoice(void)
 {
@@ -12,6 +13,7 @@ PlayerMenuOption getPlayerMenuChoice(void)
 1 - Criar jogador\n\
 2 - Selecionar jogador\n\
 3 - Remover jogador\n\
+4 - Mostrar status do jogador atual\n\
 0 - Voltar";
     int choice = PLAYER_MENU_UNKNOWN;
 
@@ -49,6 +51,7 @@ int playerMenu(void)
         case PLAYER_MENU_UNKNOWN:
             puts("Opção inválida.");
             break;
+
         case CREATE_PLAYER:
             if (buildPlayer())
             {
@@ -72,11 +75,18 @@ int playerMenu(void)
             break;
 
         case REMOVE_PLAYER:
-            // removePlayer();
+            if (removePlayer())
+            {
+                LOG_ERROR("O processo de remoção de jogador falhou.");
+            }
+            else
+            {
+                LOG_INFO("Processo de remoção completada com sucesso.");
+            }
             break;
 
         case PLAYER_STATS:
-
+            LOG_INFO("Status do jogador ainda não implementado");
             break;
 
         case PLAYER_MENU_EXIT:
