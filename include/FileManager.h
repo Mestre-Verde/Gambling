@@ -1,8 +1,6 @@
 #if !defined(FILE_MANAGER)
 #define FILE_MANAGER
 
-#include <stdbool.h>
-
 #define PLAYERDB_DIR "base_de_dados/playerdb.bin"
 #define TEMP_FILE_PATH "base_de_dados/playerdb.tmp"
 
@@ -36,6 +34,8 @@ int getNextPlayerId(unsigned short int *nextId, char PATH[]);
  * @return 0 se sucesso, 1 se algo não corre bems, -1 se não há jogadores
  */
 int listPlayersInDataBase(bool withIndex, char PATH[]);
+
+int findPlayerInDB(const unsigned short int id, Player *player);
 
 /**
  * @brief Função para remover um jogador de uma base de dados

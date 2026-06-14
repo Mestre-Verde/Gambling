@@ -18,10 +18,23 @@ typedef struct
  */
 int buildPlayer(void);
 
-void showPlayerInfo(Player player);
+/**
+ * @brief Imprime os valores de um Player
+ * @param player jogador a imprimir.
+ * @param wihLine 1 para mostar a linha, 0 para não mostrar.
+ */
+void showPlayerInfo(Player player, bool withLine);
 
+/**
+ * @brief Função para escolher o jogador atual.
+ * @return
+ */
 int choosePlayer(void);
 
+/**
+ * @brief Função para escolher um jogador para remover.
+ * @return 0 se removeu com sucesso, 1 se ocorreu um erro
+ */
 int removePlayer(void);
 
 #endif

@@ -30,7 +30,7 @@ int Abs(int x) { return x < 0 ? -x : x; }
 // retorna o cubo de um numero.
 int Cubo(int x) { return x * x * x; }
 // retorna o numero negativo
-int Minus(int x) { return x < 0 ? x : -x; }
+int Minus(int x) { return x > 0 ? -x : x; }
 // retorna o inverso de um numero
 float Inverso(int x) { return x == 0 ? x : (1 / x); }
 
@@ -108,33 +108,45 @@ int readDigitUserInput(const char prompt[], int *var)
     // imprime o texto
     printString(prompt);
 
-    char buffer[BUFFER_LEN]; // um int vai até 4'294'967'296 combinações 10 digitos
+    char buffer[BUFFER_LEN]; // buffer suficiente para int com sinal e '\0'
     // lê input e guarda no buffer, proteção contra terminais que não esperam por '\n'
     if (fgets(buffer, BUFFER_LEN, stdin) == NULL)
     {
-        return 1; // erro de leitura
+        LOG_ERROR("Problema ao copiar do stdin!");
+        return 1;
     }
 
-    int index = findCharInStr(buffer, '\n');
+    int LFindex = findCharInStr(buffer, '\n');
 
-    switch (index)
+    switch (LFindex)
     {
-    case -1: // não encontrou '\n' | se a entrada era maior que o buffer, limpa o excesso do stream stdin
+    case -1:
         clearStdinTrash();
         break;
-    case 0: // se só tem \n
-        return 1;
+
+    case 0:
+        return -1;
+
+    default:
+        // Substitui o '\n' por '\0' se não for unico
+        buffer[LFindex] = '\0';
         break;
     }
 
-    // Substitui o '\n' por '\0' se não for unico
-    buffer[index] = '\0';
+    // verificar se é negativo, o sinal para ser valido presisa de estar em buffer[0]
+    bool isNegative = buffer[0] == '-';
+
+    // verifica se só existe um '-'
+    if (isNegative && LFindex == 1)
+    {
+        return -1;
+    }
 
     // valida se todos os caracteres são dígitos
-    for (int i = 0; buffer[i] != '\0'; i++)
+    for (int i = isNegative ? 1 : 0; buffer[i] != '\0'; i++)
     {
         if (!isDigit(buffer[i]))
-            return 1; // input inválido
+            return -1; // input inválido
     }
     // converte manualmente
     /*
@@ -145,12 +157,12 @@ int readDigitUserInput(const char prompt[], int *var)
     | 2 | '3'  | 12*10 + 3 | 123   |
     */
     int value = 0;
-    for (int i = 0; buffer[i] != '\0'; i++)
+    for (int i = isNegative ? 1 : 0; buffer[i] != '\0'; i++)
     {
         value = value * 10 + (buffer[i] - '0');
     }
 
-    *var = value;
+    *var = isNegative ? Minus(value) : value;
 
     return 0;
 }

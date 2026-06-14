@@ -7,6 +7,8 @@
 #include "jogador.h"
 #include "FileManager.h"
 
+static Player currentPlayer = {0};
+
 // constutor
 Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
 {
@@ -23,21 +25,67 @@ Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
     return player;
 }
 
-/**
- * @brief Imprime os valores de um Player
- * @param player struct Player a imprimir.
- */
-void showPlayerInfo(Player player)
+void showPlayerInfo(Player player, bool withLine)
 {
-    createLine(50, '+');
+    if (withLine)
+    {
+        createLine(50, '+');
+    }
     printf("Nome do jogador:%s\n", player.nome);
     printf("Pontos no jogo da Adivinha: %lu\n", player.pontos_guess);
 }
 
 int choosePlayer(void)
 {
-    listPlayersInDataBase(1, PLAYERDB_DIR);
-    return 1;
+    // Lista os jogadores com index
+    int estado = listPlayersInDataBase(1, PLAYERDB_DIR);
+    if (estado == -1)
+    {
+        return 0;
+    }
+    else if (estado)
+    {
+        return 1;
+    }
+    putchar('\n');
+    createLine(50, '+');
+
+    // obtem a input do user
+    int id = 0;
+    int estadoInput = -1;
+    do
+    {
+        estadoInput = readDigitUserInput("Insira o numero do jogador a escolher('0' para abortar):", &id);
+        if (estadoInput == 1)
+        {
+            return 1;
+        }
+    } while (estadoInput);
+
+    // verifica se o id é invalido
+    if (!id)
+    {
+        return 0;
+    }
+
+    // verifica se o jogador existe
+    Player player = {0};
+    int foundState = findPlayerInDB(id, &player);
+    if (foundState == -1)
+    {
+        LOG_INFO("Jogador não encontrado.");
+    }
+    else if (!foundState)
+    {
+        currentPlayer = player;
+        printString("\nJogador atual:\n");
+        showPlayerInfo(currentPlayer, 0);
+    }
+    else
+    {
+        return 1;
+    }
+    return 0;
 }
 
 int buildPlayer(void)
@@ -65,7 +113,6 @@ int buildPlayer(void)
     return 0;
 }
 
-// TODO :quando implementar corrent player, naõ deixar que ele se apague.
 int removePlayer(void)
 {
     int stateOfThePlayerList = listPlayersInDataBase(true, PLAYERDB_DIR);
@@ -82,13 +129,23 @@ int removePlayer(void)
 
     // pergunta qual jogador quer remover com base em id, será 1 por vez para simpificar
     int playerId = 0;
-    if (readDigitUserInput("Insira o id do jogador a remover('0' para abortar):", &playerId))
+    int estadoInput = -1;
+    do
     {
-        return 1;
-    }
+        estadoInput = readDigitUserInput("Insira o id do jogador a remover('0' para abortar):", &playerId);
+        if (estadoInput == 1)
+        {
+            return 1;
+        }
+    } while (estadoInput);
 
     if (!playerId)
     {
+        return 0;
+    }
+    if (playerId == currentPlayer.id)
+    {
+        LOG_INFO("\7Não pode apagar o jogador atual!");
         return 0;
     }
 

@@ -84,7 +84,7 @@ int listPlayersInDataBase(bool withIndex, char PATH[])
         {
             printf("\n[%u]", player.id);
         }
-        showPlayerInfo(player);
+        showPlayerInfo(player, 1);
     }
 
     fclose(f);
@@ -167,7 +167,7 @@ int removePlayerFromDB(const unsigned short int id, char PATH[])
     // lê jogador a jogador
     while (fread(&player, sizeof(Player), 1, file) == 1)
     {
-        LOG_DEBUG("Id encontrado: %hu", player.id);
+        // LOG_DEBUG("Id encontrado: %hu", player.id);
 
         //  ignora jogador a remover
         if (player.id == id)
@@ -197,4 +197,35 @@ int removePlayerFromDB(const unsigned short int id, char PATH[])
     rename(TEMP_FILE_PATH, PATH);
 
     return 0;
+}
+
+int findPlayerInDB(const unsigned short int id, Player *player)
+{
+    // abre base de dados
+    FILE *file = fopen(PLAYERDB_DIR, "rb");
+
+    // verifica estado do ficheiro
+    int estado = checkDataBase(file);
+
+    // verifica se existe o ficheiro
+    if (estado == 1)
+    {
+        return 1;
+    }
+
+    // lê jogador a jogador
+    while (fread(player, sizeof(Player), 1, file) == 1)
+    {
+        // encontrou jogador
+        if (player->id == id)
+        {
+            fclose(file);
+            return 0;
+        }
+    }
+
+    fclose(file);
+
+    // não encontrado
+    return -1;
 }

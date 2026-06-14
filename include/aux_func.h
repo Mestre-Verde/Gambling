@@ -1,6 +1,8 @@
 #ifndef AUX_FUNC_H
 #define AUX_FUNC_H
 
+#include <stdbool.h>
+
 // MACROS--------------
 
 #define LOG_INFO(msg, ...) printf("[INFO] " msg "\n", ##__VA_ARGS__)

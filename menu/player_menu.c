@@ -66,11 +66,11 @@ int playerMenu(void)
         case CHOOSE_PLAYER:
             if (choosePlayer())
             {
-                LOG_ERROR("O processo de escolher um jogador foi abortado.");
+                LOG_ERROR("O processo de seleção do jogador falhou.");
             }
             else
             {
-                LOG_INFO("Jogador selecionado com sucesso.");
+                LOG_INFO("Processo de seleção terminado com sucesso.");
             }
             break;
 
