@@ -7,7 +7,7 @@ INCLUDE := -Iinclude
 EXEC := gamblingApp
 
 # ficheiros fonte
-SRC_MAIN := src/main.c src/setup.c src/jogador.c 	
+SRC_MAIN := src/main.c src/jogador.c 	
 
 AUX_SRC := utils/aux_func.c utils/aux_string.c
 
