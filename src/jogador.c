@@ -11,7 +11,7 @@
 Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
 {
     // inicializa tudo a 0
-    Player player;
+    Player player = {0};
 
     stringCopy(nome, player.nome);
     // LOG_DEBUG("Nome do novo jogador:%s", player.nome);

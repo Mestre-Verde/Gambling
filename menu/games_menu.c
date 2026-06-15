@@ -54,7 +54,8 @@ int gamesMenu(void)
     }
     if (engineStartGame(option))
     {
-        ERROR_LOG("Ocorreu um erro ao iniciar o jogo.");
+        LOG_ERROR("Ocorreu um erro ao iniciar o jogo.");
         return 1;
     }
+    return 1;
 }

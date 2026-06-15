@@ -37,7 +37,9 @@ int engineStartGame(GamesMenuOptions game)
     switch (game)
     {
     case JOGO_DO_GALO:
-        return jogoDoGaloMainProcess();
+        if (galoMainProcess())
+        {
+        }
 
     case GUESS_GAME:
         return guess_main_process();
@@ -45,7 +47,7 @@ int engineStartGame(GamesMenuOptions game)
     case GAME3:
     case GAME4:
         LOG_INFO("Ainda não implementado");
-        return 0;    
+        return 0;
 
     default:
         LOG_ERROR("Opção de jogo desconhecida.");
