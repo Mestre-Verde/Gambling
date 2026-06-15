@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include "aux_func.h"
-
+#include "jogador.h"
 #include "guess_game.h"
 #include "jogo_do_galo.h"
 #include "Engine.h"
@@ -37,9 +37,13 @@ int engineStartGame(GamesMenuOptions game)
     switch (game)
     {
     case JOGO_DO_GALO:
-        if (galoMainProcess())
+
+     if (galoMainProcess())
         {
-        }
+            LOG_ERROR("Ocorreu um erro no jogo do galo.");
+            return 1;
+        } 
+        
 
     case GUESS_GAME:
         return guess_main_process();
