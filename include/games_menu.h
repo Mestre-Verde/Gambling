@@ -6,7 +6,7 @@ typedef enum
     GAMES_MENU_UNKNOWN = -1,
     GAMES_MENU_EXIT = 0,
     JOGO_DO_GALO,
-    GUESS_GAME = 2,
+    GUESS_GAME,
     GAME3,
     GAME4,
 } GamesMenuOptions;
