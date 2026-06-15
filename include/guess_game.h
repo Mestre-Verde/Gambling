@@ -1,5 +1,5 @@
-#ifndef GUESS_GAME
-#define GUESS_GAME
+#ifndef GUESS_GAME_H
+#define GUESS_GAME_H
 
 /**
  * @brief Processo principal do jogo
