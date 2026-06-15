@@ -1,5 +1,5 @@
-#ifndef JOGO_DO_GALO
-#define JOGO_DO_GALO
+#ifndef JOGO_DO_GALO_H
+#define JOGO_DO_GALO_H
 
 /**
  * @brief função principal.
