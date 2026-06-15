@@ -11,6 +11,7 @@ typedef struct
 
 } Player;
 
+// permite partilhar a variavel pelos outros ficheiros
 extern Player currentPlayer;
 
 /**
