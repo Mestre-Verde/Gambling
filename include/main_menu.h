@@ -5,11 +5,8 @@ typedef enum
 {
     MENU_UNKNOWN = -1,
     MENU_EXIT = 0,
-    MENU_GALO,
-    MENU_GUESS,
-    MENU_GAME3,
-    MENU_GAME4,
-    MENU_PLAYER = 5,
+    MENU_GAMES,
+    MENU_PLAYER,
 } MainMenuOption;
 
 /**
@@ -19,4 +16,5 @@ typedef enum
 signed int mainMenu();
 
 MainMenuOption getMainMenuChoice(void);
+
 #endif

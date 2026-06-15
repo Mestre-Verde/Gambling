@@ -34,4 +34,11 @@ void printHex(int strLen, char str[strLen]);
  */
 int findCharInStr(char str[], char c);
 
+/**
+ * @brief Obtem o comprimento da string contando com o caracter nulo '\0'
+ * @param s string to get len
+ * @return o valor de compriemnto da string.
+ */
+int stringLen(const char s[]);
+
 #endif // AUX_STRING

@@ -120,15 +120,15 @@ int readDigitUserInput(const char prompt[], int *var)
 
     switch (LFindex)
     {
-    case -1:
+    case -1: // não encontrou '\n'
         clearStdinTrash();
         break;
 
-    case 0:
+    case 0: // só tem '\n'
         return -1;
 
     default:
-        // Substitui o '\n' por '\0' se não for unico
+        // Substitui o '\n' por '\0'
         buffer[LFindex] = '\0';
         break;
     }

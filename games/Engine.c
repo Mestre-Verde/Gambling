@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include "aux_func.h"
+
 #include "guess_game.h"
 #include "jogo_do_galo.h"
 #include "Engine.h"

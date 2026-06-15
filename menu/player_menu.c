@@ -9,16 +9,15 @@ PlayerMenuOption getPlayerMenuChoice(void)
 {
     // variaveis
     const char menuText[] =
-        "\n===== MENU JOGADOR =====\n\
+        "\n===== MENU JOGADOR =====\t|%s|\n\
 1 - Criar jogador\n\
 2 - Selecionar jogador\n\
 3 - Remover jogador\n\
-4 - Mostrar status do jogador atual\n\
-0 - Voltar";
+0 - Voltar\n";
     int choice = PLAYER_MENU_UNKNOWN;
 
     // imprimir textMenu e obter a resposta do user.
-    puts(menuText);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
     if (readDigitUserInput("Escolha :", &choice))
     {
         return PLAYER_MENU_UNKNOWN;
@@ -30,7 +29,6 @@ PlayerMenuOption getPlayerMenuChoice(void)
     case CREATE_PLAYER:
     case CHOOSE_PLAYER:
     case REMOVE_PLAYER:
-    case PLAYER_STATS:
         return (PlayerMenuOption)choice;
         break;
 
@@ -83,10 +81,6 @@ int playerMenu(void)
             {
                 LOG_INFO("Processo de remoção completada com sucesso.");
             }
-            break;
-
-        case PLAYER_STATS:
-            LOG_INFO("Status do jogador ainda não implementado");
             break;
 
         case PLAYER_MENU_EXIT:

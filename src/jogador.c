@@ -7,8 +7,6 @@
 #include "jogador.h"
 #include "FileManager.h"
 
-static Player currentPlayer = {0};
-
 // constutor
 Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
 {

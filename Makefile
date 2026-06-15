@@ -7,11 +7,14 @@ INCLUDE := -Iinclude
 EXEC := gamblingApp
 
 # ficheiros fonte
-SRC_MAIN := src/main.c src/jogador.c 	
+SRC_MAIN := src/main.c src/jogador.c
 
 AUX_SRC := utils/aux_func.c utils/aux_string.c
 
-MENU_SRC :=	menu/main_menu.c menu/player_menu.c
+MENU_SRC :=	\
+	menu/main_menu.c \
+	menu/player_menu.c \
+	menu/games_menu.c
 
 GAME_SRC := \
 	games/guess_game/guess_game.c \
@@ -44,7 +47,7 @@ else
 	RUN := ./$(TARGET)
 endif
 
-.PHONY: all build run clean clear
+.PHONY: all build run clean
 
 all: build run
 

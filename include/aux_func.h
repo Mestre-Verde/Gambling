@@ -34,7 +34,7 @@ void createLine(short n, char c);
 void clearStdinTrash(void);
 
 /**
- * @brief Generic function to ask integers to the user.
+ * @brief Generic function to ask integers to the user(negatives are included).
  * @param prompt Text to show before the user input
  * @param var pointer to the var that will save the input
  * @return 0 if all fine, 1 if something whent wrong

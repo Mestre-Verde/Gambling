@@ -11,6 +11,8 @@ typedef struct
 
 } Player;
 
+extern Player currentPlayer;
+
 /**
  * @brief Cria um jogador para depois guardar na base de dados.
  * Não é suposto ser escolhido o jogador criado, para escolher o jogador é noutra função.
@@ -21,7 +23,7 @@ int buildPlayer(void);
 /**
  * @brief Imprime os valores de um Player
  * @param player jogador a imprimir.
- * @param wihLine 1 para mostar a linha, 0 para não mostrar.
+ * @param wihLine 1 para mostar o separador, 0 para não mostrar.
  */
 void showPlayerInfo(Player player, bool withLine);
 

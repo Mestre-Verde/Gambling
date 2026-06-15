@@ -1,23 +1,24 @@
 #include <stdio.h>
 
+#include "aux_func.h"
+
 #include "main_menu.h"
 #include "player_menu.h"
+#include "games_menu.h"
 
-#include "jogo_do_galo.h"
-#include "guess_game.h"
-#include "aux_func.h"
+#include "jogador.h"
+Player currentPlayer = {0}; // variavel global
 
 MainMenuOption getMainMenuChoice(void)
 {
     const char menuText[] =
-        "\n===== MENU PRINCIPAL =====\n\
-1 - Jogo do Galo\n\
-2 - Guess Game\n\
-5 - Defenições de jogador\n\
-0 - Sair";
+        "\n===== MENU PRINCIPAL =====\t|%s|\n\
+1 - Menu de jogos\n\
+2 - Defenições de jogador\n\
+0 - Sair\n";
     int choice = MENU_UNKNOWN;
 
-    puts(menuText);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
     if (readDigitUserInput("Escolha: ", &choice))
     {
         // LOG_DEBUG("digito recebido: %i", choice);
@@ -28,8 +29,7 @@ MainMenuOption getMainMenuChoice(void)
     switch (choice)
     {
     case MENU_EXIT:
-    case MENU_GALO:
-    case MENU_GUESS:
+    case MENU_GAMES:
     case MENU_PLAYER:
         return (MainMenuOption)choice;
 
@@ -50,17 +50,10 @@ int mainMenu(void)
             puts("Opção inválida.");
             break;
 
-        case MENU_GALO:
-            if (galoMainProcess())
+        case MENU_GAMES:
+            if (gamesMenu())
             {
-                LOG_ERROR("Ocorreu um erro com o jogo do galo.");
-            }
-            break;
-
-        case MENU_GUESS:
-            if (guess_main_process())
-            {
-                LOG_ERROR("Ocorreu um erro com o jogo de adivinha.");
+                LOG_ERROR("Ocorreu um erro com o menu de jogos.");
             }
             break;
 
