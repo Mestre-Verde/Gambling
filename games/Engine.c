@@ -31,3 +31,24 @@ Difficulty chooseDifficulty(void)
         return UNKNOWN;
     }
 }
+
+int engineStartGame(GamesMenuOptions game)
+{
+    switch (game)
+    {
+    case JOGO_DO_GALO:
+        return jogoDoGaloMainProcess();
+
+    case GUESS_GAME:
+        return guess_main_process();
+
+    case GAME3:
+    case GAME4:
+        LOG_INFO("Ainda não implementado");
+        return 0;    
+
+    default:
+        LOG_ERROR("Opção de jogo desconhecida.");
+        return 1;
+    }
+}

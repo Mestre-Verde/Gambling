@@ -6,6 +6,8 @@
 
 #include "jogador.h"
 
+#include "Engine.h"
+
 GamesMenuOptions getGamesMenuOption(void)
 {
     const char menuText[] =
@@ -40,30 +42,19 @@ GamesMenuOptions getGamesMenuOption(void)
 
 int gamesMenu(void)
 {
-    while (1)
+     GamesMenuOptions option = getGamesMenuOption();
+    if (option == GAMES_MENU_UNKNOWN)
     {
-        GamesMenuOptions option = getGamesMenuOption();
-        // LOG_DEBUG("Valor de Enum recebido: %i", option);
-
-        switch (option)
-        {
-        case GAMES_MENU_UNKNOWN:
-            puts("Opção inválida.");
-            break;
-
-        case JOGO_DO_GALO:
-        case GUESS_GAME:
-        case GAME3:
-        case GAME4:
-            LOG_INFO("Ainda não implementado");
-            break;
-            
-        case GAMES_MENU_EXIT:
-            return 0;
-
-        default:
-            LOG_WARN("\7Opção fora do escopo,reveja o enum.Valor:%i", option);
-            return 1;
-        }
+        puts("Opção inválida. Tente novamente.");
+        return 1;
+    }
+    else if (option == GAMES_MENU_EXIT)
+    {
+        return 0; // Voltar ao menu principal
+    }
+    if (engineStartGame(option))
+    {
+        ERROR_LOG("Ocorreu um erro ao iniciar o jogo.");
+        return 1;
     }
 }
