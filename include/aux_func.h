@@ -20,39 +20,14 @@
     printf("[ERROR] [%s:%d | %s()] " msg "\n", \
            __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 */
-#define LOG_INFO(msg, ...)                                      \
-    printf(COLOR_BRIGHT_CYAN                                    \
-           "╭─[INFO]────────────────────────────────────────\n" \
-           "╰─➤ " COLOR_CYAN msg COLOR_RESET "\n",              \
-           ##__VA_ARGS__)
+#define LOG_INFO(msg, ...) printf(COLOR_BRIGHT_CYAN "╭─[INFO]─────────────────────────────────────\n" \
+                                                    "╰─➤ " COLOR_CYAN msg COLOR_RESET "\n",           \
+                                  ##__VA_ARGS__)
 
-#define LOG_DEBUG(msg, ...)                                                     \
-    printf(COLOR_BRIGHT_BLUE                                                    \
-           "[DEBUG] " COLOR_WHITE "[%s():%d] " COLOR_BLUE msg COLOR_RESET "\n", \
-           __func__, __LINE__, ##__VA_ARGS__)
+#define LOG_DEBUG(msg, ...) printf(COLOR_BRIGHT_BLUE "├─[DEBUG][%s():%d] " COLOR_BLUE msg COLOR_RESET "\n", __func__, __LINE__, ##__VA_ARGS__)
+#define LOG_WARN(msg, ...) printf(COLOR_BRIGHT_YELLOW "├─[WARN][%s | %s()] " COLOR_YELLOW msg COLOR_RESET "\n", __FILE__, __func__, ##__VA_ARGS__)
+#define LOG_ERROR(msg, ...) printf(BG_RED COLOR_WHITE "⛔ ERROR ⛔ " COLOR_RESET COLOR_RED "[%s:%d | %s()] " msg COLOR_RESET "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
-#define LOG_WARN(msg, ...)                                                         \
-    printf(COLOR_BRIGHT_YELLOW                                                     \
-           "[WARN] " COLOR_WHITE "[%s | %s()] " COLOR_YELLOW msg COLOR_RESET "\n", \
-           __FILE__, __func__, ##__VA_ARGS__)
-
-#define LOG_ERROR(msg, ...)                         \
-    printf(BG_RED COLOR_WHITE                       \
-           "⛔ ERROR ⛔ " COLOR_RESET COLOR_RED     \
-           " [%s:%d | %s()] " msg COLOR_RESET "\n", \
-           __FILE__, __LINE__, __func__, ##__VA_ARGS__)
-
-#define LOG_SUCCESS(msg, ...)                             \
-    printf(COLOR_BRIGHT_GREEN                             \
-           "[SUCCESS] " COLOR_GREEN msg COLOR_RESET "\n", \
-           ##__VA_ARGS__)
-
-#define LOG_FATAL(msg, ...)                                            \
-    printf(BG_RED TEXT_BOLD COLOR_WHITE                                \
-           "\n[FATAL ERROR]\n"                                         \
-           "========================================\n" msg            \
-           "\n========================================\n" COLOR_RESET, \
-           ##__VA_ARGS__)
 // string RELATED--------------
 
 /**
