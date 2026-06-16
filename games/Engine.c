@@ -1,13 +1,6 @@
-/**
- * Aqui é o unico lugar onde o jogador vai ser usado, em outros ficheiros de jogos não
- * pode ter nenhuma chamada do jogador.
- *  Com isso, este vai ser o launcher. um jogador é passado com ponteiro para os jogos.
- */
-
 #include <stdio.h>
 
 #include "aux_func.h"
-#include "jogador.h"
 #include "guess_game.h"
 #include "jogo_do_galo.h"
 #include "Engine.h"

@@ -5,6 +5,7 @@
 
 #include "guess_game.h"
 #include "jogador.h"
+#include "jogador.h"
 #include "aux_func.h"
 #include "colors.h"
 
@@ -140,31 +141,63 @@ int guess_main_process(Difficulty difficulty)
         printf("Try to guess the number between 1 and %d.\n", maxNumber);
     }
 
+
+    if (hardMode)
+    {
+        printf("Try to guess the decimal number between 1.00 and %d.00.\n", maxNumber);
+    }
+    else
+    {
+        printf("Try to guess the number between 1 and %d.\n", maxNumber);
+    }
+
     puts("Type 'S' to exit.");
 
-    // Controla se o jogador ja acertou no numero.
     bool guessed = false;
     int attemptsUsed = 0;
+    int attemptsUsed = 0;
 
-    // Repete enquanto o jogador nao acertar nem sair.
     while (!guessed)
     {
-        // Buffer usado para ler a linha completa escrita pelo jogador.
         char buffer[100];
         int guess;
 
         printf("Enter your guess: ");
 
-        // Le a entrada do utilizador de forma segura.
         if (!fgets(buffer, sizeof(buffer), stdin))
+        {
         {
             continue;
         }
+        }
 
-        // Permite sair do jogo escrevendo 'S' ou 's'.
         if (buffer[0] == 'S' || buffer[0] == 's')
         {
+        {
             return 0;
+        }
+
+        if (hardMode)
+        {
+            if (parseHardGuess(buffer, &guess))
+            {
+                puts("Invalid decimal number. Example: 37.42");
+                continue;
+            }
+
+            if (!isBetween(guess, 100, maxNumber * 100))
+            {
+                printf("Number must be between 1.00 and %d.00.\n", maxNumber);
+                continue;
+            }
+        }
+        else
+        {
+            if (sscanf(buffer, "%d", &guess) != 1)
+            {
+                puts("Invalid number.");
+                continue;
+            }
         }
 
         if (hardMode)
@@ -194,14 +227,23 @@ int guess_main_process(Difficulty difficulty)
                 printf("Number must be between 1 and %d.\n", maxNumber);
                 continue;
             }
+            if (!isBetween(guess, 1, maxNumber))
+            {
+                printf("Number must be between 1 and %d.\n", maxNumber);
+                continue;
+            }
         }
 
+        attemptsUsed++;
+
+        if (guess < secretNumber)
         attemptsUsed++;
 
         if (guess < secretNumber)
         {
             puts(COLOR_BLUE "Too low! Try again." COLOR_RESET);
         }
+        else if (guess > secretNumber)
         else if (guess > secretNumber)
         {
             puts(COLOR_RED "Too high! Try again." COLOR_RESET);
@@ -212,7 +254,16 @@ int guess_main_process(Difficulty difficulty)
 
             currentPlayer.pontos_guess += earnedPoints;
 
+            unsigned long int earnedPoints = calculateGuessPoints(difficulty, attemptsUsed);
+
+            currentPlayer.pontos_guess += earnedPoints;
+
             puts(COLOR_YELLOW "Congratulations! You've guessed the number!" COLOR_RESET);
+
+            printf("Tentativas usadas: %d\n", attemptsUsed);
+            printf("Pontos ganhos: %lu\n", earnedPoints);
+            printf("Total de pontos Guess Game: %lu\n", currentPlayer.pontos_guess);
+
 
             printf("Tentativas usadas: %d\n", attemptsUsed);
             printf("Pontos ganhos: %lu\n", earnedPoints);
