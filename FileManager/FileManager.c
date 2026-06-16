@@ -38,24 +38,58 @@ int checkDataBase(FILE *file)
 
 int savePlayerInDataBase(Player player, char PATH[])
 {
-    // Abre ficheiro em modo append binário
-    FILE *f = fopen(PATH, "ab");
+    FILE *original = fopen(PATH, "rb");
+    FILE *temp = fopen(TEMP_FILE_PATH, "wb");
 
-    int estado = checkDataBase(f);
-
-    if (estado == 1)
+    if (temp == NULL)
     {
-        LOG_ERROR("Não foi possível abrir o ficheiro \"%s\"", PATH);
+        LOG_ERROR("Não foi possível criar ficheiro temporário");
         return 1;
     }
 
-    // Escreve o jogador no final do ficheiro
-    size_t escritos = fwrite(&player, sizeof(Player), 1, f);
+    bool found = false;
 
-    fclose(f);
+    // Se a base de dados existir
+    if (original != NULL)
+    {
+        Player current;
 
-    // Confirma escrita
-    return (escritos == 1) ? 0 : 1;
+        while (fread(&current, sizeof(Player), 1, original) == 1)
+        {
+            // Encontrou o mesmo ID -> substitui
+            if (current.id == player.id)
+            {
+                fwrite(&player, sizeof(Player), 1, temp);
+                found = true;
+            }
+            else
+            {
+                fwrite(&current, sizeof(Player), 1, temp);
+            }
+        }
+
+        fclose(original);
+    }
+
+    // Se não encontrou o jogador, adiciona no fim
+    if (!found)
+    {
+        fwrite(&player, sizeof(Player), 1, temp);
+    }
+
+    fclose(temp);
+
+    // Remove original
+    remove(PATH);
+
+    // Renomeia temporário
+    if (rename(TEMP_FILE_PATH, PATH))
+    {
+        LOG_ERROR("Não foi possível substituir a base de dados");
+        return 1;
+    }
+
+    return 0;
 }
 
 int listPlayersInDataBase(bool withIndex, char PATH[])
@@ -199,10 +233,10 @@ int removePlayerFromDB(const unsigned short int id, char PATH[])
     return 0;
 }
 
-int findPlayerInDB(const unsigned short int id, Player *player)
+int findAndGetPlayerInDB(const unsigned short int id, Player *player, char PATH[])
 {
     // abre base de dados
-    FILE *file = fopen(PLAYERDB_DIR, "rb");
+    FILE *file = fopen(PATH, "rb");
 
     // verifica estado do ficheiro
     int estado = checkDataBase(file);
@@ -213,19 +247,20 @@ int findPlayerInDB(const unsigned short int id, Player *player)
         return 1;
     }
 
-    // lê jogador a jogador
-    while (fread(player, sizeof(Player), 1, file) == 1)
+    Player playerTmp;
+
+    // lê jogador a jogador, usando o endereço passado como arg
+    while (fread(&playerTmp, sizeof(Player), 1, file) == 1)
     {
         // encontrou jogador
-        if (player->id == id)
+        if (playerTmp.id == id)
         {
-            fclose(file);
+            *player = playerTmp;
             return 0;
         }
     }
 
     fclose(file);
 
-    // não encontrado
     return -1;
 }

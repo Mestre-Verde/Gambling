@@ -1,6 +1,8 @@
 #if !defined(FILE_MANAGER)
 #define FILE_MANAGER
 
+#include "jogador.h"
+
 #define PLAYERDB_DIR "base_de_dados/playerdb.bin"
 #define TEMP_FILE_PATH "base_de_dados/playerdb.tmp"
 
@@ -13,10 +15,14 @@
 int checkDataBase(FILE *file);
 
 /**
- * @brief Guarda um Player na base de dados (ficheiro binário)
- * @param player Estrutura Player a ser guardada
- * @param PATH caminho do ficheiro a guardar.
- * @return 0 em sucesso, 1 em erro
+ * @brief Guarda ou atualiza um Player na base de dados.
+ * @details Se o ID do jogador já existir na base de dados, o registo existente é substituído.
+ * Caso contrário, o jogador é adicionado ao final do ficheiro.
+ *
+ * @param player Estrutura Player a guardar/atualizar.
+ * @param PATH Caminho da base de dados binária.
+ *
+ * @return 0 se sucesso,1 se ocorreu um erro.
  */
 int savePlayerInDataBase(Player player, char PATH[]);
 
@@ -35,7 +41,14 @@ int getNextPlayerId(unsigned short int *nextId, char PATH[]);
  */
 int listPlayersInDataBase(bool withIndex, char PATH[]);
 
-int findPlayerInDB(const unsigned short int id, Player *player);
+/**
+ * @brief Verifica a existencia de um id em uma base de dados.
+ * @param id id a procurar.
+ * @param player endereço para substituir caso encontre.
+ * @param PATH caminho do ficheiro.
+ * @return 0 se encontrou,1 se houve um problema,-1 se não encontrou.
+ */
+int findAndGetPlayerInDB(const unsigned short int id, Player *player, char PATH[]);
 
 /**
  * @brief Função para remover um jogador de uma base de dados

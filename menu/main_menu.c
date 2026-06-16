@@ -12,10 +12,11 @@ Player currentPlayer = {0}; // variavel global
 MainMenuOption getMainMenuChoice(void)
 {
     const char menuText[] =
-        "\n===== MENU PRINCIPAL =====\t|%s|\n\
-1 - Menu de jogos\n\
-2 - Defenições de jogador\n\
-0 - Sair\n";
+        "\n===== MENU PRINCIPAL =====\t|%s|\n"
+        "1 - Menu de jogos\n"
+        "2 - Defenições de jogador\n"
+        "0 - Sair\n";
+
     int choice = MENU_UNKNOWN;
 
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);

@@ -1,3 +1,7 @@
+/*
+Antes que perguntem, sim, eu não criei um função de edição de para não haver cheats e trapassa nos pontos e nome.
+cada id é unico e caso não se queira aquelejogador basta eliminar.
+*/
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -67,15 +71,13 @@ int choosePlayer(void)
     }
 
     // verifica se o jogador existe
-    Player player = {0};
-    int foundState = findPlayerInDB(id, &player);
+    int foundState = findAndGetPlayerInDB(id, &currentPlayer, PLAYERDB_DIR);
     if (foundState == -1)
     {
         LOG_INFO("Jogador não encontrado.");
     }
     else if (!foundState)
     {
-        currentPlayer = player;
         printString("\nJogador atual:\n");
         showPlayerInfo(currentPlayer, 0);
     }

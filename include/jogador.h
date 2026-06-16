@@ -16,7 +16,8 @@ extern Player currentPlayer;
 
 /**
  * @brief Cria um jogador para depois guardar na base de dados.
- * Não é suposto ser escolhido o jogador criado, para escolher o jogador é noutra função.
+ * @details Não é suposto ser escolhido o jogador criado, para escolher o jogador é noutra função.
+ * Protege contra subscrições pelo facto de escolher sempre um novo id para o novo jogador.
  * @return 0 se sucesso, 1 se houve um problema.
  */
 int buildPlayer(void);
@@ -30,13 +31,13 @@ void showPlayerInfo(Player player, bool withLine);
 
 /**
  * @brief Função para escolher o jogador atual.
- * @return
+ * @return 0 se sucesso, 1 se ocorreu um erro
  */
 int choosePlayer(void);
 
 /**
  * @brief Função para escolher um jogador para remover.
- * @return 0 se removeu com sucesso, 1 se ocorreu um erro
+ * @return 0 se sucesso, 1 se ocorreu um erro
  */
 int removePlayer(void);
 

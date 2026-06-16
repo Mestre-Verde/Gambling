@@ -3,6 +3,6 @@
 
 #include "Engine.h"
 
-int guess_main_process(Difficulty difficulty);
+int guess_main_process(Difficulty, unsigned long int *);
 
 #endif
