@@ -204,31 +204,6 @@ char chooseTheFirstPlayer()
         // ora vamos ter em mãos um unico char.
         return toUpper(buffer[0]);
     }
-    /*
-        puts("Quem começa: X ou O (ou S para sair)");
-
-        char input;
-
-        while (1)
-        {
-            input = getchar();
-
-            // ignora ENTER e lixo
-            if (input == '\n' || input == ' ' || input == '\t')
-                continue;
-
-            input = toUpper(input);
-
-            // limpa o resto da linha (evita bugs no fgets depois)
-            while (getchar() != '\n')
-                ;
-
-            if (input == 'X' || input == 'O' || input == 'S')
-                return input;
-
-            puts("Entrada inválida. Usa X, O ou S.");
-        }
-            */
 }
 
 int galoMainProcess(void)

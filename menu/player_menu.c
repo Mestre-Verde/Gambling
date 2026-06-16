@@ -9,11 +9,11 @@ PlayerMenuOption getPlayerMenuChoice(void)
 {
     // variaveis
     const char menuText[] =
-        "\n===== MENU JOGADOR =====\t|%s|\n\
-1 - Criar jogador\n\
-2 - Selecionar jogador\n\
-3 - Remover jogador\n\
-0 - Voltar\n";
+        "\n===== MENU JOGADOR =====\t|%s|\n"
+        "1 - Criar jogador\n"
+        "2 - Selecionar jogador\n"
+        "3 - Remover jogador\n"
+        "0 - Voltar\n";
     int choice = PLAYER_MENU_UNKNOWN;
 
     // imprimir textMenu e obter a resposta do user.

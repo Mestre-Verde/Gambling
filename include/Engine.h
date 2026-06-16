@@ -5,13 +5,15 @@
 
 typedef enum
 {
-    UNKNOWN = -1,
+    DIFFICULTY_UNKNOWN = -1,
+    DIFFICULTY_EXIT = 0,
     EASY = 1,
     MEDIUM = 2,
     HARD = 3
 } Difficulty;
 
-int engineStartGame(GamesMenuOptions game);
 Difficulty chooseDifficulty(void);
+
+int engineStartGame(GamesMenuOptions game);
 
 #endif
