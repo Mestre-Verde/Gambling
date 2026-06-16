@@ -103,7 +103,7 @@ int engineStartGame(GamesMenuOptions game)
         {
             break;
         }
-        int blackjackState = blackjack_main_process(blackjackDifficulty);
+        int blackjackState = blackjack_main_process(blackjackDifficulty, &points);
         if (blackjackState)
         {
             return 4;

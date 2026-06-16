@@ -30,9 +30,48 @@ static int getDealerStopValueByDifficulty(Difficulty difficulty)
         return 17;
     }
 }
-
-int blackjack_main_process(Difficulty difficulty)
+static unsigned long int calculateBlackjackPoints(Difficulty difficulty, int playerTotal, int dealerTotal)
 {
+    int basePoints;
+    int bonusPoints;
+
+    switch (difficulty)
+    {
+    case EASY:
+        basePoints = 100;
+        bonusPoints = 20;
+        break;
+
+    case MEDIUM:
+        basePoints = 150;
+        bonusPoints = 30;
+        break;
+
+    case HARD:
+        basePoints = 250;
+        bonusPoints = 50;
+        break;
+
+    default:
+        return 0;
+    }
+
+    if (playerTotal > dealerTotal && playerTotal <= 21)
+    {
+        return basePoints + bonusPoints;
+    }
+    else if (playerTotal == dealerTotal)
+    {
+        return basePoints; // empate, apenas pontos base
+    }
+    else
+    {
+        return 0; // perdeu, sem pontos
+    }
+}
+int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
+{
+    
     srand((unsigned int)time(NULL));
 
     int dealerStopValue = getDealerStopValueByDifficulty(difficulty);
@@ -74,5 +113,6 @@ int blackjack_main_process(Difficulty difficulty)
         }
     }
 
+    *points = calculateBlackjackPoints(difficulty, playerTotal, dealerTotal);
     return 0;
 }

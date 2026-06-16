@@ -3,6 +3,6 @@
 
 #include "Engine.h"
 
-int blackjack_main_process(Difficulty difficulty);
+int blackjack_main_process(Difficulty difficulty, unsigned long int *points);
 
 #endif
