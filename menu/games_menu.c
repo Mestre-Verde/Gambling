@@ -63,9 +63,10 @@ int gamesMenu(void)
         case GUESS_GAME:
         case GAME3:
         case GAME4:
-            if (engineStartGame(option))
+            int state = engineStartGame(option);
+            if (state)
             {
-                LOG_ERROR("Ocorreu um erro ao iniciar o jogo.");
+                LOG_ERROR("Erro ao iniciar o Engine. Código: %d", state);
                 return 1;
             }
             break;

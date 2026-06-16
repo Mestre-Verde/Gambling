@@ -53,7 +53,7 @@ int engineStartGame(GamesMenuOptions game)
         if (galoMainProcess())
         {
             LOG_ERROR("Ocorreu um erro no jogo do galo.");
-            return 1;
+            return 2;
         }
         break;
 
@@ -76,8 +76,12 @@ int engineStartGame(GamesMenuOptions game)
         {
             break;
         }
+        int state = guess_main_process(difficulty, &points);
+        if (state)
+        {
+            return 3;
+        }
 
-        guess_main_process(difficulty, &points);
         break;
 
     case GAME3:
@@ -88,7 +92,7 @@ int engineStartGame(GamesMenuOptions game)
     case GAMES_MENU_EXIT:
     case GAMES_MENU_UNKNOWN:
         LOG_WARN("EXIT ou UNKNOWN do menu anterior entrou no engine!!");
-        return 1;
+        return 5;
     }
     if (points)
     {
