@@ -1,6 +1,8 @@
-#ifndef BLACKJACK_H
-#define BLACKJACK_H
+#ifndef BLACKJACK_GAME_H
+#define BLACKJACK_GAME_H
 
-int blackjack_main_process(void);
+#include "Engine.h"
+
+int blackjack_main_process(Difficulty difficulty);
 
 #endif

@@ -19,6 +19,7 @@ MENU_SRC :=	\
 GAME_SRC := \
 	games/guess_game/guess_game.c \
 	games/jogo_do_galo/jogo_do_galo.c\
+	games/blackjack_game/blackjack_game.c \
     games/Engine.c 
 
 FILE_MANAGER := FileManager/FileManager.c

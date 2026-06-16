@@ -13,6 +13,7 @@
 
 #include "guess_game.h"
 #include "jogo_do_galo.h"
+#include "blackjack_game.h"
 
 Difficulty chooseDifficulty(void)
 {
@@ -84,7 +85,31 @@ int engineStartGame(GamesMenuOptions game)
 
         break;
 
-    case GAME3:
+    case BLACKJACK:
+        Difficulty blackjackDifficulty = DIFFICULTY_UNKNOWN;
+
+        do
+        {
+            blackjackDifficulty = chooseDifficulty();
+
+            if (blackjackDifficulty == DIFFICULTY_UNKNOWN)
+            {
+                puts("Entrada inválida.");
+            }
+
+        } while (blackjackDifficulty == DIFFICULTY_UNKNOWN);
+
+        if (blackjackDifficulty == DIFFICULTY_EXIT)
+        {
+            break;
+        }
+        int blackjackState = blackjack_main_process(blackjackDifficulty);
+        if (blackjackState)
+        {
+            return 4;
+        }
+
+        break;
     case GAME4:
         LOG_INFO("Ainda não implementado");
         break;

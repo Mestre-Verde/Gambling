@@ -13,7 +13,7 @@ GamesMenuOptions getGamesMenuOption(void)
         "\n===== MENU JOGOS =====\t|%s|\n"
         "1 - Jogo do Galo\n"
         "2 - Jogo de advinha\n"
-        "3 - Game3\n"
+        "3 - Blackjack\n"
         "4 - Game4\n"
         "0 - Voltar\n";
 
@@ -30,7 +30,7 @@ GamesMenuOptions getGamesMenuOption(void)
     case GAMES_MENU_EXIT:
     case JOGO_DO_GALO:
     case GUESS_GAME:
-    case GAME3:
+    case BLACKJACK:
     case GAME4:
         return (GamesMenuOptions)choice;
 
@@ -61,7 +61,7 @@ int gamesMenu(void)
 
         case JOGO_DO_GALO:
         case GUESS_GAME:
-        case GAME3:
+        case BLACKJACK:
         case GAME4:
             int state = engineStartGame(option);
             if (state)

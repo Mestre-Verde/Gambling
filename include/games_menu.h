@@ -7,7 +7,7 @@ typedef enum
     GAMES_MENU_EXIT = 0,
     JOGO_DO_GALO,
     GUESS_GAME,
-    GAME3,
+    BLACKJACK,
     GAME4,
 } GamesMenuOptions;
 
