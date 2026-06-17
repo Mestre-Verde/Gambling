@@ -181,7 +181,7 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
     if (varSize < 3)
     {
         LOG_WARN("The vazSize must be bigger than 2 in order to have '1 char + \\n + \\0'");
-        return 2;
+        return 1;
     }
 
     char buffer[varSize];
@@ -205,9 +205,11 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
         break;
     case 0: // se só tem \n
         return -1;
+    default:
+        // Substitui o '\n' por '\0' se não for único
+        buffer[index] = '\0';
+        break;
     }
-    // Substitui o '\n' por '\0' se não for unico
-    buffer[index] = '\0';
 
     if (useFilter) // comparar a string com os caracteres permitidos
     {

@@ -62,9 +62,11 @@ int engineStartGame(GamesMenuOptions game)
         break;
 
     case GUESS_GAME:
+        // variavel para armazenar a dificuldade.
         Difficulty difficulty = DIFFICULTY_UNKNOWN;
         do
         {
+            // obtem a dificuldade que o user escolher
             difficulty = chooseDifficulty();
 
             if (difficulty == DIFFICULTY_UNKNOWN)
@@ -79,7 +81,8 @@ int engineStartGame(GamesMenuOptions game)
             break;
         }
 
-        int state = guess_main_process(difficulty, &points);
+        // guarda em uma variavel o estado do processo do jogo
+        int state = guess_main_process(difficulty, currentPlayer.pontos_guess, &points);
         if (state)
         {
             return 2;
@@ -126,7 +129,13 @@ int engineStartGame(GamesMenuOptions game)
     }
     if (points)
     {
-        savePlayerInDataBase(currentPlayer, PLAYERDB_DIR);
+        LOG_DEBUG("Há pontos, a guardar no jogador.Nº de pontos:%lu", points);
+        currentPlayer.pontos_guess += points;
+
+        if (savePlayerInDataBase(currentPlayer, PLAYERDB_DIR))
+        {
+            LOG_ERROR("Não foi possivel salvar o joagdor na base de dados.");
+        }
     }
 
     return 0;
