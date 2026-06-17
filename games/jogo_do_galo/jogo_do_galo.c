@@ -262,18 +262,16 @@ int galoMainProcess(void)
         }
         // ok agora que ou o tabuleiro ficou cheio ou algum teve 3 de uma vez verifica-se
         // qual é que ganhou para incrementar
-        switch (winner)
+        if (winner == jogadorO)
         {
-        case jogadorO:
             jogadorOWinnes++;
-            break;
-
-        case jogadorX:
+        }
+        else if (winner == jogadorX)
+        {
             jogadorXWinnes++;
-            break;
-
-        default:
-            LOG_INFO("Empate entre os 2.");
+        }
+        else
+        {
             noWinnerCount++;
             printPlayCounts();
             continue;

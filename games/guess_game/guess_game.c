@@ -129,10 +129,36 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         // verifica se é para sair do jogo
         if (toLower(buffer[0]) == 's')
         {
-            *points = 0;
             // é considerado desistencia, pontos = 0
+            *points = 0;
+            return 0;
+        }
+        // var para guardar a entrada do user.
+        int guess;
+        if (hardMode)
+        {
+            if (parseHardGuess(buffer, &guess))
+            {
+                puts("Número decimal inválido. Formato: 00.00");
+                continue;
+            }
+
+            if (!isBetween(guess, 100, maxNumber * 100))
+            {
+                printf("O número deve estar entre 1.00 e %d.00.\n", maxNumber);
+                continue;
+            }
+        }
+        else
+        {
+            if (sscanf(buffer, "%d", &guess) != 1)
+            {
+                puts("Número inválido.");
+                continue;
+            }
         }
 
-        return 1;
+        break;
     }
+    return 1;
 }
