@@ -96,6 +96,7 @@ int parseHardGuess(const char buffer[], int *guessValue)
 
 int guess_main_process(Difficulty difficulty, unsigned long int *points)
 {
+    const int MIN_VALUE = 1;
     // gera uma seed "aleatória"
     srand((unsigned int)time(NULL));
 
@@ -158,7 +159,7 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
                 continue;
             }
 
-            if (!isBetween(guess, 1, maxNumber))
+            if (!isBetween(guess, MIN_VALUE, maxNumber))
             {
                 LOG_INFO("Number must be between 1 and %d.\n", maxNumber);
                 continue;
@@ -166,9 +167,6 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         }
 
         attemptsUsed++;
-
-        if (guess < secretNumber)
-            attemptsUsed++;
 
         if (guess < secretNumber)
         {

@@ -18,11 +18,11 @@
 Difficulty chooseDifficulty(void)
 {
     const char MenuText[] =
-        "Escolha a dificuldade desta partida:\n"
+        "\nEscolha a dificuldade desta partida:\n"
         "1 - Fácil\n"
         "2 - Média\n"
         "3 - Difícil\n"
-        "0 - Sair\n";
+        "0 - Sair";
 
     int choice = DIFFICULTY_UNKNOWN;
 
