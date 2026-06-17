@@ -83,6 +83,8 @@ int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
     printf("O teu valor inicial é: %d\n", playerTotal);
     printf("O valor do dealer é: %d\n", dealerTotal);
 
+    
+
     while (playerTotal < 21)
     {
         int choice;
