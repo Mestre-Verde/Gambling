@@ -211,20 +211,17 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
         }
         else
         {
-            unsigned long int earnedPoints = 0;
-            if (calculateGuessPoints(difficulty, attemptsUsed, &earnedPoints))
+            if (calculateGuessPoints(difficulty, attemptsUsed, points))
             {
                 return 1;
             }
-
-            *points = earnedPoints;
 
             createLine(50, '#');
             puts(COLOR_YELLOW "Parabéns! Advinhaste o número!" COLOR_RESET);
 
             printf("Nº de tentativas: %d\n", attemptsUsed);
-            printf("Pontos ganhos: %lu\n", earnedPoints);
-            printf("Pontos totais do jogador no Guess Game: %lu\n", currentPoints + earnedPoints);
+            printf("Pontos ganhos: %lu\n", *points);
+            printf("Pontos totais do jogador no Guess Game: %lu\n", currentPoints + *points);
             createLine(50, '#');
 
             guessed = true;
