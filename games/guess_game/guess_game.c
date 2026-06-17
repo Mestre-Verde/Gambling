@@ -112,11 +112,11 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
     puts("Welcome to the Guess Game!");
     if (hardMode)
     {
-        printf("Try to guess the decimal number between 1.00 and %d.00.\n", maxNumber);
+        printf("Tenta advinhar o numeor decimal entre 1.00 e %d.00.\n", maxNumber);
     }
     else
     {
-        printf("Try to guess the number between 1 and %d.\n", maxNumber);
+        printf("Tenta advinhar o numeor decimal entre 1 e %d.\n", maxNumber);
     }
     while (!guessed)
     {
