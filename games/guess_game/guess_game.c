@@ -45,7 +45,7 @@ unsigned long int calculateGuessPoints(Difficulty difficulty, int attemptsUsed)
     return (unsigned long int)totalPoints;
 }
 
-static int parseHardGuess(const char buffer[], int *guessValue)
+int parseHardGuess(const char buffer[], int *guessValue)
 {
     int i = 0;
     int integerPart = 0;
@@ -57,7 +57,7 @@ static int parseHardGuess(const char buffer[], int *guessValue)
         return 1;
     }
 
-    while (buffer[i] >= '0' && buffer[i] <= '9')
+    while (isDigit(buffer[i]))
     {
         integerPart = integerPart * 10 + (buffer[i] - '0');
         i++;
@@ -67,7 +67,7 @@ static int parseHardGuess(const char buffer[], int *guessValue)
     {
         i++;
 
-        while (buffer[i] >= '0' && buffer[i] <= '9')
+        while (isDigit(buffer[i]))
         {
             if (decimalDigits >= 2)
             {
@@ -139,13 +139,13 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         {
             if (parseHardGuess(buffer, &guess))
             {
-                puts("Número decimal inválido. Formato: 00.00");
+                LOG_INFO("Número decimal inválido. Formato: 00.00");
                 continue;
             }
 
             if (!isBetween(guess, 100, maxNumber * 100))
             {
-                printf("O número deve estar entre 1.00 e %d.00.\n", maxNumber);
+                LOG_INFO("O número deve estar entre 1.00 e %d.00.\n", maxNumber);
                 continue;
             }
         }
@@ -153,12 +153,46 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         {
             if (sscanf(buffer, "%d", &guess) != 1)
             {
-                puts("Número inválido.");
+                LOG_INFO("Numero inválido");
+                continue;
+            }
+
+            if (!isBetween(guess, 1, maxNumber))
+            {
+                LOG_INFO("Number must be between 1 and %d.\n", maxNumber);
                 continue;
             }
         }
 
-        break;
+        attemptsUsed++;
+
+        if (guess < secretNumber)
+            attemptsUsed++;
+
+        if (guess < secretNumber)
+        {
+            puts(COLOR_BLUE "Too low! Try again." COLOR_RESET);
+        }
+
+        else if (guess > secretNumber)
+        {
+            puts(COLOR_RED "Too high! Try again." COLOR_RESET);
+        }
+        else
+        {
+            unsigned long int earnedPoints = calculateGuessPoints(difficulty, attemptsUsed);
+
+            *points += earnedPoints;
+
+            puts(COLOR_YELLOW "Congratulations! You've guessed the number!" COLOR_RESET);
+
+            printf("Tentativas usadas: %d\n", attemptsUsed);
+            printf("Pontos ganhos: %lu\n", earnedPoints);
+            printf("Total de pontos Guess Game: %lu\n", *points);
+
+            guessed = true;
+        }
     }
-    return 1;
+
+    return 0;
 }

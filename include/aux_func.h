@@ -84,6 +84,8 @@ int toLower(int ch);
  */
 int isSpace(int ch);
 
+int isDigit(int);
+
 // MATH RELATED--------------
 
 /**
