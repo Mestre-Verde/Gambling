@@ -32,7 +32,12 @@ BUILD_PATH := build
 
 # deteção do sistema operativo
 ifeq ($(OS),Windows_NT)
-# make no windows é mingw32-make
+# make no windows é mingw32-make 
+
+# chcp 65001  
+# [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+# $OutputEncoding = [System.Text.Encoding]::UTF8
+
 	TARGET := $(BUILD_PATH)/$(EXEC).exe
 
 	MKDIR := if not exist $(BUILD_PATH) mkdir $(BUILD_PATH)
