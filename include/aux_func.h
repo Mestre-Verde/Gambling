@@ -25,7 +25,7 @@
                                   ##__VA_ARGS__)
 
 #define LOG_DEBUG(msg, ...) printf(COLOR_BRIGHT_BLUE "├─[DEBUG][%s():%d] " COLOR_BLUE msg COLOR_RESET "\n", __func__, __LINE__, ##__VA_ARGS__)
-#define LOG_WARN(msg, ...) printf(COLOR_BRIGHT_YELLOW "├─[WARN][%s | %s()] " COLOR_YELLOW msg COLOR_RESET "\n", __FILE__, __func__, ##__VA_ARGS__)
+#define LOG_WARN(msg, ...) printf(COLOR_BRIGHT_YELLOW "├─ ⚠  WARN │ %s:%s() │ " COLOR_YELLOW msg COLOR_RESET "\n", __FILE__, __func__, ##__VA_ARGS__)
 #define LOG_ERROR(msg, ...) printf(BG_RED COLOR_WHITE "⛔ ERROR ⛔ " COLOR_RESET COLOR_RED "[%s:%d | %s()] " msg COLOR_RESET "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
 // string RELATED--------------

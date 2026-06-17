@@ -22,7 +22,7 @@ Difficulty chooseDifficulty(void)
         "1 - Fácil\n"
         "2 - Média\n"
         "3 - Difícil\n"
-        "0 - Sair";
+        "0 - Sair\n";
 
     int choice = DIFFICULTY_UNKNOWN;
 
@@ -55,6 +55,10 @@ int engineStartGame(GamesMenuOptions game)
         {
             LOG_ERROR("Houve um problema com o jogo do galo!");
         }
+        else
+        {
+            LOG_INFO("Processo do jogo do galo terminado com sucesso.");
+        }
         break;
 
     case GUESS_GAME:
@@ -79,6 +83,10 @@ int engineStartGame(GamesMenuOptions game)
         if (state)
         {
             return 2;
+        }
+        else
+        {
+            LOG_INFO("Processo do jogo da adivinha terminado com sucesso.");
         }
         break;
 

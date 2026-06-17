@@ -109,7 +109,7 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
     bool guessed = false; // variavel que guarda o valor se o jogador advinhou
     int attemptsUsed = 0; // contador de tentativas
 
-    puts("Welcome to the Guess Game!");
+    puts("\nWelcome to the Guess Game!");
     if (hardMode)
     {
         printf("Tenta advinhar o numeor decimal entre 1.00 e %d.00.\n", maxNumber);
@@ -120,6 +120,7 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
     }
     while (!guessed)
     {
+        LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | hardMode: %d", secretNumber, maxNumber, attemptsUsed, hardMode);
         const int MAX_BUFFER_LEN = (10 + 1);
         char buffer[MAX_BUFFER_LEN];
         if (readStrUserInput("Insira o seu palpite", MAX_BUFFER_LEN, buffer, 1, "0123456789.sS") == 1)
