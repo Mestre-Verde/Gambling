@@ -204,7 +204,7 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
         clearStdinTrash();
         break;
     case 0: // se só tem \n
-        return 1;
+        return -1;
     }
     // Substitui o '\n' por '\0' se não for unico
     buffer[index] = '\0';

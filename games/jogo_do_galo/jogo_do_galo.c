@@ -104,7 +104,11 @@ char getCoordenadas(char playerTurn, short int tamanho, short int position[taman
 
         // obtem a imput do user
         char buffer[MAX_BUFFER_LEN];
-        readStrUserInput("Introduza a posição [linha,coluna] ou 'S' para sair", MAX_BUFFER_LEN, buffer, 1, "0123456789,sS");
+        int state = readStrUserInput("Introduza a posição [linha,coluna] ou 'S' para sair", MAX_BUFFER_LEN, buffer, 1, "0123456789,sS");
+        if (state == 1)
+        {
+            return 1;
+        }
 
         // verifica se é para sair
         if (toUpper(buffer[0]) == 'S')
@@ -226,7 +230,7 @@ int galoMainProcess(void)
         // proceso simples, o jogador obtido na parte acima vai ser o primeiro
         // então o primeiro jogador vai mandar as coordenadas
         // nisso vai-se alternando entre jogador até um ganhar.
-        short int coordenadas[2] = {-1};
+        short int coordenadas[2] = {-1, -1};
         char winner = '\0';
         while (!winner)
         {
@@ -234,36 +238,41 @@ int galoMainProcess(void)
             printMatrix2D(tabuleiro, 0);
 
             // manda obter as coordenadas
-            if (getCoordenadas(playerTurn, sizeof(coordenadas) / sizeof(coordenadas[0]), coordenadas, tabuleiro) == 'S')
+            char coordState = getCoordenadas(playerTurn, sizeof(coordenadas) / sizeof(coordenadas[0]), coordenadas, tabuleiro);
+            if (coordState == 'S')
             {
                 return 0;
             }
-
-            // verifica se o tabuleiro já está preeenchido:
-            if (isFull(tabuleiro))
+            else if (coordState == 1)
             {
-                winner = '\0';
-                break;
+                return 1;
             }
 
             // verifica se algum jogador fez 3 seguidos
             winner = checkWinner(tabuleiro);
 
+            // verifica se o tabuleiro já está preeenchido
+            if (isFull(tabuleiro))
+            {
+                break;
+            }
+
             // troca de jogador no final de 1 jogada.
             playerTurn = (playerTurn == jogadorX) ? jogadorO : jogadorX;
         }
         // ok agora que ou o tabuleiro ficou cheio ou algum teve 3 de uma vez verifica-se
-        // qual é que ganheou para incrementar
-        if (winner == jogadorO)
+        // qual é que ganhou para incrementar
+        switch (winner)
         {
+        case jogadorO:
             jogadorOWinnes++;
-        }
-        else if (winner == jogadorX)
-        {
+            break;
+
+        case jogadorX:
             jogadorXWinnes++;
-        }
-        else
-        {
+            break;
+
+        default:
             LOG_INFO("Empate entre os 2.");
             noWinnerCount++;
             printPlayCounts();
@@ -275,6 +284,4 @@ int galoMainProcess(void)
         createLine(33, '!');
         printPlayCounts();
     }
-
-    return 0;
 }

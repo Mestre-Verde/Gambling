@@ -53,15 +53,12 @@ int engineStartGame(GamesMenuOptions game)
     case JOGO_DO_GALO:
         if (galoMainProcess())
         {
-            LOG_ERROR("Ocorreu um erro no jogo do galo.");
-            return 2;
+            LOG_ERROR("Houve um problema com o jogo do galo!");
         }
         break;
 
     case GUESS_GAME:
-
         Difficulty difficulty = DIFFICULTY_UNKNOWN;
-
         do
         {
             difficulty = chooseDifficulty();
@@ -77,12 +74,12 @@ int engineStartGame(GamesMenuOptions game)
         {
             break;
         }
+
         int state = guess_main_process(difficulty, &points);
         if (state)
         {
-            return 3;
+            return 2;
         }
-
         break;
 
     case BLACKJACK:
@@ -106,7 +103,7 @@ int engineStartGame(GamesMenuOptions game)
         int blackjackState = blackjack_main_process(blackjackDifficulty, &points);
         if (blackjackState)
         {
-            return 4;
+            return 3;
         }
 
         break;

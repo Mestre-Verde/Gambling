@@ -57,7 +57,7 @@ int playerMenu(void)
             }
             else
             {
-                LOG_INFO("Jogador criado com sucesso!");
+                LOG_INFO("Processo de seleção terminado com sucesso!");
             }
             break;
 
