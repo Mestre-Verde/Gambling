@@ -128,6 +128,7 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         {
             return 1;
         }
+        LOG_DEBUG("A verificar se entrada é 's'.");
         // verifica se é para sair do jogo
         if (toLower(buffer[0]) == 's')
         {
@@ -153,6 +154,7 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         }
         else
         {
+            LOG_DEBUG("A verificar o formato inteiro.");
             if (sscanf(buffer, "%d", &guess) != 1)
             {
                 LOG_INFO("Numero inválido");

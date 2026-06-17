@@ -226,7 +226,7 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
             }
             if (!isValid)
             {
-                return 1;
+                return 2;
             }
         }
         stringCopy(buffer, var);

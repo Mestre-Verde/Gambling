@@ -57,7 +57,7 @@ int readDigitUserInput(const char prompt[], int *var);
  * @param var ponteiro a apontar para a variavel que vai armazenar o valor
  * @param useFilter 1 se vai ter caracteres aceitaveis, 0 se não vai ter
  * @param allowedChars string com os caracteres aceitaveis
- * @return 0 if all fine, 1 if something whent wrong, -1 if foud only a enter.
+ * @return 0 if all fine, 1 if something whent wrong, -1 if foud only a enter, 2 se não tinha caracteres permitidos.
  */
 int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize], bool useFilter, const char allowedChars[]);
 
