@@ -13,7 +13,7 @@ GamesMenuOptions getGamesMenuOption(void)
         "\n\n===== MENU JOGOS =====\t|%s|\n"
         "1 - Jogo do Galo\n"
         "2 - Jogo de advinha\t[%lu]\n"
-        "3 - Blackjack\n"
+        "3 - Blackjack\t\t\t[]\n"
         "4 - Game4\n"
         "0 - Voltar\n";
 
