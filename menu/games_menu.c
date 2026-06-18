@@ -14,7 +14,7 @@ GamesMenuOptions getGamesMenuOption(void)
         "1 - Jogo do Galo\n"
         "2 - Jogo de advinha\n"
         "3 - Blackjack\n"
-        "4 - Game4\n"
+        "4 - Memory game\n"
         "0 - Voltar\n";
 
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
@@ -31,7 +31,7 @@ GamesMenuOptions getGamesMenuOption(void)
     case JOGO_DO_GALO:
     case GUESS_GAME:
     case BLACKJACK:
-    case GAME4:
+    case MEMORY_GAME:
         return (GamesMenuOptions)choice;
 
     default:
@@ -62,7 +62,7 @@ int gamesMenu(void)
         case JOGO_DO_GALO:
         case GUESS_GAME:
         case BLACKJACK:
-        case GAME4:
+        case MEMORY_GAME:
             int state = engineStartGame(option);
             if (state)
             {

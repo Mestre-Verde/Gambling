@@ -9,6 +9,7 @@ typedef struct
     char nome[MAX_NAME_LENGTH];
     unsigned long int pontos_guess;
     unsigned long int blackjackPoints;
+    unsigned long int memoryPoints;
 
 } Player;
 
