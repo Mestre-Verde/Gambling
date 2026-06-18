@@ -1,8 +1,9 @@
 /**
  * Aqui é o unico lugar onde o jogador vai ser usado, em outros ficheiros de jogos não
  * pode ter nenhuma chamada do jogador.
- *  Com isso, este vai ser o launcher. Os parametros do jogador a mexer devem ser passados como parametros.
+ * Com isso, este vai ser o launcher. Os parametros do jogador a mexer devem ser passados como parametros.
  */
+
 #include <stdio.h>
 
 #include "aux_func.h"
@@ -14,6 +15,7 @@
 #include "guess_game.h"
 #include "jogo_do_galo.h"
 #include "blackjack_game.h"
+#include "memory_game.h"
 
 Difficulty chooseDifficulty(void)
 {
@@ -27,7 +29,8 @@ Difficulty chooseDifficulty(void)
     int choice = DIFFICULTY_UNKNOWN;
 
     puts(MenuText);
-    if (readDigitUserInput("Insira a sua escolha:", &choice))
+
+    if (readDigitUserInput("Insira a sua escolha: ", &choice))
     {
         return DIFFICULTY_UNKNOWN;
     }
@@ -55,10 +58,8 @@ int engineStartGame(GamesMenuOptions game)
         {
             LOG_ERROR("Houve um problema com o jogo do galo!");
         }
-        else
-        {
-            LOG_INFO("Processo do jogo do galo terminado com sucesso.");
-        }
+
+        LOG_INFO("Processo do jogo do galo terminado com sucesso.");
         break;
 
     case GUESS_GAME:
@@ -83,6 +84,7 @@ int engineStartGame(GamesMenuOptions game)
 
         // guarda em uma variavel o estado do processo do jogo
         int state = guess_main_process(difficulty, currentPlayer.pontos_guess, &points);
+
         if (state)
         {
             return 2;
@@ -111,21 +113,54 @@ int engineStartGame(GamesMenuOptions game)
         {
             break;
         }
+
         int blackjackState = blackjack_main_process(blackjackDifficulty, &points);
+
         if (blackjackState)
         {
             return 3;
         }
 
+        LOG_INFO("Processo do Blackjack terminado com sucesso.");
         break;
-    case GAME4:
-        LOG_INFO("Ainda não implementado");
+
+    case MEMORY_GAME:
+        Difficulty memoryDifficulty = DIFFICULTY_UNKNOWN;
+
+        do
+        {
+            memoryDifficulty = chooseDifficulty();
+
+            if (memoryDifficulty == DIFFICULTY_UNKNOWN)
+            {
+                puts("Entrada inválida.");
+            }
+
+        } while (memoryDifficulty == DIFFICULTY_UNKNOWN);
+
+        if (memoryDifficulty == DIFFICULTY_EXIT)
+        {
+            break;
+        }
+
+        int memoryState = memory_game_main_process(memoryDifficulty, &points);
+
+        if (memoryState)
+        {
+            return 4;
+        }
+
+        LOG_INFO("Processo do Memory Game terminado com sucesso.");
         break;
 
     case GAMES_MENU_EXIT:
     case GAMES_MENU_UNKNOWN:
         LOG_WARN("EXIT ou UNKNOWN do menu anterior entrou no engine!!");
         return 5;
+
+    default:
+        LOG_WARN("Jogo desconhecido entrou no engine.Valor:%i", game);
+        return 6;
     }
     if (points)
     {
@@ -134,7 +169,7 @@ int engineStartGame(GamesMenuOptions game)
 
         if (savePlayerInDataBase(currentPlayer, PLAYERDB_DIR))
         {
-            LOG_ERROR("Não foi possivel salvar o joagdor na base de dados.");
+            LOG_ERROR("Não foi possivel salvar o jogador na base de dados.");
         }
     }
 
