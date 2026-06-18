@@ -12,12 +12,12 @@ GamesMenuOptions getGamesMenuOption(void)
     const char menuText[] =
         "\n\n===== MENU JOGOS =====\t|%s|\n"
         "1 - Jogo do Galo\n"
-        "2 - Jogo de advinha\n"
+        "2 - Jogo de advinha\t[%lu]\n"
         "3 - Blackjack\n"
         "4 - Memory game\n"
         "0 - Voltar\n";
 
-    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess);
 
     int choice = GAMES_MENU_UNKNOWN;
     if (readDigitUserInput("Escolha: ", &choice))

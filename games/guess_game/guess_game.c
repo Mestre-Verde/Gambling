@@ -9,10 +9,17 @@
 #include "aux_func.h"
 #include "colors.h"
 
-unsigned long int calculateGuessPoints(Difficulty difficulty, int attemptsUsed)
+/**
+ * @brief função para calcular os pontos com base em tentativas
+ * @param difficulty dificuldade do jogo
+ * @param attemptsUsed nº de tentativas.
+ * @param finalPoints ponteiro para a variavel que armazena os pontos locais.
+ * @return 0 se sucesso, 1 se ocorreu um problema.
+ */
+int calculateGuessPoints(Difficulty difficulty, int attemptsUsed, unsigned long int *finalPoints)
 {
-    int basePoints;
-    int penalPerAttempt;
+    int basePoints;      // pontos base
+    int penalPerAttempt; // penalização por tentativa
 
     switch (difficulty)
     {
@@ -32,19 +39,28 @@ unsigned long int calculateGuessPoints(Difficulty difficulty, int attemptsUsed)
         break;
 
     default:
-        return 0;
+        LOG_WARN("Recebida uma dificuldade não listada. Valor:%i", difficulty);
+        return 1;
     }
 
+    // pontos finais = pontos base menos nº de tentativas, ignorando a que acertou no numero vezes a penalização por tentativa.
     int totalPoints = basePoints - ((attemptsUsed - 1) * penalPerAttempt);
-
+    LOG_DEBUG("Pontos totais: %i - (%i - 1) x %i = %i", basePoints, attemptsUsed, penalPerAttempt, totalPoints);
     if (totalPoints < 0)
     {
         totalPoints = 0;
     }
 
-    return (unsigned long int)totalPoints;
+    *finalPoints = (unsigned long int)totalPoints;
+    return 0;
 }
 
+/**
+ * @brief Converte uma string em um numero decimal para a dificuldade dificil.
+ * @param buffer string a converter.
+ * @param guessValue ponteiro para a variavel a substituir.
+ * @return 0 se sucesso, 1 se o formato não é o correto.
+ */
 int parseHardGuess(const char buffer[], int *guessValue)
 {
     int i = 0;
@@ -52,7 +68,7 @@ int parseHardGuess(const char buffer[], int *guessValue)
     int decimalPart = 0;
     int decimalDigits = 0;
 
-    if (buffer[i] < '0' || buffer[i] > '9')
+    if (!isDigit(buffer[i]))
     {
         return 1;
     }
@@ -85,60 +101,58 @@ int parseHardGuess(const char buffer[], int *guessValue)
         }
     }
 
-    if (buffer[i] != '\n' && buffer[i] != '\0')
-    {
-        return 1;
-    }
-
     *guessValue = integerPart * 100 + decimalPart;
     return 0;
 }
 
-int guess_main_process(Difficulty difficulty, unsigned long int *points)
+int guess_main_process(const Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points)
 {
-    const int MIN_VALUE = 1;
     // gera uma seed "aleatória"
     srand((unsigned int)time(NULL));
 
     // define o numero máximo que pode gerar
-    const bool hardMode = difficulty == HARD;
-    int maxNumber = hardMode ? 200 : (int)difficulty * 50;
+    const bool isHard = difficulty == HARD;
+    int maxNumber = isHard ? 200 : (int)difficulty * 50;
+
+    const int MIN_VALUE = 1; // valor minimo
 
     // Variavel com o valor a adivinhar
-    int secretNumber = hardMode ? rand() % ((maxNumber - 1) * 100 + 1) + 100 : rand() % maxNumber + 1;
+    int secretNumber = isHard ? rand() % ((maxNumber - 1) * 100 + MIN_VALUE) + 100 : rand() % maxNumber + 1;
 
     bool guessed = false; // variavel que guarda o valor se o jogador advinhou
     int attemptsUsed = 0; // contador de tentativas
 
+    // imprime as introduções ao jogo
     puts("\nWelcome to the Guess Game!");
-    if (hardMode)
+    if (isHard)
     {
-        printf("Tenta advinhar o numeor decimal entre 1.00 e %d.00.\n", maxNumber);
+        printf("Tenta advinhar o número decimal entre %i.00 e %d.00.\n", MIN_VALUE, maxNumber);
     }
     else
     {
-        printf("Tenta advinhar o numeor decimal entre 1 e %d.\n", maxNumber);
+        printf("Tenta advinhar o número inteiro entre %i e %d.\n", MIN_VALUE, maxNumber);
     }
     while (!guessed)
     {
-        LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | hardMode: %d", secretNumber, maxNumber, attemptsUsed, hardMode);
-        const int MAX_BUFFER_LEN = (10 + 1);
-        char buffer[MAX_BUFFER_LEN];
-        if (readStrUserInput("Insira o seu palpite", MAX_BUFFER_LEN, buffer, 1, "0123456789.sS") == 1)
-        {
-            return 1;
-        }
-        // verifica se é para sair do jogo
-        if (toLower(buffer[0]) == 's')
-        {
-            // é considerado desistencia, pontos = 0
-            *points = 0;
-            return 0;
-        }
+        LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | isHard: %d", secretNumber, maxNumber, attemptsUsed, isHard);
+
         // var para guardar a entrada do user.
-        int guess;
-        if (hardMode)
+        int guess = 0;
+
+        if (isHard)
         {
+            const int MAX_BUFFER_LEN = (10 + 1);
+            char buffer[MAX_BUFFER_LEN];
+            if (readStrUserInput("Insira o seu palpite(insira S para saír)", MAX_BUFFER_LEN, buffer, 0, "") == 1)
+            {
+                return 1;
+            }
+            //  verifica se é para sair do jogo
+            if (toLower(buffer[0]) == 's')
+            {
+                // é considerado desistencia, pontos = 0
+                return 0;
+            }
             if (parseHardGuess(buffer, &guess))
             {
                 LOG_INFO("Número decimal inválido. Formato: 00.00");
@@ -153,16 +167,34 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
         }
         else
         {
-            if (sscanf(buffer, "%d", &guess) != 1)
+            // guarda a entrada do user.
+            int inputStatus = readDigitUserInput("Insira o seu palpite(-1 para sair):", &guess);
+            switch (inputStatus)
             {
-                LOG_INFO("Numero inválido");
+            case -1:
+                puts("Entrada inválida.");
                 continue;
-            }
 
-            if (!isBetween(guess, MIN_VALUE, maxNumber))
-            {
-                LOG_INFO("Number must be between 1 and %d.\n", maxNumber);
-                continue;
+            case 0:
+                if (guess == -1) // verifica se é para sair.
+                {
+                    // é considerado desistencia, pontos = 0
+                    return 0;
+                }
+                // verifica se a entrada está dentro do intervalo aceitável.
+                if (!isBetween(guess, MIN_VALUE, maxNumber))
+                {
+                    LOG_INFO("O número deve estar entre 1 e %d.\n", maxNumber);
+                    continue;
+                }
+                break;
+
+            case 1:
+                return 1;
+
+            default:
+                LOG_WARN("Valor desconhecido de readDigitInput. Valor:%i", inputStatus);
+                return 1;
             }
         }
 
@@ -170,28 +202,30 @@ int guess_main_process(Difficulty difficulty, unsigned long int *points)
 
         if (guess < secretNumber)
         {
-            puts(COLOR_BLUE "Too low! Try again." COLOR_RESET);
+            puts(COLOR_BLUE "Muito baixo! Tenta outra vez." COLOR_RESET);
         }
 
         else if (guess > secretNumber)
         {
-            puts(COLOR_RED "Too high! Try again." COLOR_RESET);
+            puts(COLOR_RED "Muito alto! Tenta outra vez." COLOR_RESET);
         }
         else
         {
-            unsigned long int earnedPoints = calculateGuessPoints(difficulty, attemptsUsed);
+            if (calculateGuessPoints(difficulty, attemptsUsed, points))
+            {
+                return 1;
+            }
 
-            *points += earnedPoints;
+            createLine(50, '#');
+            puts(COLOR_YELLOW "Parabéns! Advinhaste o número!" COLOR_RESET);
 
-            puts(COLOR_YELLOW "Congratulations! You've guessed the number!" COLOR_RESET);
-
-            printf("Tentativas usadas: %d\n", attemptsUsed);
-            printf("Pontos ganhos: %lu\n", earnedPoints);
-            printf("Total de pontos Guess Game: %lu\n", *points);
+            printf("Nº de tentativas: %d\n", attemptsUsed);
+            printf("Pontos ganhos: %lu\n", *points);
+            printf("Pontos totais do jogador no Guess Game: %lu\n", currentPoints + *points);
+            createLine(50, '#');
 
             guessed = true;
         }
     }
-
     return 0;
 }

@@ -5,21 +5,7 @@
 #include "colors.h"
 
 // MACROS--------------
-/*
-#define LOG_INFO(msg, ...) printf("[INFO] " msg "\n", ##__VA_ARGS__)
 
-#define LOG_DEBUG(msg, ...)               \
-    printf("[DEBUG] [%s():%d] " msg "\n", \
-           __func__, __LINE__, ##__VA_ARGS__)
-
-#define LOG_WARN(msg, ...)               \
-    printf("[WARN] [%s | %s] " msg "\n", \
-           __FILE__, __func__, ##__VA_ARGS__)
-
-#define LOG_ERROR(msg, ...)                    \
-    printf("[ERROR] [%s:%d | %s()] " msg "\n", \
-           __FILE__, __LINE__, __func__, ##__VA_ARGS__)
-*/
 #define LOG_INFO(msg, ...) printf(COLOR_BRIGHT_CYAN "╭─[INFO]─────────────────────────────────────\n" \
                                                     "╰─➤ " COLOR_CYAN msg COLOR_RESET "\n",           \
                                   ##__VA_ARGS__)
@@ -46,7 +32,7 @@ void clearStdinTrash(void);
  * @brief Generic function to ask integers to the user(negatives are included).
  * @param prompt Text to show before the user input
  * @param var pointer to the var that will save the input
- * @return 0 if all fine, 1 if something whent wrong
+ * @return 0 if all fine, 1 if something whent wrong, -1 se entrada inválida.
  */
 int readDigitUserInput(const char prompt[], int *var);
 
@@ -57,7 +43,7 @@ int readDigitUserInput(const char prompt[], int *var);
  * @param var ponteiro a apontar para a variavel que vai armazenar o valor
  * @param useFilter 1 se vai ter caracteres aceitaveis, 0 se não vai ter
  * @param allowedChars string com os caracteres aceitaveis
- * @return 0 if all fine, 1 if something whent wrong, -1 if foud only a enter.
+ * @return 0 if all fine, 1 if something whent wrong, -1 if foud only a enter, 2 se não tinha caracteres permitidos.
  */
 int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize], bool useFilter, const char allowedChars[]);
 

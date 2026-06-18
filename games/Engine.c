@@ -86,7 +86,7 @@ int engineStartGame(GamesMenuOptions game)
             break;
         }
 
-        int state = guess_main_process(difficulty, &points);
+        int state = guess_main_process(difficulty, currentPlayer.pontos_guess, &points);
 
         if (state)
         {
@@ -186,7 +186,12 @@ int engineStartGame(GamesMenuOptions game)
 
     if (points > 0)
     {
-        savePlayerInDataBase(currentPlayer, PLAYERDB_DIR);
+        LOG_DEBUG("Há pontos, a guardar no jogador. Nº de pontos: %lu", points);
+
+        if (savePlayerInDataBase(currentPlayer, PLAYERDB_DIR))
+        {
+            LOG_ERROR("Não foi possivel salvar o jogador na base de dados.");
+        }
     }
 
     return 0;

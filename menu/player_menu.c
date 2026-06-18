@@ -18,7 +18,7 @@ PlayerMenuOption getPlayerMenuChoice(void)
 
     // imprimir textMenu e obter a resposta do user.
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
-    if (readDigitUserInput("Escolha :", &choice))
+    if (readDigitUserInput("Escolha:", &choice))
     {
         return PLAYER_MENU_UNKNOWN;
     }
