@@ -13,11 +13,11 @@ GamesMenuOptions getGamesMenuOption(void)
         "\n\n===== MENU JOGOS =====\t|%s|\n"
         "1 - Jogo do Galo\n"
         "2 - Jogo de advinha\t[%lu]\n"
-        "3 - Blackjack\t\t\t[]\n"
-        "4 - Memory game\n"
+        "3 - Blackjack\t\t[%lu]\n"
+        "4 - Memory game\t\t[%lu]\n"
         "0 - Voltar\n";
 
-    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.blackjackPoints, currentPlayer.memoryPoints);
 
     int choice = GAMES_MENU_UNKNOWN;
     if (readDigitUserInput("Escolha: ", &choice))

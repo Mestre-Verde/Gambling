@@ -8,106 +8,120 @@
 #include "aux_func.h"
 #include "Engine.h"
 
-static int drawCard(void)
+/**
+ * @brief Gera uma carta aleatória.
+ *
+ * Gera e devolve o valor de uma carta compreendido entre
+ * MIN_CARD e MAX_CARD (inclusive).
+ *
+ * @return Valor da carta gerada aleatoriamente.
+ */
+int drawCard(void)
 {
-    return rand() % 11 + 1;
+    return rand() % (MAX_CARD - MIN_CARD + 1) + MIN_CARD;
 }
 
-static int getDealerStopValueByDifficulty(Difficulty difficulty)
+/**
+ * @brief Obtém o valor mínimo a partir do qual o dealer deixa de pedir cartas.
+ * @param difficulty Dificuldade atual do jogo.
+ * @return Valor mínimo para o dealer parar de comprar cartas.
+ */
+int getDealerStopValueByDifficulty(Difficulty difficulty)
 {
     switch (difficulty)
     {
     case EASY:
-        return 15;
+        return DEALER_STOP_EASY;
 
     case MEDIUM:
-        return 17;
+        return DEALER_STOP_MEDIUM;
 
     case HARD:
-        return 18;
+        return DEALER_STOP_HARD;
 
     default:
-        return 17;
+        return 1;
     }
 }
 
-static unsigned long int calculateBlackjackPoints(Difficulty difficulty, int playerTotal, int dealerTotal)
+/**
+ * @brief Calcula os pontos obtidos no Blackjack.
+ * @details A pontuação depende da dificuldade selecionada e do resultado da partida.
+ * O jogador não recebe pontos se ultrapassar 21 ou perder contra o dealer.
+ * Em caso de empate é atribuída uma pontuação fixa e um Blackjack (21 pontos)
+ * concede um bónus adicional.
+ *
+ * @param difficulty Dificuldade atual do jogo.
+ * @param playerTotal Valor final da mão do jogador.
+ * @param dealerTotal Valor final da mão do dealer.
+ * @return Pontos a adicionar ao jogador.
+ */
+unsigned long int calculateBlackjackPoints(Difficulty difficulty, int playerTotal, int dealerTotal)
 {
     unsigned long int basePoints;
     unsigned long int bonusPoints;
 
-    if (playerTotal > 21)
+    if (playerTotal > BLACKJACK_VALUE || (dealerTotal <= BLACKJACK_VALUE && dealerTotal > playerTotal))
     {
         return 0;
     }
 
     if (playerTotal == dealerTotal)
     {
-        return 25;
-    }
-
-    if (dealerTotal <= 21 && dealerTotal > playerTotal)
-    {
-        return 0;
+        return DRAW_POINTS;
     }
 
     switch (difficulty)
     {
     case EASY:
-        basePoints = 100;
-        bonusPoints = 20;
+        basePoints = BASE_POINTS_EASY;
+        bonusPoints = BLACKJACK_BONUS_EASY;
         break;
 
     case MEDIUM:
-        basePoints = 150;
-        bonusPoints = 30;
+        basePoints = BASE_POINTS_MEDIUM;
+        bonusPoints = BLACKJACK_BONUS_MEDIUM;
         break;
 
     case HARD:
-        basePoints = 250;
-        bonusPoints = 50;
+        basePoints = BASE_POINTS_HARD;
+        bonusPoints = BLACKJACK_BONUS_HARD;
         break;
 
     default:
-        return 0;
+        return 1; // Dificuldade não tratada.
     }
 
-    if (playerTotal == 21)
-    {
-        return basePoints + bonusPoints;
-    }
-
-    return basePoints;
+    return (playerTotal == BLACKJACK_VALUE) ? basePoints + bonusPoints : basePoints;
 }
 
 int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
 {
-    *points = 0;
-
-    srand((unsigned int)time(NULL));
 
     int dealerStopValue = getDealerStopValueByDifficulty(difficulty);
 
     int playerTotal = drawCard() + drawCard();
     int dealerTotal = drawCard() + drawCard();
 
-    printf("Bem vindo ao Blackjack!\n");
-    printf("O teu valor inicial e: %d\n", playerTotal);
-    printf("O valor inicial do dealer e: %d\n", dealerTotal);
+    puts("\nBem vindo ao Blackjack!");
+    printf("O teu valor inicial é: %d\n", playerTotal);
+    printf("O valor inicial do dealer é: %d\n", dealerTotal);
 
-    while (playerTotal < 21)
+    while (playerTotal < BLACKJACK_VALUE)
     {
+        LOG_DEBUG("dealerstopValue: %i|playertotal: %i|dealerTotal: %i|", dealerStopValue, playerTotal, dealerTotal);
         int choice;
 
-        puts("\nEscolhe uma opcao:");
+        puts("\nEscolhe uma opção:");
         puts("1 - Pedir carta");
         puts("2 - Parar");
 
         if (readDigitUserInput("Escolha: ", &choice))
         {
-            puts("Opcao invalida.");
+            puts("Opção inválida.");
             continue;
         }
+        LOG_DEBUG("Jogador escolheu: %d", choice);
 
         if (choice == 1)
         {
@@ -116,18 +130,24 @@ int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
 
             printf("Carta recebida: %d\n", card);
             printf("Total atual: %d\n", playerTotal);
+            if (playerTotal > BLACKJACK_VALUE)
+            {
+                LOG_DEBUG("Jogador rebentou | total=%d", playerTotal);
+                break;
+            }
         }
         else if (choice == 2)
         {
+            LOG_DEBUG("Jogador decidiu parar | total=%d", playerTotal);
             break;
         }
         else
         {
-            puts("Opcao invalida.");
+            puts("Opção inválida.");
         }
     }
 
-    if (playerTotal > 21)
+    if (playerTotal > BLACKJACK_VALUE)
     {
         puts("\nPassaste de 21. Perdeste.");
         *points = 0;
@@ -135,6 +155,12 @@ int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
     }
 
     puts("\nVez do dealer...");
+    // delay para parecer que o dealer está a fazer uam jogada
+    for (size_t i = 0; i < 4000000000; i++)
+        ;
+
+    LOG_DEBUG("Dealer inicia jogada | total=%d | stop=%d",
+              dealerTotal, dealerStopValue);
 
     while (dealerTotal < dealerStopValue)
     {

@@ -107,9 +107,6 @@ int parseHardGuess(const char buffer[], int *guessValue)
 
 int guess_main_process(const Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points)
 {
-    // gera uma seed "aleatória"
-    srand((unsigned int)time(NULL));
-
     // define o numero máximo que pode gerar
     const bool isHard = difficulty == HARD;
     int maxNumber = isHard ? 200 : (int)difficulty * 50;
@@ -134,7 +131,7 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
     }
     while (!guessed)
     {
-        LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | isHard: %d", secretNumber, maxNumber, attemptsUsed, isHard);
+        // LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | isHard: %d", secretNumber, maxNumber, attemptsUsed, isHard);
 
         // var para guardar a entrada do user.
         int guess = 0;
@@ -143,7 +140,7 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
         {
             const int MAX_BUFFER_LEN = (10 + 1);
             char buffer[MAX_BUFFER_LEN];
-            if (readStrUserInput("Insira o seu palpite(insira S para saír)", MAX_BUFFER_LEN, buffer, 0, "") == 1)
+            if (readStrUserInput("Insira o seu palpite(insira S para sair)", MAX_BUFFER_LEN, buffer, 0, "") == 1)
             {
                 return 1;
             }
@@ -217,7 +214,7 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
             }
 
             createLine(50, '#');
-            puts(COLOR_YELLOW "Parabéns! Advinhaste o número!" COLOR_RESET);
+            puts(COLOR_BRIGHT_GREEN "Parabéns! Advinhaste o número!" COLOR_RESET);
 
             printf("Nº de tentativas: %d\n", attemptsUsed);
             printf("Pontos ganhos: %lu\n", *points);

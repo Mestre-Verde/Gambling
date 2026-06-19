@@ -35,6 +35,8 @@ void showPlayerInfo(Player player, bool withLine)
     }
     printf("Nome do jogador:%s\n", player.nome);
     printf("Pontos no jogo da Adivinha: %lu\n", player.pontos_guess);
+    printf("Pontos no black Jack: %lu\n", player.blackjackPoints);
+    printf("Pontos no jogo da memória: %lu\n", player.memoryPoints);
 }
 
 int choosePlayer(void)

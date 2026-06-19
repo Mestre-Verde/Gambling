@@ -3,7 +3,7 @@
 
 /**
  * @brief função principal.
- * @return 0 porque este código não falha
+ * @return 0 = sucesso, 1 = erro
  */
 int galoMainProcess(void);
 

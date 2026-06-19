@@ -1,6 +1,6 @@
 /**
  * Aqui é o unico lugar onde o jogador vai ser usado, em outros ficheiros de jogos não
- * pode ter nenhuma chamada do jogador.
+ * pode ter nenhuma chamada do jogador. Isto para controlar a forma como se usa o static
  * Com isso, este vai ser o launcher. Os parametros do jogador a mexer devem ser passados como parametros.
  */
 
@@ -51,20 +51,11 @@ Difficulty chooseDifficulty(void)
 int engineStartGame(GamesMenuOptions game)
 {
     unsigned long int points = 0;
-    switch (game)
+    Difficulty difficulty = DIFFICULTY_UNKNOWN; // variavel para armazenar a dificuldade.
+
+    // obtem a dificuldade do jogador
+    if (game == GUESS_GAME || game == BLACKJACK || game == MEMORY_GAME)
     {
-    case JOGO_DO_GALO:
-        if (galoMainProcess())
-        {
-            LOG_ERROR("Houve um problema com o jogo do galo!");
-        }
-
-        LOG_INFO("Processo do jogo do galo terminado com sucesso.");
-        break;
-
-    case GUESS_GAME:
-        // variavel para armazenar a dificuldade.
-        Difficulty difficulty = DIFFICULTY_UNKNOWN;
         do
         {
             // obtem a dificuldade que o user escolher
@@ -79,71 +70,43 @@ int engineStartGame(GamesMenuOptions game)
 
         if (difficulty == DIFFICULTY_EXIT)
         {
-            break;
+            return 0;
+        }
+    }
+
+    // inicia o procesos principal do menu principal
+    switch (game)
+    {
+    case JOGO_DO_GALO:
+        if (galoMainProcess())
+        {
+            LOG_ERROR("Houve um problema com o jogo do galo!");
+            return 1;
         }
 
-        // guarda em uma variavel o estado do processo do jogo
-        int state = guess_main_process(difficulty, currentPlayer.pontos_guess, &points);
+        LOG_INFO("Processo do jogo do galo terminado com sucesso.");
+        break;
 
-        if (state)
+    case GUESS_GAME:
+        if (guess_main_process(difficulty, currentPlayer.pontos_guess, &points))
         {
             return 2;
         }
-        else
-        {
-            LOG_INFO("Processo do jogo da adivinha terminado com sucesso.");
-        }
+        LOG_INFO("Processo do jogo da adivinha terminado com sucesso.");
         break;
 
     case BLACKJACK:
-        Difficulty blackjackDifficulty = DIFFICULTY_UNKNOWN;
+        int blackjackState = blackjack_main_process(difficulty, &points);
 
-        do
-        {
-            blackjackDifficulty = chooseDifficulty();
-
-            if (blackjackDifficulty == DIFFICULTY_UNKNOWN)
-            {
-                puts("Entrada inválida.");
-            }
-
-        } while (blackjackDifficulty == DIFFICULTY_UNKNOWN);
-
-        if (blackjackDifficulty == DIFFICULTY_EXIT)
-        {
-            break;
-        }
-
-        int blackjackState = blackjack_main_process(blackjackDifficulty, &points);
-
-        if (blackjackState)
+        if (blackjack_main_process(difficulty, &points))
         {
             return 3;
         }
-
         LOG_INFO("Processo do Blackjack terminado com sucesso.");
         break;
 
     case MEMORY_GAME:
-        Difficulty memoryDifficulty = DIFFICULTY_UNKNOWN;
-
-        do
-        {
-            memoryDifficulty = chooseDifficulty();
-
-            if (memoryDifficulty == DIFFICULTY_UNKNOWN)
-            {
-                puts("Entrada inválida.");
-            }
-
-        } while (memoryDifficulty == DIFFICULTY_UNKNOWN);
-
-        if (memoryDifficulty == DIFFICULTY_EXIT)
-        {
-            break;
-        }
-
-        int memoryState = memory_game_main_process(memoryDifficulty, &points);
+        int memoryState = memory_game_main_process(difficulty, &points);
 
         if (memoryState)
         {
@@ -162,16 +125,32 @@ int engineStartGame(GamesMenuOptions game)
         LOG_WARN("Jogo desconhecido entrou no engine.Valor:%i", game);
         return 6;
     }
+
+    // se tiver pontos incrementa-os na secção respetiva
     if (points)
     {
         LOG_DEBUG("Há pontos, a guardar no jogador.Nº de pontos:%lu", points);
-        currentPlayer.pontos_guess += points;
 
+        switch (game)
+        {
+        case GUESS_GAME:
+            currentPlayer.pontos_guess += points;
+            break;
+
+        case BLACKJACK:
+            currentPlayer.blackjackPoints += points;
+            break;
+
+        case MEMORY_GAME:
+            currentPlayer.memoryPoints += points;
+            break;
+        default: // os erros já são tratados no switch do processo de jogos
+            break;
+        }
         if (savePlayerInDataBase(currentPlayer, PLAYERDB_DIR))
         {
             LOG_ERROR("Não foi possivel salvar o jogador na base de dados.");
         }
     }
-
     return 0;
 }
