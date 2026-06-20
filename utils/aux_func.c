@@ -15,12 +15,10 @@
 #include "aux_string.h"
 
 int isDigit(int ch) { return '0' <= ch && ch <= '9'; }
-int isAlpha(int ch) { return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'); }
-int isAlnum(int ch) { return ('0' <= ch && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'); }
 int isLower(int ch) { return (ch >= 'a' && ch <= 'z'); }
+
 int isUpper(int ch) { return (ch >= 'A' && ch <= 'Z'); }
 int isSpace(int ch) { return ch == 32; }
-int isVowell(char ch) { return (ch == 'a' || ch == 'A' || ch == 'e' || ch == 'E' || ch == 'i' || ch == 'I' || ch == 'o' || ch == 'O' || ch == 'u' || ch == 'U'); }
 
 int toLower(int ch)
 {
@@ -36,14 +34,8 @@ int toUpper(int ch)
 
 // retorna 1 se estiver dentro do intervalo,0 se contrário
 bool isBetween(int value, int min_value, int max_value) { return min_value <= value && value <= max_value; }
-// @return valor absoluto
-int Abs(int x) { return x < 0 ? -x : x; }
-// retorna o cubo de um numero.
-int Cubo(int x) { return x * x * x; }
 // retorna o numero negativo
 int Minus(int x) { return x > 0 ? -x : x; }
-// retorna o inverso de um numero
-float Inverso(int x) { return x == 0 ? x : (1 / x); }
 
 //---------------
 
@@ -75,7 +67,7 @@ void delay(unsigned short seg)
     for (unsigned long long i = 0; i < (((unsigned long long)seg) * 1000000000); i++)
         ;
 }
-
+/*
 void printCharTable(void)
 {
     printf("Char   | Dec | Hex\n");
@@ -118,7 +110,7 @@ void printCharTable(void)
         }
     }
 }
-
+*/
 int readDigitUserInput(const char prompt[], int *var)
 {
     const int BUFFER_LEN = (10 + 1);
