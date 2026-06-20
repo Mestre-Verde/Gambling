@@ -14,10 +14,10 @@ unsigned long int calculateMemoryPoints(Difficulty difficulty)
         return 50;
 
     case MEDIUM:
-        return 200;
+        return 100;
 
     case HARD:
-        return 400;
+        return 300;
 
     default:
         return 0;
@@ -63,7 +63,7 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
 
             state = readDigitUserInput("(-1 para sair):", &playerSequence[i]);
 
-            LOG_DEBUG("Valor do estado: %i | Valor recebido: %i\n", state, playerSequence[i]);
+            // LOG_DEBUG("Valor do estado: %i | Valor recebido: %i\n", state, playerSequence[i]);
 
             if (state == 1)
             {
@@ -100,10 +100,8 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
 
     createLine(50, '*');
     printf("Pontos ganhos: %lu\n", *points);
-    printf("Pontos atuais: %lu\n", currentPoints);
-    createLine(3, ' ');
-    putchar('+');
-    createLine(30, '-');
+    printf("Pontos atuais: %lu  +\n", currentPoints);
+    createLine(21, '-');
     printf("Pontos totais: %lu\n", currentPoints + *points);
 
     return 0;
