@@ -96,9 +96,7 @@ int engineStartGame(GamesMenuOptions game)
         break;
 
     case BLACKJACK:
-        int blackjackState = blackjack_main_process(difficulty, &points);
-
-        if (blackjack_main_process(difficulty, &points))
+        if (blackjack_main_process(difficulty, currentPlayer.blackjackPoints, &points))
         {
             return 3;
         }
@@ -106,7 +104,7 @@ int engineStartGame(GamesMenuOptions game)
         break;
 
     case MEMORY_GAME:
-        int memoryState = memory_game_main_process(difficulty, &points);
+        int memoryState = memory_game_main_process(difficulty, currentPlayer.memoryPoints, &points);
 
         if (memoryState)
         {

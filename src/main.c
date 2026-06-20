@@ -13,7 +13,6 @@ int main(void)
      LOG_WARN("olá");*/
 
     // obtem uma semente aleatória
-
     srand(time(NULL));
 
     if (mainMenu())

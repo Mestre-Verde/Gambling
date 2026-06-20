@@ -25,9 +25,10 @@
 /**
  * @brief Função principal do jogo blackjack.
  * @param difficulty Dificuldade selecionada para a ronda (define comportamento do dealer).
+ * @param currentPoints Pontos atuais do jogador.
  * @param points Ponteiro onde serão guardados os pontos obtidos pelo jogador.
  * @return 0 = sucesso, 1 = erro
  */
-int blackjack_main_process(Difficulty difficulty, unsigned long int *points);
+int blackjack_main_process(Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points);
 
 #endif

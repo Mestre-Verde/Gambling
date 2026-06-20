@@ -49,6 +49,6 @@
 #define CURSOR_HOME "\033[H"
 
 // Limpar linha atual
-#define CLEAR_LINE "\033[2K"
+#define CLEAR_LINE "\r\033[2K"
 
 #endif // COLORS_H

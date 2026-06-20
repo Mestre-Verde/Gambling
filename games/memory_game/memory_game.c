@@ -4,102 +4,107 @@
 
 #include "memory_game.h"
 #include "aux_func.h"
+#include "aux_string.h"
 
-static int getSequenceSizeByDifficulty(Difficulty difficulty)
+unsigned long int calculateMemoryPoints(Difficulty difficulty)
 {
     switch (difficulty)
     {
     case EASY:
-        return 3;
-
-    case MEDIUM:
-        return 5;
-
-    case HARD:
-        return 7;
-
-    default:
-        return 3;
-    }
-}
-
-static unsigned long int calculateMemoryPoints(Difficulty difficulty)
-{
-    switch (difficulty)
-    {
-    case EASY:
-        return 100;
+        return 50;
 
     case MEDIUM:
         return 200;
 
     case HARD:
-        return 350;
+        return 400;
 
     default:
         return 0;
     }
 }
 
-int memory_game_main_process(Difficulty difficulty, unsigned long int *points)
+int memory_game_main_process(Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points)
 {
-    int sequenceSize = getSequenceSizeByDifficulty(difficulty);
+    // Variavel para armazenar o valor de len da string
+    const int sequenceSize = 1 + ((int)difficulty * 2); // 3 -> 5 -> 7 -> 9
 
-    int sequence[10];
-    int playerSequence[10];
-
-    srand((unsigned int)time(NULL));
-
-    puts("===== MEMORY GAME =====");
-    puts("Memoriza a sequencia:");
+    // variaveis para guardar as sequencias
+    int randonSequence[sequenceSize];
+    int playerSequence[sequenceSize];
 
     for (int i = 0; i < sequenceSize; i++)
     {
-        sequence[i] = rand() % 10;
-        printf("%d ", sequence[i]);
+        randonSequence[i] = rand() % 10;
     }
 
-    putchar('\n');
-
-    puts("\nMemoriza...");
-
-#ifdef _WIN32
-    system("timeout /t 3 > nul");
-    system("cls");
-#else
-    system("sleep 3");
-    system("clear");
-#endif
-
     puts("===== MEMORY GAME =====");
-    puts("Agora escreve a sequencia pela mesma ordem.");
+    printf("Memoriza a sequência:");
+    delay(1);
+    for (short i = 0; i < sequenceSize; i++)
+    {
+        printf("%i ", randonSequence[i]);
+    }
+    // obriga a imprimir a sequencia no terminal, pois este espera por um '\n' que não tem visto que precisa de ser tudo em uma linha
+    fflush(stdout);
+    //  espera 3 segundos e apaga a sequencia da consola
+    delay(3);
+    // limpa a linha com a sequência
+    printf(CLEAR_LINE);
+    puts("Agora escreve a sequencia pela mesma ordem. Um número de cada vez.");
 
     for (int i = 0; i < sequenceSize; i++)
     {
-        printf("Numero %d: ", i + 1);
+        int state = 0;
 
-        if (readDigitUserInput("", &playerSequence[i]))
+        while (1)
         {
-            puts("Entrada invalida.");
-            *points = 0;
-            return 0;
+            printf("Numero %d", i + 1);
+
+            state = readDigitUserInput("(-1 para sair):", &playerSequence[i]);
+
+            LOG_DEBUG("Valor do estado: %i | Valor recebido: %i\n", state, playerSequence[i]);
+
+            if (state == 1)
+            {
+                return 1;
+            }
+
+            if (state == -1)
+            {
+                LOG_INFO("Entrada invalida.");
+                continue;
+            }
+
+            if (playerSequence[i] == -1)
+            {
+                LOG_INFO("Jogo abortado.");
+                return 0;
+            }
+            break;
         }
     }
 
     for (int i = 0; i < sequenceSize; i++)
     {
-        if (playerSequence[i] != sequence[i])
+        if (playerSequence[i] != randonSequence[i])
         {
-            puts("Erraste a sequencia.");
-            *points = 0;
+            LOG_INFO("Erraste a sequência.");
             return 0;
         }
     }
 
-    puts("Acertaste a sequencia!");
+    LOG_INFO("Acertaste a sequencia!");
 
     *points = calculateMemoryPoints(difficulty);
 
-  
+    createLine(50, '*');
+    printf("Pontos ganhos: %lu\n", *points);
+    printf("Pontos atuais: %lu\n", currentPoints);
+    createLine(3, ' ');
+    putchar('+');
+    createLine(30, '-');
+    printf("Pontos totais: %lu\n", currentPoints + *points);
+
     return 0;
 }

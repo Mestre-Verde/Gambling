@@ -89,4 +89,9 @@ bool isBetween(int value, int min_value, int max_value);
  */
 void ShowCursorPosition(FILE *file);
 
+/**
+ * @brief Coloca o programa em espera
+ * @param secunds segundos de espera aproximados
+ */
+void delay(unsigned short secunds);
 #endif

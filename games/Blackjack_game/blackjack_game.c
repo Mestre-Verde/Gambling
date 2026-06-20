@@ -95,7 +95,7 @@ unsigned long int calculateBlackjackPoints(Difficulty difficulty, int playerTota
     return (playerTotal == BLACKJACK_VALUE) ? basePoints + bonusPoints : basePoints;
 }
 
-int blackjack_main_process(Difficulty difficulty, unsigned long int *points)
+int blackjack_main_process(Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points)
 {
 
     int dealerStopValue = getDealerStopValueByDifficulty(difficulty);

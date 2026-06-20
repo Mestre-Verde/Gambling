@@ -59,6 +59,12 @@ void ShowCursorPosition(FILE *file)
     printf("Cursor: %ld\n", ftell(file));
 }
 
+void delay(unsigned short seg)
+{
+    for (unsigned long long i = 0; i < (((unsigned long long)seg) * 1000000000); i++)
+        ;
+}
+
 void printCharTable(void)
 {
     printf("Char   | Dec | Hex\n");
