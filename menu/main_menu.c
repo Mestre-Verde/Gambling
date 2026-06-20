@@ -1,3 +1,9 @@
+/* Menu principal do programa.
+   Permite aceder ao menu de jogos, ao menu de jogador ou terminar a aplicação.
+   Aqui é onde se cria a variavel global currentplayer que vai ser usada nos outros ficheiros
+*/
+
+// Verifica se o valor introduzido corresponde a uma opção válida do enum.
 #include <stdio.h>
 
 #include "aux_func.h"
@@ -7,7 +13,8 @@
 #include "games_menu.h"
 
 #include "jogador.h"
-Player currentPlayer = {0}; // variavel global
+
+Player currentPlayer = {0}; // Variável global que armazena o jogador atualmente selecionado.
 
 MainMenuOption getMainMenuChoice(void)
 {

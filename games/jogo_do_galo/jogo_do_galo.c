@@ -1,5 +1,5 @@
 /*
-Este jogo n\ao ter]a logica de jogador pois para isso necessitaria de logica
+Este jogo não tem logica de jogador pois para isso necessitaria de logica
 para ter 2 jogadores ativos o que não vai acontecer.
 
 De resto, este ficheiro é o jogo do galo normal.

@@ -3,6 +3,7 @@ Ficheiro com as funções responsáveis por os streams.
 Para mexer com ficheiros externos é necessário chamar funções genéricas aqui.
 
 O id de um jogador tem o valor minimo de 1.
+pois um id = 0  é util como NO PLAYER SELECTED
 
 */
 #include <stdio.h>

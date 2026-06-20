@@ -1,3 +1,13 @@
+/*
+ * memory_game.c
+ * Implementação do Memory Game (jogo da memória).
+ * Responsabilidades:
+ * - Gerar e mostrar sequência aleatória
+ * - Ler sequência do jogador e verificar correspondência
+ * - Calcular pontos em função da dificuldade
+ * Funções principais: `memory_game_main_process`, `calculateMemoryPoints`.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -45,7 +55,7 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
     {
         printf("%i ", randonSequence[i]);
     }
-    // obriga a imprimir a sequencia no terminal, pois este espera por um '\n' que não tem visto que precisa de ser tudo em uma linha
+    // obriga a imprimir a sequencia no terminal, pois este espera por um '\n' que não tem, visto que precisa de ser tudo em uma linha
     fflush(stdout);
     //  espera 3 segundos e apaga a sequencia da consola
     delay(3);

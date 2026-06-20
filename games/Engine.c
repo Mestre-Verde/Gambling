@@ -1,7 +1,7 @@
 /**
  * Aqui é o unico lugar onde o jogador vai ser usado, em outros ficheiros de jogos não
  * pode ter nenhuma chamada do jogador. Isto para controlar a forma como se usa o static
- * Com isso, este vai ser o launcher. Os parametros do jogador a mexer devem ser passados como parametros.
+ * Com isso, este vai ser o launcher. Os parametros do jogador a mexer devem ser passados como parametros e constantes.
  */
 
 #include <stdio.h>

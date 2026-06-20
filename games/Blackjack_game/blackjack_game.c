@@ -1,3 +1,13 @@
+/*
+ * blackjack_game.c
+ * Implementação simplificada do Blackjack.
+ * Responsabilidades:
+ * - Gerar cartas aleatórias
+ * - Lógica de jogadas do jogador e do dealer
+ * - Cálculo de pontos para diferentes dificuldades
+ * Funções principais: `blackjack_main_process`, `calculateBlackjackPoints`, `drawCard`.
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>

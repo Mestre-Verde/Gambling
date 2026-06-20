@@ -1,3 +1,11 @@
+/*
+ * games_menu.c
+ * Menu que lista os jogos disponíveis e delega a execução para o Engine.
+ * Responsabilidades:
+ * - Mostrar pontuações do `currentPlayer`
+ * - Validar escolha do jogo e chamar `engineStartGame()`
+ */
+
 #include <stdio.h>
 
 #include "aux_func.h"
@@ -17,7 +25,7 @@ GamesMenuOptions getGamesMenuOption(void)
         "4 - Memory game\t\t[%lu]\n"
         "0 - Voltar\n";
 
-    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.blackjackPoints, currentPlayer.memoryPoints);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum", 0, 0, 0 : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.blackjackPoints, currentPlayer.memoryPoints);
 
     int choice = GAMES_MENU_UNKNOWN;
     if (readDigitUserInput("Escolha: ", &choice))

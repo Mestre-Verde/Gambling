@@ -1,3 +1,15 @@
+/*
+ * aux_string.c
+ * Funções utilitárias simples para manipulação de strings em C.
+ * Responsabilidades:
+ * - Cópia de strings (`stringCopy`)
+ * - Impressão de strings (`printString`)
+ * - Pesquisa de caracteres (`findCharInStr`)
+ * - Impressão em hexadecimal (`printHex`)
+ * - Cálculo de comprimento (`stringLen`)
+ * Utilização típica: auxilia funções de input/output e validação nos menus e jogos.
+ */
+
 #include <stdio.h>
 
 void stringCopy(const char inicial[], char final[])

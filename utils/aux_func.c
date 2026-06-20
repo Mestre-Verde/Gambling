@@ -1,3 +1,14 @@
+/*
+ * aux_func.c
+ * Funções utilitárias diversas usadas por menus e jogos.
+ * Responsabilidades:
+ * - Operadores sobre caracteres e checks (isDigit, isAlpha...)
+ * - Conversões (toLower, toUpper)
+ * - Funções auxiliares de I/O (readDigitUserInput, readStrUserInput)
+ * - Utilitários de depuração/visualização (createLine, ShowCursorPosition)
+ * Uso: incluído por módulos que precisam de utilitários comuns.
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "aux_func.h"

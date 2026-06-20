@@ -1,3 +1,12 @@
+/*
+ * player_menu.c
+ * Menu responsável por criar, selecionar e remover jogadores.
+ * Funções principais:
+ * - getPlayerMenuChoice(): apresenta opções e valida a escolha do utilizador
+ * - playerMenu(): loop principal do menu de jogador que chama as ações correspondentes
+ * Utiliza `jogador.h` e funções utilitárias em `aux_func.h`.
+ */
+
 #include <stdio.h>
 
 #include "aux_func.h"

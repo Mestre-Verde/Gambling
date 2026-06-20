@@ -1,3 +1,13 @@
+/*
+ * guess_game.c
+ * Implementação do jogo da adivinha (Guess Game).
+ * Responsabilidades:
+ * - Gerar o número secreto (inteiro ou decimal dependendo da dificuldade)
+ * - Ler palpites do utilizador e validar formatos
+ * - Calcular pontos com base em tentativas (calculateGuessPoints)
+ * Funções principais: `guess_main_process`, `calculateGuessPoints`, `parseHardGuess`.
+ */
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -45,7 +55,7 @@ int calculateGuessPoints(Difficulty difficulty, int attemptsUsed, unsigned long 
 
     // pontos finais = pontos base menos nº de tentativas, ignorando a que acertou no numero vezes a penalização por tentativa.
     int totalPoints = basePoints - ((attemptsUsed - 1) * penalPerAttempt);
-    LOG_DEBUG("Pontos totais: %i - (%i - 1) x %i = %i", basePoints, attemptsUsed, penalPerAttempt, totalPoints);
+    // LOG_DEBUG("Pontos totais: %i - (%i - 1) x %i = %i", basePoints, attemptsUsed, penalPerAttempt, totalPoints);
     if (totalPoints < 0)
     {
         totalPoints = 0;
