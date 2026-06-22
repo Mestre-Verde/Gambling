@@ -19,7 +19,7 @@ MENU_SRC :=	\
 GAME_SRC := \
 	games/guess_game/guess_game.c \
 	games/jogo_do_galo/jogo_do_galo.c\
-	games/Blackjack_game/blackjack_game.c \
+	games/pedra_papel_tesoura/pedra_papel_tesoura.c \
 	games/memory_game/memory_game.c \
     games/Engine.c 
 
