@@ -64,7 +64,7 @@ int gamesMenu(void)
         switch (option)
         {
         case GAMES_MENU_UNKNOWN:
-            puts("Opção inválida.");
+            puts(COLOR_GOLD "Opção inválida.\n" COLOR_RESET);
             break;
 
         case GAMES_MENU_EXIT:

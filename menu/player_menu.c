@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include "aux_func.h"
+#include "colors.h"
 
 #include "player_menu.h"
 #include "jogador.h"
@@ -58,7 +59,7 @@ int playerMenu(void)
         switch (option)
         {
         case PLAYER_MENU_UNKNOWN:
-            puts("Opção inválida.");
+            puts(COLOR_GOLD "Opção inválida." COLOR_RESET);
             break;
 
         case CREATE_PLAYER:

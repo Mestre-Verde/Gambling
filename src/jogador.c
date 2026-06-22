@@ -97,7 +97,7 @@ int buildPlayer(void)
 {
     // pede nome
     char nome[MAX_NAME_LENGTH] = {0};
-    if (readStrUserInput("Insira o nome do jogador(enter para cancelar)", MAX_NAME_LENGTH, nome, 0, ""))
+    if (readStrUserInput(COLOR_AMBER_SOFT "Insira o nome do jogador(enter para cancelar)" COLOR_RESET, MAX_NAME_LENGTH, nome, 0, ""))
     {
         LOG_INFO("Não foi possivel criar o jogador.Nome não aceite.");
         return 0;

@@ -35,6 +35,14 @@ void printHex(int strLen, char str[strLen]);
 int findCharInStr(char str[], char c);
 
 /**
+ * @brief Compara 2 strings.
+ * @param str1 string 1 a comparar
+ * @param str2 string 2 a comparar
+ * @return 0 = são iguais, 1 = não são iguais.
+ */
+int stringCompareIgnoreCase(const char str1[], const char str2[]);
+
+/**
  * @brief Obtem o comprimento da string contando com o caracter nulo '\0'
  * @param s string to get len
  * @return o valor de compriemnto da string.
