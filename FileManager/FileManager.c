@@ -140,10 +140,9 @@ int getNextPlayerId(unsigned short int *nextId, char PATH[])
     }
 
     int estado = checkDataBase(f);
-
+    // ficheiro vazio
     if (estado == 2)
     {
-        // ficheiro vazio
         *nextId = 1;
         fclose(f);
         return 0;
