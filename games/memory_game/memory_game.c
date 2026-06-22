@@ -70,9 +70,11 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
         while (1)
         {
             printf("Numero %d", i + 1);
+
             state = readDigitUserInput("(-1 para sair):", &playerSequence[i]);
 
             // LOG_DEBUG("Valor do estado: %i | Valor recebido: %i\n", state, playerSequence[i]);
+
             if (state == 1)
             {
                 return 1;
