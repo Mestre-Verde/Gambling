@@ -6,6 +6,7 @@ cada id é unico e caso não se queira aquelejogador basta eliminar.
 #include <stdbool.h>
 
 #include "aux_func.h"
+#include "colors.h"
 #include "aux_string.h"
 
 #include "jogador.h"
@@ -24,6 +25,8 @@ Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
     // LOG_DEBUG("Id do novo jogador:%i", player.id);
 
     player.pontos_guess = 0;
+    player.blackjackPoints = 0;
+    player.memoryPoints = 0;
     return player;
 }
 
@@ -33,10 +36,10 @@ void showPlayerInfo(Player player, bool withLine)
     {
         createLine(50, '+');
     }
-    printf("Nome do jogador:%s\n", player.nome);
-    printf("Pontos no jogo da Adivinha: %lu\n", player.pontos_guess);
-    printf("Pontos no black Jack: %lu\n", player.blackjackPoints);
-    printf("Pontos no jogo da memória: %lu\n", player.memoryPoints);
+    printf(TEXT_BOLD "Nome:               " COLOR_RESET COLOR_BRIGHT_GREEN "%s\n" COLOR_RESET, player.nome);
+    printf(TEXT_BOLD "Adivinha:           " COLOR_RESET COLOR_YELLOW "%lu pontos\n" COLOR_RESET, player.pontos_guess);
+    printf(TEXT_BOLD "BlackJack:          " COLOR_RESET COLOR_RED "%lu pontos\n" COLOR_RESET, player.blackjackPoints);
+    printf(TEXT_BOLD "Jogo da Memória:    " COLOR_RESET COLOR_MAGENTA "%lu pontos\n" COLOR_RESET, player.memoryPoints);
 }
 
 int choosePlayer(void)
@@ -52,7 +55,7 @@ int choosePlayer(void)
         return 1;
     }
     putchar('\n');
-    createLine(50, '+');
+    createLine(50, '_');
 
     // obtem a input do user
     int id = 0;
@@ -128,7 +131,7 @@ int removePlayer(void)
     {
         return 0;
     }
-
+    createLine(50, '_');
     // pergunta qual jogador quer remover com base em id, será 1 por vez para simpificar
     int playerId = 0;
     int estadoInput = -1;

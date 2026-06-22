@@ -17,13 +17,16 @@
 
 GamesMenuOptions getGamesMenuOption(void)
 {
+
     const char menuText[] =
-        "\n\n===== MENU JOGOS =====\t|%s|\n"
+        TEXT_BOLD COLOR_BRIGHT_CYAN
+        "\n===== MENU JOGOS =====" COLOR_RESET
+        "\t|%s|\n" COLOR_RESET COLOR_BRIGHT_WHITE
         "1 - Jogo do Galo\n"
-        "2 - Jogo de advinha\t[%lu]\n"
-        "3 - Blackjack\t\t[%lu]\n"
-        "4 - Memory game\t\t[%lu]\n"
-        "0 - Voltar\n";
+        "2 - Jogo de adivinha\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "3 - Blackjack\t\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "4 - Memory game\t\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "0 - Voltar\n" COLOR_RESET;
 
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.blackjackPoints, currentPlayer.memoryPoints);
 

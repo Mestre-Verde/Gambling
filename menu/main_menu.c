@@ -19,11 +19,12 @@ Player currentPlayer = {0}; // Variável global que armazena o jogador atualment
 MainMenuOption getMainMenuChoice(void)
 {
     const char menuText[] =
-        "\n===== MENU PRINCIPAL =====\t|%s|\n"
+        TEXT_BOLD COLOR_BRIGHT_CYAN
+        "\n===== MENU PRINCIPAL =====" COLOR_RESET
+        "\t|%s|\n" COLOR_RESET COLOR_BRIGHT_WHITE
         "1 - Menu de jogos\n"
-        "2 - Defenições de jogador\n"
-        "0 - Sair\n";
-
+        "2 - Definições de jogador\n"
+        "0 - Sair\n" COLOR_RESET;
     int choice = MENU_UNKNOWN;
 
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome);
