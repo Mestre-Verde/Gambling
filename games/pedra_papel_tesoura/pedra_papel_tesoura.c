@@ -28,6 +28,8 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
     int result_random = rand() % 3;
 
+     printString("Escolhe Pedra, Papel ou Tesoura");
+
     int estado = readStrUserInput("PEDRA PAPEL TESOURA", MAXBUFFER_LEN, resposta, 0, "");
 
     switch (estado)
@@ -53,33 +55,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     return 1;
         
     }
-
-    printString("Escolhe Pedra, Papel ou Tesoura");
-
     // Condições
 
-    if (result_random == estado)
-    {
-        puts("Empate");
-    }    
-
-    if (result_random == PEDRA && estado == PAPEL )
-    {
-        puts("Ganhaste");
-    }
-
-    if (result_random == PAPEL && estado == PEDRA)
-    {
-        puts("Perdeste");
-    }
-
-    if (result_random == TESOURA && estado == PEDRA)
-    {
-        puts("Ganhaste");
-    }
-
-    if (result_random == PEDRA && estado == TESOURA)
-    {
-        puts("");
-    }
+   
 }
