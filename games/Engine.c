@@ -20,16 +20,13 @@
 Difficulty chooseDifficulty(void)
 {
     const char MenuText[] =
-        "\nEscolha a dificuldade desta partida:\n"
-        "1 - Fácil\n"
-        "2 - Média\n"
-        "3 - Difícil\n"
-        "0 - Sair";
-
-    int choice = DIFFICULTY_UNKNOWN;
+        "\nEscolha a dificuldade desta partida:\n" BG_GREEN COLOR_BLACK " 1 - Fácil\n" COLOR_RESET
+            BG_YELLOW COLOR_BLACK " 2 - Média\n" COLOR_RESET
+                BG_RED COLOR_BLACK " 3 - Difícil\n" COLOR_RESET COLOR_WHITE " 0 - Sair" COLOR_RESET;
 
     puts(MenuText);
 
+    int choice = DIFFICULTY_UNKNOWN;
     if (readDigitUserInput("Insira a sua escolha: ", &choice))
     {
         return DIFFICULTY_UNKNOWN;
@@ -63,7 +60,7 @@ int engineStartGame(GamesMenuOptions game)
 
             if (difficulty == DIFFICULTY_UNKNOWN)
             {
-                puts("Entrada inválida.");
+                puts(COLOR_GOLD "Entrada inválida." COLOR_RESET);
             }
 
         } while (difficulty == DIFFICULTY_UNKNOWN);
