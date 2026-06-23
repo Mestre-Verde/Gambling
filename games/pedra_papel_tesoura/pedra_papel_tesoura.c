@@ -33,14 +33,16 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     // Titulo do jogo com cor.
     printString(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
 
-    // Explicacao inicial da regra da melhor de 5.
-    printf(COLOR_YELLOW "Melhor de 5: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES);
+    // Explicacao inicial da regra da melhor de 3.
+    printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES, MAX_VICTORIES);
 
     // O ciclo continua enquanto nenhum dos dois chegou ao numero maximo de vitorias.
     // MAX_VICTORIES deve estar definido no ficheiro .h como 3.
     // Como e uma melhor de 5, quem chegar primeiro a 3 vitorias ganha.
     while (vitorias_jogador < MAX_VICTORIES && vitorias_computador < MAX_VICTORIES)
     {
+        const char RPS_MENU_TEXT[] =
+            COLOR_BRIGHT_WHITE "Escolhe " COLOR_RESET COLOR_GRAY_SOFT "Pedra" COLOR_RESET COLOR_BRIGHT_WHITE ", " COLOR_RESET COLOR_YELLOW "Papel" COLOR_RESET COLOR_BRIGHT_WHITE " ou " COLOR_RESET COLOR_PURPLE_SOFT "Tesoura\n" COLOR_RESET;
         // Buffer onde fica guardada a resposta escrita pelo utilizador.
         // Exemplo da palavra "pedra" em memoria:
         // ['p', 'e', 'd', 'r', 'a', '\0']
@@ -52,31 +54,39 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         int result_random = rand() % 3;
 
         // Mostra o inicio de uma nova ronda.
-        printf(TEXT_BOLD COLOR_SKY_BLUE "\n--- %d RONDA ---\n" COLOR_RESET, n_ronda_atual);
+        printf(TEXT_BOLD COLOR_SKY_BLUE "\n--- %dª RONDA ---\n" COLOR_RESET, n_ronda_atual);
 
         // Mostra ao jogador o que deve escrever.
-        printString(COLOR_BRIGHT_WHITE "Escolhe " COLOR_RESET);
-        printString(COLOR_GRAY_SOFT "Pedra" COLOR_RESET);
-        printString(COLOR_BRIGHT_WHITE ", " COLOR_RESET);
-        printString(COLOR_YELLOW "Papel" COLOR_RESET);
-        printString(COLOR_BRIGHT_WHITE " ou " COLOR_RESET);
-        printString(COLOR_PURPLE_SOFT "Tesoura\n" COLOR_RESET);
+        printString(RPS_MENU_TEXT);
 
-        // Le a resposta do utilizador.
-        //
-        // "Resposta"    -> texto mostrado antes do input
-        // MAXBUFFER_LEN -> tamanho maximo do buffer
-        // resposta      -> buffer onde a resposta vai ser guardada
-        // false         -> nao usa filtro de caracteres
-        // ""            -> lista de caracteres permitidos vazia porque o filtro esta desligado
-        int estado = readStrUserInput("Resposta", MAXBUFFER_LEN, resposta, false, "");
-
-        // Se estado for diferente de 0, significa que houve erro ao ler a resposta.
-        if (estado != 0)
+        int estado = 0;
+        do
         {
-            puts(COLOR_BRIGHT_RED "Erro ao ler a resposta." COLOR_RESET);
-            return 1; // retorna erro
-        }
+            // Le a resposta do utilizador.
+            //
+            // "Resposta"    -> texto mostrado antes do input
+            // MAXBUFFER_LEN -> tamanho maximo do buffer
+            // resposta      -> buffer onde a resposta vai ser guardada
+            // false         -> nao usa filtro de caracteres
+            // ""            -> lista de caracteres permitidos vazia porque o filtro esta desligado
+            int estado = readStrUserInput("Resposta", MAXBUFFER_LEN, resposta, false, "");
+            switch (estado)
+            {
+            case -1:
+                puts(COLOR_BRIGHT_RED "Entrada inválida;" COLOR_RESET);
+                break;
+
+            case 0:
+                break;
+
+            case 1:
+                return 1;
+
+            default:
+                LOG_WARN("Estado desconhecido de readStrUserInput!. Valor:%i.", estado);
+                return 1;
+            }
+        } while (estado);
 
         // Variavel que vai guardar a escolha do utilizador ja convertida para enum.
         PedraPapelTesouraOption escolha_utilizador;
