@@ -14,7 +14,7 @@
 
 #include "guess_game.h"
 #include "jogo_do_galo.h"
-#include "blackjack_game.h"
+#include "pedra_papel_tesoura.h"
 #include "memory_game.h"
 
 Difficulty chooseDifficulty(void)
@@ -54,7 +54,7 @@ int engineStartGame(GamesMenuOptions game)
     Difficulty difficulty = DIFFICULTY_UNKNOWN; // variavel para armazenar a dificuldade.
 
     // obtem a dificuldade do jogador
-    if (game == GUESS_GAME || game == BLACKJACK || game == MEMORY_GAME)
+    if (game == GUESS_GAME || game == MEMORY_GAME)
     {
         do
         {
@@ -95,12 +95,12 @@ int engineStartGame(GamesMenuOptions game)
         LOG_INFO("Processo do jogo da adivinha terminado com sucesso.");
         break;
 
-    case BLACKJACK:
-        if (blackjack_main_process(difficulty, currentPlayer.blackjackPoints, &points))
+    case PEDRA_PAPEL_TESOURA:
+        if (main_process_pedra_papel_tesoura(currentPlayer.pedra_papel_tesouraPoints, &points))
         {
             return 3;
         }
-        LOG_INFO("Processo do Blackjack terminado com sucesso.");
+        LOG_INFO("Processo do jogo Pedra,Papel,Tesoura terminado com sucesso.");
         break;
 
     case MEMORY_GAME:
@@ -135,8 +135,8 @@ int engineStartGame(GamesMenuOptions game)
             currentPlayer.pontos_guess += points;
             break;
 
-        case BLACKJACK:
-            currentPlayer.blackjackPoints += points;
+        case PEDRA_PAPEL_TESOURA:
+            currentPlayer.pedra_papel_tesouraPoints += points;
             break;
 
         case MEMORY_GAME:

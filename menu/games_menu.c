@@ -24,11 +24,11 @@ GamesMenuOptions getGamesMenuOption(void)
         "\t|%s|\n" COLOR_RESET COLOR_BRIGHT_WHITE
         "1 - Jogo do Galo\n"
         "2 - Jogo de adivinha\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
-        "3 - Blackjack\t\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "3 - Pedra Papel Tesoura " COLOR_YELLOW "[%lu]\n" COLOR_RESET
         "4 - Memory game\t\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
         "0 - Voltar\n" COLOR_RESET;
 
-    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.blackjackPoints, currentPlayer.memoryPoints);
+    printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.pedra_papel_tesouraPoints, currentPlayer.memoryPoints);
 
     int choice = GAMES_MENU_UNKNOWN;
     if (readDigitUserInput("Escolha: ", &choice))
@@ -41,7 +41,7 @@ GamesMenuOptions getGamesMenuOption(void)
     case GAMES_MENU_EXIT:
     case JOGO_DO_GALO:
     case GUESS_GAME:
-    case BLACKJACK:
+    case PEDRA_PAPEL_TESOURA:
     case MEMORY_GAME:
         return (GamesMenuOptions)choice;
 
@@ -72,7 +72,7 @@ int gamesMenu(void)
 
         case JOGO_DO_GALO:
         case GUESS_GAME:
-        case BLACKJACK:
+        case PEDRA_PAPEL_TESOURA:
         case MEMORY_GAME:
             int state = engineStartGame(option);
             if (state)

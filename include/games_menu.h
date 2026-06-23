@@ -7,7 +7,7 @@ typedef enum
     GAMES_MENU_EXIT = 0,
     JOGO_DO_GALO = 1,
     GUESS_GAME = 2,
-    BLACKJACK = 3,
+    PEDRA_PAPEL_TESOURA = 3,
     MEMORY_GAME = 4,
 } GamesMenuOptions;
 

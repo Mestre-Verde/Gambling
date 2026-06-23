@@ -25,7 +25,7 @@ Player createPlayer(const char nome[MAX_NAME_LENGTH], unsigned short int *id)
     // LOG_DEBUG("Id do novo jogador:%i", player.id);
 
     player.pontos_guess = 0;
-    player.blackjackPoints = 0;
+    player.pedra_papel_tesouraPoints = 0;
     player.memoryPoints = 0;
     return player;
 }
@@ -38,7 +38,7 @@ void showPlayerInfo(Player player, bool withLine)
     }
     printf(TEXT_BOLD "Nome:               " COLOR_RESET COLOR_BRIGHT_GREEN "%s\n" COLOR_RESET, player.nome);
     printf(TEXT_BOLD "Adivinha:           " COLOR_RESET COLOR_YELLOW "%lu pontos\n" COLOR_RESET, player.pontos_guess);
-    printf(TEXT_BOLD "BlackJack:          " COLOR_RESET COLOR_RED "%lu pontos\n" COLOR_RESET, player.blackjackPoints);
+    printf(TEXT_BOLD "Pedra, Papel, Tesoura: " COLOR_RESET COLOR_RED "%lu pontos\n" COLOR_RESET, player.pedra_papel_tesouraPoints);
     printf(TEXT_BOLD "Jogo da Memória:    " COLOR_RESET COLOR_MAGENTA "%lu pontos\n" COLOR_RESET, player.memoryPoints);
 }
 

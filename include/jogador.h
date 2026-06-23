@@ -8,7 +8,7 @@ typedef struct
     unsigned short int id;
     char nome[MAX_NAME_LENGTH];
     unsigned long int pontos_guess;
-    unsigned long int blackjackPoints;
+    unsigned long int pedra_papel_tesouraPoints;
     unsigned long int memoryPoints;
 
 } Player;
