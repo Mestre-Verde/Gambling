@@ -11,7 +11,7 @@ void stringCopy(const char inicial[], char final[]);
 /**
  * @brief Imprime uma string caractere a caractere até '\0'.
  *
- * Diferente de puts(), não adiciona automaticamente '\n'.
+ * Diferente de puts(), não adiciona automaticamente '\\n'.
  * Evita overhead de formatação do printf().
  *
  * @param str String a imprimir

@@ -10,6 +10,6 @@
  * @param points ponteiro para a variavelq eu vai guardar os pontos
  * @return 0 = sucesso ; 1 = erro
  */
-int guess_main_process(const Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points);
+signed int guess_main_process(const Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points);
 
 #endif

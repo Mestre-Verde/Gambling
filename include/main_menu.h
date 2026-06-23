@@ -10,11 +10,15 @@ typedef enum
 } MainMenuOption;
 
 /**
+ * @brief Obtem uma escolha do user
+ * @return Uma opção do menu
+ */
+MainMenuOption getMainMenuChoice(void);
+
+/**
  * @brief Menu inicial.
  * @return 0 se correu tudo bem, 1 se houve um problema.
  */
 signed int mainMenu();
-
-MainMenuOption getMainMenuChoice(void);
 
 #endif

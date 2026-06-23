@@ -11,11 +11,15 @@ typedef enum
 } PlayerMenuOption;
 
 /**
+ * @brief Obtem uma opção do user.
+ * @return Uma opção do menu
+ */
+PlayerMenuOption getPlayerMenuChoice(void);
+
+/**
  * @brief Menu do jogador
  * @return 0 se correu tudo bem, 1 se houve algum problema
  */
 signed int playerMenu(void);
-
-PlayerMenuOption getPlayerMenuChoice(void);
 
 #endif

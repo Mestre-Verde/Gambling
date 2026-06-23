@@ -3,17 +3,20 @@
 
 #include "Engine.h"
 
-#define MAX_VICTORIES 3
+// Enum usado para representar as tres escolhas possiveis do jogo.
+// Em vez de usar numeros soltos no codigo, usamos nomes mais faceis de perceber.
+typedef enum
+{
+    PEDRA = 0,  // PEDRA fica associada ao valor 0
+    PAPEL = 1,  // PAPEL fica associado ao valor 1
+    TESOURA = 2 // TESOURA fica associada ao valor 2
 
-#define BASE_POINTS_EASY 100
-#define BASE_POINTS_MEDIUM 150
-#define BASE_POINTS_HARD 250
+} PedraPapelTesouraOption;
 
 /**
- * @brief Função principal do jogo blackjack.
- * @param difficulty Dificuldade selecionada para a ronda (define comportamento do dealer).
- * @param currentPoints Pontos atuais do jogador.
- * @param points Ponteiro onde serão guardados os pontos obtidos pelo jogador.
+ * @brief Funcao principal do jogo Pedra, Papel e Tesoura.
+ * @param currentPoints pontos atuais do jogador neste jogo.
+ * @param points ponteiro onde vao ser guardados os pontos ganhos nesta partida.
  * @return 0 = sucesso, 1 = erro
  */
 int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsigned long int *points);

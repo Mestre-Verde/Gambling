@@ -22,7 +22,7 @@ extern Player currentPlayer;
  * Protege contra subscrições pelo facto de escolher sempre um novo id para o novo jogador.
  * @return 0 se sucesso, 1 se houve um problema.
  */
-int buildPlayer(void);
+signed int buildPlayer(void);
 
 /**
  * @brief Imprime os valores de um Player
@@ -35,12 +35,12 @@ void showPlayerInfo(Player player, bool withLine);
  * @brief Função para escolher o jogador atual.
  * @return 0 se sucesso, 1 se ocorreu um erro
  */
-int choosePlayer(void);
+signed int choosePlayer(void);
 
 /**
  * @brief Função para escolher um jogador para remover.
  * @return 0 se sucesso, 1 se ocorreu um erro
  */
-int removePlayer(void);
+signed int removePlayer(void);
 
 #endif

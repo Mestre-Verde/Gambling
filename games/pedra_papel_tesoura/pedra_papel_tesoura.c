@@ -1,32 +1,31 @@
 
-#include <stdio.h>      // Biblioteca usada para printf() e puts()
-#include <stdbool.h>    // Biblioteca usada para bool, true e false
-#include <stdlib.h>     // Biblioteca usada para rand() e srand()
-#include <time.h>       // Biblioteca usada para time(), para gerar numeros aleatorios diferentes
+#include <stdio.h>   // Biblioteca usada para printf() e puts()
+#include <stdbool.h> // Biblioteca usada para bool, true e false
+#include <stdlib.h>  // Biblioteca usada para rand() e srand()
+#include <time.h>    // Biblioteca usada para time(), para gerar numeros aleatorios diferentes
 
 #include "pedra_papel_tesoura.h" // Header deste jogo. Tem MAX_VICTORIES e os pontos base
 #include "aux_func.h"            // Header com funcoes auxiliares, como readStrUserInput()
 #include "aux_string.h"          // Header com funcoes de strings, como printString() e stringCompareIgnoreCase()
 #include "colors.h"              // Header com as cores usadas no terminal
 
-#define MAXBUFFER_LEN 68 // Tamanho maximo da resposta: 67 caracteres + 1 para o '\0'
+#define MAX_VICTORIES 3
 
-// Enum usado para representar as tres escolhas possiveis do jogo.
-// Em vez de usar numeros soltos no codigo, usamos nomes mais faceis de perceber.
-typedef enum
-{
-    PEDRA = 0,   // PEDRA fica associada ao valor 0
-    PAPEL = 1,   // PAPEL fica associado ao valor 1
-    TESOURA = 2  // TESOURA fica associada ao valor 2
+#define BASE_POINTS_EASY 100
+#define BASE_POINTS_MEDIUM 150
+#define BASE_POINTS_HARD 250
 
-} PedraPapelTesouraOption;
+#define MAXBUFFER_LEN (67 + 1) // Tamanho maximo da resposta: 67 caracteres + 1 para o '\0'
 
-// Funcao principal do jogo Pedra, Papel e Tesoura.
-// currentPoints -> pontos atuais do jogador neste jogo.
-// points -> ponteiro onde vao ser guardados os pontos ganhos nesta partida.
+/**
+ * @brief Funcao principal do jogo Pedra, Papel e Tesoura.
+ * @param currentPoints pontos atuais do jogador neste jogo.
+ * @param points ponteiro onde vao ser guardados os pontos ganhos nesta partida.
+ * @return
+ */
 int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsigned long int *points)
 {
-    //variavel do numero de ronda 
+    // variavel do numero de ronda
     int n_ronda_atual = 1;
 
     // Contador das vitorias do jogador.
@@ -37,17 +36,8 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     // Tambem comeca em 0.
     int vitorias_computador = 0;
 
-    // Inicializa os pontos ganhos nesta execucao do jogo a 0.
-    // Assim garantimos que os pontos comecam sempre limpos.
-    *points = 0;
-
-    // Inicializa o gerador de numeros aleatorios.
-    // time(NULL) ajuda a fazer com que os numeros aleatorios sejam diferentes
-    // sempre que o programa e executado.
-    srand((unsigned int)time(NULL));
-
     // Titulo do jogo com cor.
-    printf(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
+    printString(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
 
     // Explicacao inicial da regra da melhor de 5.
     printf(COLOR_YELLOW "Melhor de 5: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES);
@@ -138,7 +128,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         case PAPEL:
             printString(COLOR_YELLOW "Papel\n" COLOR_RESET);
             break;
-     
+
         case TESOURA:
             printString(COLOR_PURPLE_SOFT "Tesoura\n" COLOR_RESET);
             break;
@@ -215,4 +205,3 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
     return 0; // retorna sucesso
 }
-
