@@ -34,6 +34,19 @@ unsigned long int calculateMemoryPoints(Difficulty difficulty)
     }
 }
 
+/**
+ * @brief Imprime uma sequencia de inteiros em uma linha.
+ * @param size Tamanho da sequência.
+ * @param sequence Sequancia a imprimir.
+ */
+void showSequence(const int size, int sequence[])
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%i ", sequence[i]);
+    }
+}
+
 int memory_game_main_process(Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points)
 {
     // Variavel para armazenar o valor de len da string
@@ -51,10 +64,7 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
     puts("===== MEMORY GAME =====");
     printf("Memoriza a sequência:");
     delay(1);
-    for (short i = 0; i < sequenceSize; i++)
-    {
-        printf("%i ", randonSequence[i]);
-    }
+    showSequence(sequenceSize, randonSequence);
     // obriga a imprimir a sequencia no terminal, pois este espera por um '\n' que não tem, visto que precisa de ser tudo em uma linha
     fflush(stdout);
     //  espera 3 segundos e apaga a sequencia da consola
@@ -100,19 +110,25 @@ int memory_game_main_process(Difficulty difficulty, const unsigned long int curr
         if (playerSequence[i] != randonSequence[i])
         {
             LOG_INFO("Erraste a sequência.");
+            printString("A sequencia correta era:");
+            showSequence(sequenceSize, randonSequence);
             return 0;
         }
     }
 
-    LOG_INFO("Acertaste a sequencia!");
-
     *points = calculateMemoryPoints(difficulty);
 
     createLine(50, '*');
-    printf("Pontos ganhos: %lu\n", *points);
-    printf("Pontos atuais: %lu  +\n", currentPoints);
+    puts(TEXT_BOLD COLOR_BRIGHT_GREEN "Acertaste a sequência!" COLOR_RESET);
+
+    printf("Pontos ganhos : " COLOR_BRIGHT_GREEN "%lu\n" COLOR_RESET, *points);
+    printf("Pontos atuais : " COLOR_BRIGHT_CYAN "%lu\n", currentPoints);
+    printf("               + %lu\n", *points);
     createLine(21, '-');
-    printf("Pontos totais: %lu\n", currentPoints + *points);
+    printf(TEXT_BOLD "Pontos totais : " COLOR_GOLD "%lu\n" COLOR_RESET, currentPoints + *points);
+
+    createLine(50, '*');
+    delay(2);
 
     return 0;
 }

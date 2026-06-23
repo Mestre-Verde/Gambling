@@ -20,11 +20,9 @@
 Difficulty chooseDifficulty(void)
 {
     const char MenuText[] =
-        "\nEscolha a dificuldade desta partida:\n" BG_GREEN COLOR_BLACK " 1 - Fácil\n" COLOR_RESET
-            BG_YELLOW COLOR_BLACK " 2 - Média\n" COLOR_RESET
-                BG_RED COLOR_BLACK " 3 - Difícil\n" COLOR_RESET COLOR_WHITE " 0 - Sair" COLOR_RESET;
+        "\nEscolha a dificuldade desta partida:\n" BG_GREEN COLOR_BLACK " 1 - Fácil" COLOR_RESET "\n" BG_YELLOW COLOR_BLACK " 2 - Média" COLOR_RESET "\n" BG_RED COLOR_WHITE " 3 - Difícil" COLOR_RESET "\n" COLOR_WHITE " 0 - Voltar ao menu\n" COLOR_RESET;
 
-    puts(MenuText);
+    printf("%s", MenuText);
 
     int choice = DIFFICULTY_UNKNOWN;
     if (readDigitUserInput("Insira a sua escolha: ", &choice))
@@ -80,7 +78,6 @@ int engineStartGame(GamesMenuOptions game)
             LOG_ERROR("Houve um problema com o jogo do galo!");
             return 1;
         }
-
         LOG_INFO("Processo do jogo do galo terminado com sucesso.");
         break;
 
@@ -101,13 +98,10 @@ int engineStartGame(GamesMenuOptions game)
         break;
 
     case MEMORY_GAME:
-        int memoryState = memory_game_main_process(difficulty, currentPlayer.memoryPoints, &points);
-
-        if (memoryState)
+        if (memory_game_main_process(difficulty, currentPlayer.memoryPoints, &points))
         {
             return 4;
         }
-
         LOG_INFO("Processo do Memory Game terminado com sucesso.");
         break;
 
@@ -118,11 +112,11 @@ int engineStartGame(GamesMenuOptions game)
 
     default:
         LOG_WARN("Jogo desconhecido entrou no engine.Valor:%i", game);
-        return 6;
+        return 5;
     }
 
     // se tiver pontos incrementa-os na secção respetiva
-    if (points)
+    if (points > 0)
     {
         LOG_DEBUG("Há pontos, a guardar no jogador.Nº de pontos:%lu", points);
 
@@ -147,5 +141,11 @@ int engineStartGame(GamesMenuOptions game)
             LOG_ERROR("Não foi possivel salvar o jogador na base de dados.");
         }
     }
+    else if (points < 0)
+    {
+        LOG_WARN("Detetados Pontos negativos! Jogo: %i |pontos: %lu.", game, points);
+        return 6;
+    }
+
     return 0;
 }

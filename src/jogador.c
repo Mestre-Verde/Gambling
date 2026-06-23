@@ -36,10 +36,10 @@ void showPlayerInfo(Player player, bool withLine)
     {
         createLine(50, '+');
     }
-    printf(TEXT_BOLD "Nome:               " COLOR_RESET COLOR_BRIGHT_GREEN "%s\n" COLOR_RESET, player.nome);
-    printf(TEXT_BOLD "Adivinha:           " COLOR_RESET COLOR_YELLOW "%lu pontos\n" COLOR_RESET, player.pontos_guess);
-    printf(TEXT_BOLD "Pedra, Papel, Tesoura: " COLOR_RESET COLOR_RED "%lu pontos\n" COLOR_RESET, player.pedra_papel_tesouraPoints);
-    printf(TEXT_BOLD "Jogo da Memória:    " COLOR_RESET COLOR_MAGENTA "%lu pontos\n" COLOR_RESET, player.memoryPoints);
+    printf(TEXT_BOLD "Nome:                     " COLOR_RESET COLOR_BRIGHT_GREEN "%s\n" COLOR_RESET, player.nome);
+    printf(TEXT_BOLD "Adivinha:                 " COLOR_RESET COLOR_YELLOW "%lu pontos\n" COLOR_RESET, player.pontos_guess);
+    printf(TEXT_BOLD "Pedra, Papel, Tesoura:    " COLOR_RESET COLOR_RED "%lu pontos\n" COLOR_RESET, player.pedra_papel_tesouraPoints);
+    printf(TEXT_BOLD "Jogo da Memória:          " COLOR_RESET COLOR_MAGENTA "%lu pontos\n" COLOR_RESET, player.memoryPoints);
 }
 
 int choosePlayer(void)

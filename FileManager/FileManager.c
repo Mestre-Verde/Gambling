@@ -117,7 +117,7 @@ int listPlayersInDataBase(bool withIndex, char PATH[])
     {
         if (withIndex)
         {
-            printf("\n[%u]", player.id);
+            printf("\n" COLOR_BRIGHT_CYAN "[%u]" COLOR_RESET, player.id);
         }
         showPlayerInfo(player, 1);
     }

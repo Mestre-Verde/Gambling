@@ -6,10 +6,10 @@ De resto, este ficheiro é o jogo do galo normal.
 */
 #include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
 
 #include "jogo_do_galo.h"
 #include "aux_func.h"
+#include "colors.h"
 
 #define MAX 3
 
@@ -23,9 +23,14 @@ int noWinnerCount = 0;
 void printPlayCounts(void)
 {
     createLine('#', 30);
-    printf("Vitórias do jogador X: %i\n", jogadorXWinnes);
-    printf("Vitórias do jogador O: %i\n", jogadorOWinnes);
-    printf("Empates: %i\n", noWinnerCount);
+    printf(BG_BLUE COLOR_BRIGHT_WHITE " Vitórias do jogador X " COLOR_RESET " %i", jogadorXWinnes);
+    putchar('\n');
+
+    printf(BG_MAGENTA COLOR_BRIGHT_WHITE " Vitórias do jogador O " COLOR_RESET " %i", jogadorOWinnes);
+    putchar('\n');
+
+    printf(BG_YELLOW COLOR_BLACK " Empates " COLOR_RESET " %i", noWinnerCount);
+    putchar('\n');
     createLine('#', 30);
 }
 
@@ -212,7 +217,7 @@ char chooseTheFirstPlayer()
 
 int galoMainProcess(void)
 {
-    puts("!!!WELCOME TO THE GAME!!");
+    puts("\n!!!WELCOME TO THE GAME!!");
 
     while (1)
     {
@@ -257,7 +262,7 @@ int galoMainProcess(void)
                 break;
             }
 
-            // troca de jogador no final de 1 jogada.
+            // troca de jogador no final da jogada.
             playerTurn = (playerTurn == jogadorX) ? jogadorO : jogadorX;
         }
         // ok agora que ou o tabuleiro ficou cheio ou algum teve 3 de uma vez verifica-se
@@ -277,9 +282,15 @@ int galoMainProcess(void)
             continue;
         }
 
-        createLine(33, '!');
-        printf("!!!O jogador \"%c\" ganhou o jogo!!!\n", winner);
-        createLine(33, '!');
+        printf(COLOR_BRIGHT_RED);
+        createLine(35, '!');
+        printf(COLOR_RESET);
+
+        printf(TEXT_BOLD COLOR_BRIGHT_GREEN "!!! O jogador \"%c\" ganhou o jogo !!!" COLOR_RESET "\n", winner);
+
+        printf(COLOR_BRIGHT_RED);
+        createLine(35, '!');
+        printf(COLOR_RESET);
         printPlayCounts();
     }
 }

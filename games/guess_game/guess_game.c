@@ -119,12 +119,14 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
 {
     // define o numero máximo que pode gerar
     const bool isHard = difficulty == HARD;
-    int maxNumber = isHard ? 200 : (int)difficulty * 50;
+    int maxNumber = isHard ? 200
+                           : (int)difficulty * 50;
 
     const int MIN_VALUE = 1; // valor minimo
 
     // Variavel com o valor a adivinhar
-    int secretNumber = isHard ? rand() % ((maxNumber - 1) * 100 + MIN_VALUE) + 100 : rand() % maxNumber + 1;
+    int secretNumber = isHard ? rand() % ((maxNumber - 1) * 100 + MIN_VALUE) + 100
+                              : rand() % maxNumber + 1;
 
     bool guessed = false; // variavel que guarda o valor se o jogador advinhou
     int attemptsUsed = 0; // contador de tentativas
@@ -141,7 +143,7 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
     }
     while (!guessed)
     {
-        // LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | isHard: %d", secretNumber, maxNumber, attemptsUsed, isHard);
+        LOG_DEBUG("secret number: %d | maxNumber:%i |attemptsUsed:%i | isHard: %d", secretNumber, maxNumber, attemptsUsed, isHard);
 
         // var para guardar a entrada do user.
         int guess = 0;
@@ -174,8 +176,7 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
         }
         else
         {
-            // guarda a entrada do user.
-            int inputStatus = readDigitUserInput("Insira o seu palpite(-1 para sair):", &guess);
+            int inputStatus = readDigitUserInput("Insira o seu palpite(-1 para sair):", &guess); // guarda a entrada do user.
             switch (inputStatus)
             {
             case -1:
@@ -224,11 +225,10 @@ int guess_main_process(const Difficulty difficulty, const unsigned long int curr
             }
 
             createLine(50, '#');
-            puts(COLOR_BRIGHT_GREEN "Parabéns! Advinhaste o número!" COLOR_RESET);
-
-            printf("Nº de tentativas: %d\n", attemptsUsed);
-            printf("Pontos ganhos: %lu\n", *points);
-            printf("Pontos totais do jogador no Guess Game: %lu\n", currentPoints + *points);
+            puts(BG_GREEN COLOR_BLACK TEXT_BOLD " Parabéns! Adivinhaste o número! " COLOR_RESET);
+            printf(COLOR_BRIGHT_WHITE "Nº de tentativas: " COLOR_GOLD "%d\n" COLOR_RESET, attemptsUsed);
+            printf(COLOR_BRIGHT_WHITE "Pontos ganhos: " COLOR_BRIGHT_GREEN "%lu\n" COLOR_RESET, *points);
+            printf(COLOR_BRIGHT_WHITE "Pontos totais do jogador no Guess Game: " COLOR_BRIGHT_CYAN "%lu\n" COLOR_RESET, currentPoints + *points);
             createLine(50, '#');
 
             guessed = true;
