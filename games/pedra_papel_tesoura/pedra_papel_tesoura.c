@@ -17,12 +17,6 @@
 
 #define MAXBUFFER_LEN (67 + 1) // Tamanho maximo da resposta: 67 caracteres + 1 para o '\0'
 
-/**
- * @brief Funcao principal do jogo Pedra, Papel e Tesoura.
- * @param currentPoints pontos atuais do jogador neste jogo.
- * @param points ponteiro onde vao ser guardados os pontos ganhos nesta partida.
- * @return
- */
 int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsigned long int *points)
 {
     // variavel do numero de ronda
