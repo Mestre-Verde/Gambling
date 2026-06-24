@@ -124,7 +124,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
                  (escolha_utilizador == PAPEL && botChoice == PEDRA) ||
                  (escolha_utilizador == TESOURA && botChoice == PAPEL)) // Aqui estao as tres situacoes em que o jogador ganha:
         {
-            printString(COLOR_BRIGHT_GREEN "Ganhaste a ronda!\n" COLOR_RESET);
+            printString(COLOR_BRIGHT_GREEN "\nGanhaste a ronda!\n" COLOR_RESET);
             // Aumenta 1 vitoria ao jogador.
             playerWins++;
 
@@ -133,7 +133,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         }
         else // Se nao foi empate e o jogador nao ganhou, entao o computador ganhou a ronda.
         {
-            printString(COLOR_BRIGHT_RED "O computador ganhou a ronda!\n" COLOR_RESET);
+            printString(COLOR_BRIGHT_RED "\nO computador ganhou a ronda!\n" COLOR_RESET);
 
             // Aumenta 1 vitoria ao computador.
             botWins++;
