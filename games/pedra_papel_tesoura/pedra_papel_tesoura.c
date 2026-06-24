@@ -11,15 +11,25 @@
 
 #define MAX_VICTORIES 3
 
-#define BASE_POINTS_EASY 100
-#define BASE_POINTS_MEDIUM 150
-#define BASE_POINTS_HARD 250
+#define BASE_POINTS 50
+
+#define RPS_MAX_LEN (7 + 1)
 
 #define MAXBUFFER_LEN (67 + 1) // Tamanho maximo da resposta: 67 caracteres + 1 para o '\0'
 
+PedraPapelTesouraOption getBotChoice()
+{
+    // Gera a escolha aleatoria do computador.
+    int botRandomValue = rand() % 3; // rand() % 3 so pode dar 0, 1 ou 2.
+
+    return (PedraPapelTesouraOption)botRandomValue; // Converte o numero aleatorio do computador para o enum.
+}
+
 int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsigned long int *points)
 {
-    int correntRound = 1; // variavel que armazena a ronda atual
+    const char RPS[][RPS_MAX_LEN] = {"Pedra", "Papel", "Tesoura"};
+
+    int correntRound = 1; // contador de rondas
 
     int playerWins = 0; // Contador das vitorias do jogador. Comeca em 0 porque no inicio ninguem ganhou nenhuma ronda.
     int botWins = 0;    // Contador das vitorias do computador.
@@ -28,7 +38,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     printString(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
 
     // Explicacao do jogo incial.
-    printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES, MAX_VICTORIES);
+    printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES + 2, MAX_VICTORIES);
     delay(2);
 
     // O ciclo continua enquanto nenhum dos dois chegou ao numero maximo de vitorias.
@@ -43,130 +53,91 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
         printf(RPS_MENU_TEXT, (int)PEDRA, (int)PAPEL, (int)TESOURA);
 
-        // Gera a escolha aleatoria do computador.
-        int botRandomValue = rand() % 3; // rand() % 3 so pode dar 0, 1 ou 2.                                                     // Mostra ao jogador o que deve escrever.
+        // Mostra ao jogador o que deve escrever.
         // Buffer onde fica guardada a resposta escrita pelo utilizador.
-        char playerChoice[MAXBUFFER_LEN] = {0}; // Exemplo da palavra "pedra" em memoria:['p', 'e', 'd', 'r', 'a', '\0']
-        int estado = 0;
-        do
+        char playerInput[MAXBUFFER_LEN] = {0}; // Exemplo da palavra "pedra" em memoria:['p', 'e', 'd', 'r', 'a', '\0']
+
+        PedraPapelTesouraOption escolha_utilizador; // Variavel que vai guardar a escolha do utilizador convertida para enum.
+
+        // obtem uma entrada e válida
+        bool isValid = false;
+        while (!isValid)
         {
-            // Le a resposta do utilizador.
-            /*
-            // "Resposta"    -> texto mostrado antes do input
-            // MAXBUFFER_LEN -> tamanho maximo do buffer
-            // resposta      -> buffer onde a resposta vai ser guardada
-            // false         -> nao usa filtro de caracteres
-            / ""            -> lista de caracteres permitidos vazia porque o filtro esta desligado
-            */
-            int estado = readStrUserInput("Insira aqui a sua escolha:", MAXBUFFER_LEN, playerChoice, false, "");
-            switch (estado)
+            // obtem a entrada do user (string valida)
+            int estado = 0;
+            do
             {
-            case -1:
-                puts(COLOR_BRIGHT_RED "Entrada inválida;" COLOR_RESET);
-                break;
+                estado = readStrUserInput("Insira aqui a sua escolha", MAXBUFFER_LEN, playerInput, false, "");
+                switch (estado)
+                {
+                case -1: // invalida se for só enter.
+                    puts(COLOR_BRIGHT_RED "Entrada inválida;" COLOR_RESET);
+                    continue;
 
-            case 0:
-                break;
+                case 0: // tem uma string valida
+                    break;
 
-            case 1:
-                return 1;
+                case 1: // erro
+                    return 1;
 
-            default:
-                LOG_WARN("Estado desconhecido de readStrUserInput!. Valor:%i.", estado);
-                return 1;
+                default:
+                    LOG_WARN("Estado desconhecido de readStrUserInput!. Valor:%i.", estado);
+                    return 1;
+                }
+
+            } while (estado);
+            // chega um a string aprovada
+            // temos de verificar se string ==(ignore case)playerInput!LITERAL!, ou é igual ao valor de enum
+
+            int inputLen = stringLen(playerInput);
+            // filtra a string
+            if (stringCompareIgnoreCase(inputLen, playerInput, stringLen(RPS[0]), RPS[0]) || stringCompareIgnoreCase(inputLen, playerInput, 2, "0"))
+            {
+                escolha_utilizador = PEDRA;
             }
-        } while (estado);
-
-        // Variavel que vai guardar a escolha do utilizador ja convertida para enum.
-        PedraPapelTesouraOption escolha_utilizador;
-
-        // Converte o numero aleatorio do computador para o enum.
-        // Exemplo:
-        // se botRandomValue for 0, escolha_computador fica PEDRA.
-        // se botRandomValue for 1, escolha_computador fica PAPEL.
-        // se botRandomValue for 2, escolha_computador fica TESOURA.
-        PedraPapelTesouraOption escolha_computador = (PedraPapelTesouraOption)botRandomValue;
-
-        // Compara a resposta do utilizador com "PEDRA", ignorando maiusculas e minusculas.
-        // Assim aceita "pedra", "Pedra", "PEDRA", etc.
-        if (stringCompareIgnoreCase(playerChoice, "PEDRA") == 0)
-        {
-            escolha_utilizador = PEDRA;
+            else if (stringCompareIgnoreCase(inputLen, playerInput, stringLen(RPS[1]), RPS[1]) || stringCompareIgnoreCase(inputLen, playerInput, 2, "1"))
+            {
+                escolha_utilizador = PAPEL;
+            }
+            else if (stringCompareIgnoreCase(inputLen, playerInput, stringLen(RPS[2]), RPS[2]) || stringCompareIgnoreCase(inputLen, playerInput, 2, "2"))
+            {
+                escolha_utilizador = TESOURA;
+            }
+            else
+            {
+                puts(COLOR_BRIGHT_RED "Entrada inválida;" COLOR_RESET);
+            }
+            isValid = true;
         }
-        else if (stringCompareIgnoreCase(playerChoice, "PAPEL") == 0)
-        {
-            escolha_utilizador = PAPEL;
-        }
-        else if (stringCompareIgnoreCase(playerChoice, "TESOURA") == 0)
-        {
-            escolha_utilizador = TESOURA;
-        }
-        else
-        {
-            // Se nao for pedra, papel ou tesoura, a escolha e invalida.
-            puts(COLOR_BRIGHT_RED "Escolha invalida. Escolhe Pedra, Papel ou Tesoura." COLOR_RESET);
-            return 1; // retorna erro
-        }
-
-        // Mostra qual foi a escolha do computador.
-        printString(COLOR_CYAN "O computador escolheu: " COLOR_RESET);
-
-        // Usa switch para imprimir o nome da escolha do computador com cor diferente.
-        switch (escolha_computador)
-        {
-        case PEDRA:
-            printString(COLOR_GRAY_SOFT "Pedra\n" COLOR_RESET);
-            break;
-
-        case PAPEL:
-            printString(COLOR_YELLOW "Papel\n" COLOR_RESET);
-            break;
-
-        case TESOURA:
-            printString(COLOR_PURPLE_SOFT "Tesoura\n" COLOR_RESET);
-            break;
-        }
+        // mostra resumo da ronda
+        PedraPapelTesouraOption botChoice = getBotChoice();
+        printString("\nJogador\t\t|\tComputador\n");
+        printf("%s\t\tvs\t%s\n", RPS[(int)escolha_utilizador], RPS[(int)botChoice]);
 
         // Primeiro verifica se houve empate.
-        // Se as duas escolhas forem iguais, ninguem ganha a ronda.
-        if (escolha_utilizador == escolha_computador)
+        if (escolha_utilizador == botChoice)
         {
             printString(COLOR_BRIGHT_YELLOW "Empate!\n" COLOR_RESET);
-            correntRound++;
         }
-
-        // Aqui estao as tres situacoes em que o jogador ganha:
-        //
-        // PEDRA ganha a TESOURA
-        // PAPEL ganha a PEDRA
-        // TESOURA ganha a PAPEL
-        else if ((escolha_utilizador == PEDRA && escolha_computador == TESOURA) ||
-                 (escolha_utilizador == PAPEL && escolha_computador == PEDRA) ||
-                 (escolha_utilizador == TESOURA && escolha_computador == PAPEL))
+        else if ((escolha_utilizador == PEDRA && botChoice == TESOURA) ||
+                 (escolha_utilizador == PAPEL && botChoice == PEDRA) ||
+                 (escolha_utilizador == TESOURA && botChoice == PAPEL)) // Aqui estao as tres situacoes em que o jogador ganha:
         {
             printString(COLOR_BRIGHT_GREEN "Ganhaste a ronda!\n" COLOR_RESET);
-
             // Aumenta 1 vitoria ao jogador.
             playerWins++;
 
-            correntRound++;
-
             // Soma pontos ao total desta partida.
-            // Usa += porque os pontos devem acumular.
-            *points += BASE_POINTS_EASY;
+            *points += BASE_POINTS; // Usa += porque os pontos devem acumular.
         }
-
-        // Se nao foi empate e o jogador nao ganhou,
-        // entao o computador ganhou a ronda.
-        else
+        else // Se nao foi empate e o jogador nao ganhou, entao o computador ganhou a ronda.
         {
             printString(COLOR_BRIGHT_RED "O computador ganhou a ronda!\n" COLOR_RESET);
 
             // Aumenta 1 vitoria ao computador.
             botWins++;
-            correntRound++;
         }
-
+        correntRound++;
         // Mostra o resultado atual da melhor de 5.
         printf(TEXT_BOLD "Resultado: " COLOR_RESET);
         printf(COLOR_BRIGHT_GREEN "Jogador %d" COLOR_RESET, playerWins);
@@ -181,16 +152,16 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     // Se foi o jogador, ele ganhou a melhor de 5.
     if (playerWins == MAX_VICTORIES)
     {
-        printString(TEXT_BOLD COLOR_BRIGHT_GREEN "\nGanhaste a melhor de 5!\n" COLOR_RESET);
+        LOG_INFO("\nGanhaste a melhor de %i!\n", MAX_VICTORIES + 2);
 
         // Bonus final por ganhar a partida completa.
-        *points += BASE_POINTS_HARD;
+        *points += BASE_POINTS;
     }
-    else
+    else // o computador que ganhou.
     {
         // Se o jogador nao chegou a MAX_VICTORIES,
-        // entao foi o computador que ganhou.
-        printString(TEXT_BOLD COLOR_BRIGHT_RED "\nO computador ganhou a melhor de 5!\n" COLOR_RESET);
+        // entao foi
+        LOG_INFO("\nPerdeste a melhor de %i!\n", MAX_VICTORIES + 2);
     }
 
     // Mostra o total de pontos ganhos nesta execucao do jogo.

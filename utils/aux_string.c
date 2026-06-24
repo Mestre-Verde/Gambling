@@ -25,34 +25,18 @@ void stringCopy(const char inicial[], char final[])
     final[i] = '\0';
 }
 
-int stringCompareIgnoreCase(const char str1[], const char str2[])
+int stringCompareIgnoreCase(int str1Len, const char str1[str1Len], int str2Len, const char str2[str2Len])
 {
-    for (int i = 0; str1[i] != 0; i++)
-    {
-        // variaveis a armazenar lower ou upper
-        char str11 = toLower(str1[i]);
-        char str22 = toLower(str2[i]);
+    if (str1Len != str2Len)
+        return 0;
 
-        // verifica se são iguais
-        /*
-        if (str11 == str22)
-        {
-            LOG_DEBUG("Caracter lido é igual: %c,%c", str11, str22);
-        }
-        else
-        {
-            LOG_DEBUG("Caracter lido não é igual: %c,%c", str11, str22);
+    for (int i = 0; i < str1Len; i++)
+    {
+        if (toLower(str1[i]) != toLower(str2[i]))
             return 1;
-        }
-            */
-        // verifica se são difernetes
-        if (str11 != str22)
-        {
-            LOG_DEBUG("Caracter lido não é igual: %c,%c", str11, str22);
-            return 1;
-        }
     }
-    return 0;
+
+    return 1;
 }
 
 void printString(const char str[])
@@ -87,6 +71,9 @@ void printHex(int strLen, char str[strLen])
 int stringLen(const char s[])
 {
     int i = 0;
-    while (s[i]){i++;}
+    while (s[i])
+    {
+        i++;
+    }
     return i += 1;
 }
