@@ -44,6 +44,7 @@
 #define COLOR_BRIGHT_WHITE "\033[97m"
 
 // Fundo
+// para usar background deia reset antes de colocar \n
 #define BG_BLACK "\033[40m"
 #define BG_RED "\033[41m"
 #define BG_GREEN "\033[42m"

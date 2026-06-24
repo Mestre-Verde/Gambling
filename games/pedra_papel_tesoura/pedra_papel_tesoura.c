@@ -19,57 +19,46 @@
 
 int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsigned long int *points)
 {
-    // variavel do numero de ronda
-    int n_ronda_atual = 1;
+    int correntRound = 1; // variavel que armazena a ronda atual
 
-    // Contador das vitorias do jogador.
-    // Comeca em 0 porque no inicio ninguem ganhou nenhuma ronda.
-    int vitorias_jogador = 0;
-
-    // Contador das vitorias do computador.
-    // Tambem comeca em 0.
-    int vitorias_computador = 0;
+    int playerWins = 0; // Contador das vitorias do jogador. Comeca em 0 porque no inicio ninguem ganhou nenhuma ronda.
+    int botWins = 0;    // Contador das vitorias do computador.
 
     // Titulo do jogo com cor.
     printString(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
 
-    // Explicacao inicial da regra da melhor de 3.
+    // Explicacao do jogo incial.
     printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES, MAX_VICTORIES);
+    delay(2);
 
     // O ciclo continua enquanto nenhum dos dois chegou ao numero maximo de vitorias.
     // MAX_VICTORIES deve estar definido no ficheiro .h como 3.
     // Como e uma melhor de 5, quem chegar primeiro a 3 vitorias ganha.
-    while (vitorias_jogador < MAX_VICTORIES && vitorias_computador < MAX_VICTORIES)
+    while (playerWins < MAX_VICTORIES && botWins < MAX_VICTORIES)
     {
         const char RPS_MENU_TEXT[] =
-            COLOR_BRIGHT_WHITE "Escolhe " COLOR_RESET COLOR_GRAY_SOFT "Pedra" COLOR_RESET COLOR_BRIGHT_WHITE ", " COLOR_RESET COLOR_YELLOW "Papel" COLOR_RESET COLOR_BRIGHT_WHITE " ou " COLOR_RESET COLOR_PURPLE_SOFT "Tesoura\n" COLOR_RESET;
-        // Buffer onde fica guardada a resposta escrita pelo utilizador.
-        // Exemplo da palavra "pedra" em memoria:
-        // ['p', 'e', 'd', 'r', 'a', '\0']
-        char resposta[MAXBUFFER_LEN] = {0};
+            COLOR_BRIGHT_WHITE "Escolhe " COLOR_RESET COLOR_GRAY_SOFT "Pedra(%i)" COLOR_RESET COLOR_BRIGHT_WHITE ", " COLOR_RESET COLOR_YELLOW "Papel(%i)" COLOR_RESET COLOR_BRIGHT_WHITE " ou " COLOR_RESET COLOR_PURPLE_SOFT "Tesoura(%i).\n" COLOR_RESET;
+
+        printf(TEXT_BOLD COLOR_SKY_BLUE "\n--- %dª RONDA ---\n" COLOR_RESET, correntRound); // Mostra o inicio de uma nova ronda.
+
+        printf(RPS_MENU_TEXT, (int)PEDRA, (int)PAPEL, (int)TESOURA);
 
         // Gera a escolha aleatoria do computador.
-        // rand() % 3 so pode dar 0, 1 ou 2.
-        // 0 = PEDRA, 1 = PAPEL, 2 = TESOURA.
-        int result_random = rand() % 3;
-
-        // Mostra o inicio de uma nova ronda.
-        printf(TEXT_BOLD COLOR_SKY_BLUE "\n--- %dª RONDA ---\n" COLOR_RESET, n_ronda_atual);
-
-        // Mostra ao jogador o que deve escrever.
-        printString(RPS_MENU_TEXT);
-
+        int botRandomValue = rand() % 3; // rand() % 3 so pode dar 0, 1 ou 2.                                                     // Mostra ao jogador o que deve escrever.
+        // Buffer onde fica guardada a resposta escrita pelo utilizador.
+        char playerChoice[MAXBUFFER_LEN] = {0}; // Exemplo da palavra "pedra" em memoria:['p', 'e', 'd', 'r', 'a', '\0']
         int estado = 0;
         do
         {
             // Le a resposta do utilizador.
-            //
+            /*
             // "Resposta"    -> texto mostrado antes do input
             // MAXBUFFER_LEN -> tamanho maximo do buffer
             // resposta      -> buffer onde a resposta vai ser guardada
             // false         -> nao usa filtro de caracteres
-            // ""            -> lista de caracteres permitidos vazia porque o filtro esta desligado
-            int estado = readStrUserInput("Resposta", MAXBUFFER_LEN, resposta, false, "");
+            / ""            -> lista de caracteres permitidos vazia porque o filtro esta desligado
+            */
+            int estado = readStrUserInput("Insira aqui a sua escolha:", MAXBUFFER_LEN, playerChoice, false, "");
             switch (estado)
             {
             case -1:
@@ -93,22 +82,22 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
         // Converte o numero aleatorio do computador para o enum.
         // Exemplo:
-        // se result_random for 0, escolha_computador fica PEDRA.
-        // se result_random for 1, escolha_computador fica PAPEL.
-        // se result_random for 2, escolha_computador fica TESOURA.
-        PedraPapelTesouraOption escolha_computador = (PedraPapelTesouraOption)result_random;
+        // se botRandomValue for 0, escolha_computador fica PEDRA.
+        // se botRandomValue for 1, escolha_computador fica PAPEL.
+        // se botRandomValue for 2, escolha_computador fica TESOURA.
+        PedraPapelTesouraOption escolha_computador = (PedraPapelTesouraOption)botRandomValue;
 
         // Compara a resposta do utilizador com "PEDRA", ignorando maiusculas e minusculas.
         // Assim aceita "pedra", "Pedra", "PEDRA", etc.
-        if (stringCompareIgnoreCase(resposta, "PEDRA") == 0)
+        if (stringCompareIgnoreCase(playerChoice, "PEDRA") == 0)
         {
             escolha_utilizador = PEDRA;
         }
-        else if (stringCompareIgnoreCase(resposta, "PAPEL") == 0)
+        else if (stringCompareIgnoreCase(playerChoice, "PAPEL") == 0)
         {
             escolha_utilizador = PAPEL;
         }
-        else if (stringCompareIgnoreCase(resposta, "TESOURA") == 0)
+        else if (stringCompareIgnoreCase(playerChoice, "TESOURA") == 0)
         {
             escolha_utilizador = TESOURA;
         }
@@ -143,7 +132,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         if (escolha_utilizador == escolha_computador)
         {
             printString(COLOR_BRIGHT_YELLOW "Empate!\n" COLOR_RESET);
-            n_ronda_atual++;
+            correntRound++;
         }
 
         // Aqui estao as tres situacoes em que o jogador ganha:
@@ -158,9 +147,9 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
             printString(COLOR_BRIGHT_GREEN "Ganhaste a ronda!\n" COLOR_RESET);
 
             // Aumenta 1 vitoria ao jogador.
-            vitorias_jogador++;
+            playerWins++;
 
-            n_ronda_atual++;
+            correntRound++;
 
             // Soma pontos ao total desta partida.
             // Usa += porque os pontos devem acumular.
@@ -174,15 +163,15 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
             printString(COLOR_BRIGHT_RED "O computador ganhou a ronda!\n" COLOR_RESET);
 
             // Aumenta 1 vitoria ao computador.
-            vitorias_computador++;
-            n_ronda_atual++;
+            botWins++;
+            correntRound++;
         }
 
         // Mostra o resultado atual da melhor de 5.
         printf(TEXT_BOLD "Resultado: " COLOR_RESET);
-        printf(COLOR_BRIGHT_GREEN "Jogador %d" COLOR_RESET, vitorias_jogador);
+        printf(COLOR_BRIGHT_GREEN "Jogador %d" COLOR_RESET, playerWins);
         printf(COLOR_WHITE " / " COLOR_RESET);
-        printf(COLOR_BRIGHT_RED "Computador %d\n" COLOR_RESET, vitorias_computador);
+        printf(COLOR_BRIGHT_RED "Computador %d\n" COLOR_RESET, botWins);
 
         // Mostra os pontos acumulados nesta partida.
         printf(COLOR_GOLD "Pontos atuais neste jogo: %lu\n" COLOR_RESET, *points);
@@ -190,7 +179,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
     // Quando o while acaba, significa que alguem chegou a MAX_VICTORIES.
     // Se foi o jogador, ele ganhou a melhor de 5.
-    if (vitorias_jogador == MAX_VICTORIES)
+    if (playerWins == MAX_VICTORIES)
     {
         printString(TEXT_BOLD COLOR_BRIGHT_GREEN "\nGanhaste a melhor de 5!\n" COLOR_RESET);
 
