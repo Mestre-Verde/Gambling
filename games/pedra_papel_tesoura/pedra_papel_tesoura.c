@@ -46,12 +46,20 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     // Como e uma melhor de 5, quem chegar primeiro a 3 vitorias ganha.
     while (playerWins < MAX_VICTORIES && botWins < MAX_VICTORIES)
     {
-        const char RPS_MENU_TEXT[] =
-            COLOR_BRIGHT_WHITE "Escolhe " COLOR_RESET COLOR_GRAY_SOFT "Pedra(%i)" COLOR_RESET COLOR_BRIGHT_WHITE ", " COLOR_RESET COLOR_YELLOW "Papel(%i)" COLOR_RESET COLOR_BRIGHT_WHITE " ou " COLOR_RESET COLOR_PURPLE_SOFT "Tesoura(%i).\n" COLOR_RESET;
+        printf("\n");
+        printf(TEXT_BOLD COLOR_SKY_BLUE "========================================\n" COLOR_RESET);
+        printf(TEXT_BOLD COLOR_BRIGHT_CYAN "              RONDA %d\n" COLOR_RESET, correntRound);
+        printf(TEXT_BOLD COLOR_SKY_BLUE "========================================\n" COLOR_RESET);
 
-        printf(TEXT_BOLD COLOR_SKY_BLUE "\n--- %dª RONDA ---\n" COLOR_RESET, correntRound); // Mostra o inicio de uma nova ronda.
+        printf(COLOR_BRIGHT_WHITE "Escolhe uma opção:\n" COLOR_RESET);
 
-        printf(RPS_MENU_TEXT, (int)PEDRA, (int)PAPEL, (int)TESOURA);
+        printf("  " COLOR_GRAY_SOFT "[0] Pedra\n" COLOR_RESET);
+        printf("  " COLOR_YELLOW "[1] Papel\n" COLOR_RESET);
+        printf("  " COLOR_PURPLE_SOFT "[2] Tesoura\n" COLOR_RESET);
+
+        printf(COLOR_GRAY_SOFT "\nTambem podes escrever: pedra, papel ou tesoura.\n" COLOR_RESET);
+
+        printf(TEXT_BOLD COLOR_SKY_BLUE "----------------------------------------\n" COLOR_RESET);
 
         // Mostra ao jogador o que deve escrever.
         // Buffer onde fica guardada a resposta escrita pelo utilizador.
@@ -112,8 +120,10 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         }
         // mostra resumo da ronda
         PedraPapelTesouraOption botChoice = getBotChoice();
-        printString("\nJogador\t\t|\tComputador\n");
-        printf("%s\t\tvs\t%s\n", RPS[(int)escolha_utilizador], RPS[(int)botChoice]);
+        printf(TEXT_BOLD COLOR_BRIGHT_CYAN "\n----- JOGADA -----\n" COLOR_RESET);
+        printf(COLOR_BRIGHT_GREEN "Jogador:    %s\n" COLOR_RESET, RPS[(int)escolha_utilizador]);
+        printf(COLOR_BRIGHT_RED "Computador: %s\n" COLOR_RESET, RPS[(int)botChoice]);
+        printf(TEXT_BOLD COLOR_BRIGHT_CYAN "------------------\n" COLOR_RESET);
 
         // Primeiro verifica se houve empate.
         if (escolha_utilizador == botChoice)
@@ -140,13 +150,11 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
         }
         correntRound++;
         // Mostra o resultado atual da melhor de 5.
-        printf(TEXT_BOLD "Resultado: " COLOR_RESET);
-        printf(COLOR_BRIGHT_GREEN "Jogador %d" COLOR_RESET, playerWins);
-        printf(COLOR_WHITE " / " COLOR_RESET);
-        printf(COLOR_BRIGHT_RED "Computador %d\n" COLOR_RESET, botWins);
-
-        // Mostra os pontos acumulados nesta partida.
-        printf(COLOR_GOLD "Pontos atuais neste jogo: %lu\n" COLOR_RESET, *points);
+        printf(TEXT_BOLD COLOR_BRIGHT_CYAN "\n----- MARCADOR -----\n" COLOR_RESET);
+        printf(COLOR_BRIGHT_GREEN "Jogador:    %d\n" COLOR_RESET, playerWins);
+        printf(COLOR_BRIGHT_RED "Computador: %d\n" COLOR_RESET, botWins);
+        printf(COLOR_GOLD "Pontos:     %lu\n" COLOR_RESET, *points); // Mostra os pontos acumulados nesta partida
+        printf(TEXT_BOLD COLOR_BRIGHT_CYAN "--------------------\n" COLOR_RESET);
     }
 
     // Quando o while acaba, significa que alguem chegou a MAX_VICTORIES.
