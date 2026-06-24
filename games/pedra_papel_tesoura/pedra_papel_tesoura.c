@@ -106,6 +106,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
             else
             {
                 puts(COLOR_BRIGHT_RED "Entrada inválida;" COLOR_RESET);
+                continue;
             }
             isValid = true;
         }
