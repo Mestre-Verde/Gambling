@@ -23,9 +23,9 @@ GamesMenuOptions getGamesMenuOption(void)
         "\n===== MENU JOGOS =====" COLOR_RESET
         "\t|%s|\n" COLOR_RESET COLOR_BRIGHT_WHITE
         "1 - Jogo do Galo\n"
-        "2 - Jogo de adivinha\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "2 - Jogo de Adivinha\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
         "3 - Pedra Papel Tesoura " COLOR_YELLOW "[%lu]\n" COLOR_RESET
-        "4 - Memory game\t\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
+        "4 - Jogo da Memória\t" COLOR_YELLOW "[%lu]\n" COLOR_RESET
         "0 - Voltar\n" COLOR_RESET;
 
     printf(menuText, currentPlayer.id == 0 ? "Nenhum" : currentPlayer.nome, currentPlayer.pontos_guess, currentPlayer.pedra_papel_tesouraPoints, currentPlayer.memoryPoints);

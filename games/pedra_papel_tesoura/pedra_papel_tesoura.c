@@ -10,6 +10,7 @@
 #include "colors.h"              // Header com as cores usadas no terminal
 
 #define MAX_VICTORIES 3
+#define MELHOR_DE (MAX_VICTORIES * 2 - 1)
 
 #define BASE_POINTS 50
 
@@ -38,8 +39,7 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     printString(TEXT_BOLD COLOR_BRIGHT_CYAN "\n===== PEDRA, PAPEL E TESOURA =====\n" COLOR_RESET);
 
     // Explicacao do jogo incial.
-    printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MAX_VICTORIES + 2, MAX_VICTORIES);
-    delay(2);
+    printf(COLOR_YELLOW "Melhor de %i: quem chegar primeiro a %d vitorias ganha.\n" COLOR_RESET, MELHOR_DE, MAX_VICTORIES);
 
     // O ciclo continua enquanto nenhum dos dois chegou ao numero maximo de vitorias.
     // MAX_VICTORIES deve estar definido no ficheiro .h como 3.
@@ -53,9 +53,9 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
 
         printf(COLOR_BRIGHT_WHITE "Escolhe uma opção:\n" COLOR_RESET);
 
-        printf("  " COLOR_GRAY_SOFT "[0] Pedra\n" COLOR_RESET);
-        printf("  " COLOR_YELLOW "[1] Papel\n" COLOR_RESET);
-        printf("  " COLOR_PURPLE_SOFT "[2] Tesoura\n" COLOR_RESET);
+        printf(COLOR_GRAY_SOFT "\t[0] Pedra\n" COLOR_RESET);
+        printf(COLOR_YELLOW "\t[1] Papel\n" COLOR_RESET);
+        printf(COLOR_PURPLE_SOFT "\t[2] Tesoura\n" COLOR_RESET);
 
         printf(COLOR_GRAY_SOFT "\nTambem podes escrever: pedra, papel ou tesoura.\n" COLOR_RESET);
 
@@ -161,16 +161,12 @@ int main_process_pedra_papel_tesoura(const unsigned long int currentPoints, unsi
     // Se foi o jogador, ele ganhou a melhor de 5.
     if (playerWins == MAX_VICTORIES)
     {
-        LOG_INFO("\nGanhaste a melhor de %i!\n", MAX_VICTORIES + 2);
-
-        // Bonus final por ganhar a partida completa.
-        *points += BASE_POINTS;
+        LOG_INFO("\nGanhaste a melhor de %i!\n", MELHOR_DE);
+        *points += BASE_POINTS; // Bonus final por ganhar a partida completa.
     }
     else // o computador que ganhou.
     {
-        // Se o jogador nao chegou a MAX_VICTORIES,
-        // entao foi
-        LOG_INFO("\nPerdeste a melhor de %i!\n", MAX_VICTORIES + 2);
+        LOG_INFO("\nPerdeste a melhor de %i!\n", MELHOR_DE);
     }
 
     // Mostra o total de pontos ganhos nesta execucao do jogo.

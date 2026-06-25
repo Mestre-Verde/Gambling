@@ -4,11 +4,11 @@
 #include "Engine.h"
 
 /**
- * @brief Processo principal do jogo da memória
- * @param difficulty Dificultade do jogo atual
- * @param currentPoints pontos atuais do jogador.
- * @param points pontos a incrementar
- * @return 0 = sucesso, 1 = erro
+ * @brief Função principal do Memory Game. Que gera uma sequência aleatória, mostra ao jogador, lê a sequência do jogador e verifica se está correta.
+ * @param difficulty dificuldade do jogo (EASY, MEDIUM, HARD)
+ * @param currentPoints pontos atuais do jogador
+ * @param points ponteiro para a variável que armazenará os pontos ganhos nesta partida
+ * @return 0 = sucesso ; 1 = erro
  */
 int memory_game_main_process(Difficulty difficulty, const unsigned long int currentPoints, unsigned long int *points);
 

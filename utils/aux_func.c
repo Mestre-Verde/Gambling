@@ -48,7 +48,7 @@ void createLine(short n, char c)
 
 void clearStdinTrash(void)
 {
-    LOG_DEBUG("Detetado caracteres a mais em stdin. A limpar...");
+    // LOG_DEBUG("Detetado caracteres a mais em stdin. A limpar...");
     for (int c = 0; c != '\n' && c != EOF;)
     {
         c = getchar();
@@ -200,8 +200,8 @@ int readStrUserInput(const char prompt[], const size_t varSize, char var[varSize
         return 1;
     }
 
-    LOG_DEBUG("Entrada recebida:");
-    printHex(varSize, buffer);
+    // LOG_DEBUG("Entrada recebida:");
+    // printHex(varSize, buffer);
 
     //  obtem a posição do enter
     int index = findCharInStr(buffer, '\n');

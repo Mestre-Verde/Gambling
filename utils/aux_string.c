@@ -25,8 +25,7 @@ void stringCopy(const char inicial[], char final[])
     final[i] = '\0';
 }
 
-int stringCompareIgnoreCase(int str1Len, const char str1[str1Len],
-                            int str2Len, const char str2[str2Len])
+int stringCompareIgnoreCase(int str1Len, const char str1[str1Len], int str2Len, const char str2[str2Len])
 {
     if (str1Len != str2Len)
         return 0;

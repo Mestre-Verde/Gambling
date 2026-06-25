@@ -11,16 +11,17 @@ De resto, este ficheiro é o jogo do galo normal.
 #include "aux_func.h"
 #include "colors.h"
 
-#define MAX 3
+#define MAX 3 // define o tamanho do tabuleiro como 3x3
 
-const char jogadorX = 'X';
-const char jogadorO = 'O';
+const char jogadorX = 'X'; // define o caracter do jogador X
+const char jogadorO = 'O'; // define o caracter do jogador O
 
-int jogadorXWinnes = 0;
-int jogadorOWinnes = 0;
-int noWinnerCount = 0;
+// contadores globais para guardar o hitorico de vitórias de cada jogador e o número de empates
+int jogadorXWinnes = 0; //  vitorias do jogador X
+int jogadorOWinnes = 0; // vitorias do jogador O
+int noWinnerCount = 0; // empates
 
-void printPlayCounts(void)
+void printPlayCounts(void) // função que imprime no terminal o número de vitórias de cada jogador e o número de empates no final do jogo
 {
     createLine('#', 30);
     printf(BG_BLUE COLOR_BRIGHT_WHITE " Vitórias do jogador X " COLOR_RESET " %i", jogadorXWinnes);
@@ -39,30 +40,31 @@ void printPlayCounts(void)
  * @param M coloque aqui o array que pretente mostrar
  * @param showContent 0 para mostrar as coordenadas, 1 para mostrar o conteudo em cada membro do array.
  */
-void printMatrix2D(char M[MAX][MAX], short int showContent)
+void printMatrix2D(char M[MAX][MAX], short int showContent) // função que imprime o tabuleiro, ShowContent = 0 -> mostra as coordenadas, ShowContent = 1 -> mostra o conteudo do tabuleiro(x ou o)
 {
-    for (int linha = 0; linha < MAX; linha++)
+    for (int linha = 0; linha < MAX; linha++) // este for percorre as linhas do tabuleiro, e para cada linha, percorre as colunas, imprimindo o conteúdo de cada célula do tabuleiro. como MAX = 3, vai percorrer as linhas 0, 1 , 2 e para cada linha, vai percorrer as colunas 0, 1, 2, imprimindo o conteúdo de cada célula do tabuleiro.
     {
         if (showContent)
         {
-            createLine(7, '-');
+            createLine(7, '-'); // ex : 7 vezes o caracter '-' -> -------
         }
         else
         {
-            createLine(13, '-');
+            createLine(13, '-'); // ex : 13 vezes o caracter '-' -> -------------
         }
-        putchar('|');
-        for (int coluna = 0; coluna < MAX; coluna++)
+        putchar('|'); // separador vertical 
+
+        for (int coluna = 0; coluna < MAX; coluna++) // este for percorre percorre as linhas do tabuleiro, lovo vai percorrer 3 colunas
         {
             if (showContent)
-                printf("%c|", M[linha][coluna]);
+                printf("%c|", M[linha][coluna]); // se o showContent for 1 mostra o conteudo da matriz (tabuleiro) com 'X'/'Y'; 
             else
-                printf("%i,%i|", linha, coluna);
+                printf("%i,%i|", linha, coluna);// se o showContent for 0 mostra as coordenadas; ex: 1,2  para o jogador saber onde pode jogar 
         }
-        putchar('\n');
+        putchar('\n'); // passa para a linha seguinte depois de imprimir tudo(linhas/colunas) 
     }
 
-    if (showContent)
+    if (showContent) // depois de imprimir tudo, imprime a linha separadora central 
     {
         createLine(7, '-');
     }
@@ -80,37 +82,37 @@ void printMatrix2D(char M[MAX][MAX], short int showContent)
  * @param M matriz do tabuleiro
  * @return 0 se colocou com sucesso, 1 se não conseguiu
  */
-int placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX])
+int placeChar(char c, short int tamanho, short position[tamanho], char M[MAX][MAX]) // antes de colocar o caracter ( X OU Y ), verifica se estão detro do tabuleiro e se a posição ainda está vazia 
 {
-    if (!isBetween(position[0], 0, MAX - 1) || !isBetween(position[1], 0, MAX - 1))
+    if (!isBetween(position[0], 0, MAX - 1) || !isBetween(position[1], 0, MAX - 1)) // como MAX = 3, logo só tem receber linha -> 0, 1, 2 / colunas -> 0, 1, 2, ou seja verifica se está dentro do tabuleiro   
+    {
+        return 1;                                                                  // position[0] representa a linha e position[1] representa a coluna 
+    }
+
+    if (M[position[0]][position[1]] != ' ')   // verifica se a posição está vazia 
     {
         return 1;
     }
 
-    if (M[position[0]][position[1]] != ' ')
-    {
-        return 1;
-    }
-
-    M[position[0]][position[1]] = c;
+    M[position[0]][position[1]] = c; // coloca o caracter ( X OU Y )
 
     return 0;
 }
 
-char getCoordenadas(char playerTurn, short int tamanho, short int position[tamanho], char tabuleiro[MAX][MAX])
+char getCoordenadas(char playerTurn, short int tamanho, short int position[tamanho], char tabuleiro[MAX][MAX]) // função responsável por pedir as coordenadas ao jogador atual aonde quer jogar 
 {
     // só é aceitavel (x,y\n\0)
-    const int MAX_BUFFER_LEN = (4 + 1);
+    const int MAX_BUFFER_LEN = (4 + 1); // input esperado tem no máximo caracteres; '1' ',' '2' '\n' '\0'
 
-    while (1)
+    while (1) // ciclo repete até que o jogador atual insira uma jogada válida 
     {
         // Informa de quem é o turno
         LOG_INFO("Vez de: \"%c\".", playerTurn);
 
         // obtem a imput do user
-        char buffer[MAX_BUFFER_LEN];
-        int state = readStrUserInput("Introduza a posição [linha,coluna] ou 'S' para sair", MAX_BUFFER_LEN, buffer, 1, "0123456789,sS");
-        if (state == 1)
+        char buffer[MAX_BUFFER_LEN]; // ex: se o jogador escrever 1,2 fica guardado "1,2" no buffer 
+        int state = readStrUserInput("Introduza a posição [linha,coluna] ou 'S' para sair", MAX_BUFFER_LEN, buffer, 1, "0123456789,sS"); // texto mostrado ao utilizadotor, tamanho maximo do buffer(5), onde fica guardado o texto escrito, ativa o filtro de caracteres, só permite /numeros /vírgulas/ s ou S 
+        if (state == 1) // se for 1, houve um erro então a função termina e devolve 1
         {
             return 1;
         }
@@ -120,7 +122,7 @@ char getCoordenadas(char playerTurn, short int tamanho, short int position[taman
             return 'S';
 
         // validar formato
-        if (sscanf(buffer, "%hi,%hi", &position[0], &position[1]) != 2)
+        if (sscanf(buffer, "%hi,%hi", &position[0], &position[1]) != 2) // tenta ler os 2 numeros separados por 1 virgula
         {
             LOG_INFO("Input inválido. Usa formato: x,y .");
             continue;
@@ -129,7 +131,7 @@ char getCoordenadas(char playerTurn, short int tamanho, short int position[taman
         // LOG_DEBUG("Coordenadas recebidas:%hi,%hi", position[0], position[1]);
 
         // tentar jogar
-        if (!placeChar(playerTurn, tamanho, position, tabuleiro))
+        if (!placeChar(playerTurn, tamanho, position, tabuleiro)) // a função placeChar(X ou Y) verifica se a posição está dentro do tabuleiro e se está vazia 
         {
             putchar('\n');
             return 0; // jogada válida feita
@@ -139,7 +141,7 @@ char getCoordenadas(char playerTurn, short int tamanho, short int position[taman
     }
 }
 
-_Bool isFull(char M[MAX][MAX])
+_Bool isFull(char M[MAX][MAX]) // função para ver se o tabuleiro está cheio, ou seja o 1 for verifica as linhas, o 2 for verifica as colunas, se encontrar alguma posição vazia, devolve false( ainda da para jogar). Se estiver tudo cheio = empate 
 {
 
     for (short linha = 0; linha < MAX; linha++)
@@ -155,7 +157,7 @@ _Bool isFull(char M[MAX][MAX])
     return true;
 }
 
-char checkWinner(char tabuleiro[MAX][MAX])
+char checkWinner(char tabuleiro[MAX][MAX]) // função que verifa se algum jogador fez 3 caracteres seguidos 
 {
     // linhas
     for (int i = 0; i < MAX; i++)
@@ -194,12 +196,12 @@ char checkWinner(char tabuleiro[MAX][MAX])
  * @brief Lê uma entrada correpsondente a "X","O","S"
  * @return Um dos 3 caracteres.
  */
-char chooseTheFirstPlayer()
+char chooseTheFirstPlayer() // função para ver quem começa a jogar primeiro 
 {
     const char promptText[] = "Quem começa: X ou O (ou S para sair)";
     // formato (char\n\0);
-    const int MAX_BUFFER_LEN = (2 + 1);
-    while (1)
+    const int MAX_BUFFER_LEN = (2 + 1);// tamanho maximo buffer, só aceita X, O ou S  
+    while (1)// ciclo repete até que o utilizador insira um entrada válida 
     {
         char buffer[MAX_BUFFER_LEN];
 
@@ -211,7 +213,7 @@ char chooseTheFirstPlayer()
         }
 
         // ora vamos ter em mãos um unico char.
-        return toUpper(buffer[0]);
+        return toUpper(buffer[0]); // converte para maiusculas o 'x' 'O' 's'
     }
 }
 
@@ -219,7 +221,7 @@ int galoMainProcess(void)
 {
     puts("\n!!!WELCOME TO THE GAME!!");
 
-    while (1)
+    while (1) // quando a partida acaba, o programa volta ao inicio deste ciclo e começa uma nova partida com o tabuleiro limpo 
     {
         // limpa o tabuleiro no inicio de cada ronda.
         char tabuleiro[MAX][MAX] = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
@@ -232,23 +234,24 @@ int galoMainProcess(void)
         }
         // inicia-se o jogo
 
-        // proceso simples, o jogador obtido na parte acima vai ser o primeiro
+        // processo simples, o jogador obtido na parte acima vai ser o primeiro
         // então o primeiro jogador vai mandar as coordenadas
         // nisso vai-se alternando entre jogador até um ganhar.
-        short int coordenadas[2] = {-1, -1};
-        char winner = '\0';
-        while (!winner)
-        {
-            printMatrix2D(tabuleiro, 1);
-            printMatrix2D(tabuleiro, 0);
+        short int coordenadas[2] = {-1, -1}; // array usado para guardar as coordenadas da jogada. Começa com -1 porque ainda não foi escolhida nehuma posição 
+        char winner = '\0'; // variável que guarda o vencedor da partida. Começa com \0 pq ainda não existe vencedor, se alguem ganhar vai ter 'X' OU 'O'
 
-            // manda obter as coordenadas
+        while (!winner) // enquanto não existe vencedor continua  
+        {
+            printMatrix2D(tabuleiro, 1); // mostra o tabuleiro com os X OU O
+            printMatrix2D(tabuleiro, 0); // mostra o tabuleiro das coordenadas 
+
+            // manda obter as coordenadas e tenta colocar a jogada no tabuleiro 
             char coordState = getCoordenadas(playerTurn, sizeof(coordenadas) / sizeof(coordenadas[0]), coordenadas, tabuleiro);
-            if (coordState == 'S')
+            if (coordState == 'S')// se o jogador escrever s, termina o jogo 
             {
                 return 0;
             }
-            else if (coordState == 1)
+            else if (coordState == 1) // se o coorState for 1, ocorreu algum erro 
             {
                 return 1;
             }
@@ -281,7 +284,7 @@ int galoMainProcess(void)
             printPlayCounts();
             continue;
         }
-
+        // Resumo do que aconteceu na partida 
         printf(COLOR_BRIGHT_RED);
         createLine(35, '!');
         printf(COLOR_RESET);

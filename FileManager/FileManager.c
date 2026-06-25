@@ -50,14 +50,13 @@ int savePlayerInDataBase(Player player, char PATH[])
 
     bool found = false;
 
-    // Se a base de dados existir
+    // Se o ficheiro original existe, copia e substitui se necessário
     if (original != NULL)
     {
         Player current;
 
         while (fread(&current, sizeof(Player), 1, original) == 1)
         {
-            // Encontrou o mesmo ID -> substitui
             if (current.id == player.id)
             {
                 fwrite(&player, sizeof(Player), 1, temp);
@@ -72,7 +71,7 @@ int savePlayerInDataBase(Player player, char PATH[])
         fclose(original);
     }
 
-    // Se não encontrou o jogador, adiciona no fim
+    // Se não encontrou no ficheiro (ou ficheiro não existia), adiciona
     if (!found)
     {
         fwrite(&player, sizeof(Player), 1, temp);
@@ -80,14 +79,16 @@ int savePlayerInDataBase(Player player, char PATH[])
 
     fclose(temp);
 
-    // Remove original
-    if (remove(PATH))
+    // Se o original não existia, não precisas de remover nada
+    if (original != NULL)
     {
-        LOG_ERROR("Não foi possivel remover o ficheiro.");
-        return 1;
+        if (remove(PATH))
+        {
+            LOG_ERROR("Não foi possivel remover o ficheiro.");
+            return 1;
+        }
     }
 
-    // Renomeia temporário
     if (rename(TEMP_FILE_PATH, PATH))
     {
         LOG_ERROR("Não foi possível substituir a base de dados");
