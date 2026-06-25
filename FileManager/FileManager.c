@@ -81,7 +81,10 @@ int savePlayerInDataBase(Player player, char PATH[])
     fclose(temp);
 
     // Remove original
-    remove(PATH);
+    if (remove(PATH))
+    {
+        LOG_ERROR("Não foi possivel remover o ficheiro.");
+    }
 
     // Renomeia temporário
     if (rename(TEMP_FILE_PATH, PATH))
