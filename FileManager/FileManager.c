@@ -84,6 +84,7 @@ int savePlayerInDataBase(Player player, char PATH[])
     if (remove(PATH))
     {
         LOG_ERROR("Não foi possivel remover o ficheiro.");
+        return 1;
     }
 
     // Renomeia temporário
@@ -227,11 +228,19 @@ int removePlayerFromDB(const unsigned short int id, char PATH[])
         return -1;
     }
 
-    // remove base de dados antiga
-    remove(PATH);
+    // Remove original
+    if (remove(PATH))
+    {
+        LOG_ERROR("Não foi possivel remover o ficheiro.");
+        return 1;
+    }
 
-    // renomeia temporário para base de dados principal
-    rename(TEMP_FILE_PATH, PATH);
+    // Renomeia temporário
+    if (rename(TEMP_FILE_PATH, PATH))
+    {
+        LOG_ERROR("Não foi possível substituir a base de dados");
+        return 1;
+    }
 
     return 0;
 }
